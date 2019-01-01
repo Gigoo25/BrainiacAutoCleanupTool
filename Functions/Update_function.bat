@@ -120,9 +120,10 @@ if exist "%TEMP%\Version_Check.txt" (
 )
 
 ::Download version to compare from online
-"%Output%\Tools\WGET\wget.exe" -q "%REPO_URL%/%REPO_BRANCH%/Version.txt" "%TEMP%\Version_Check.txt" 2>NUL
+"%Output%\Tools\WGET\wget.exe" -q "%REPO_URL%/%REPO_BRANCH%/Version.txt" -O "%TEMP%\Version_Check.txt" 2>NUL
+pause
 if /i %ERRORLEVEL%==0 (
-	set /p CHECK_UPDATE_VERSION=<"%TEMP%\Version_Check.txt"
+	set /p CHECK_UPDATE_VERSION=<%TEMP%\Version_Check.txt
 ) else (
 	::Set red Color
 	color 0c
@@ -156,7 +157,6 @@ if "%CHECK_UPDATE_VERSION%" GTR "%CURRENT_VERSION%" (
 	echo    Update found!
 	echo.
 	echo ===================================================================================
-	TIMEOUT 2
 	::Ask if the user wants to update
 	choice /M "Do you want to update the tool" /c YN 
 	IF errorlevel 2 goto :update_no
