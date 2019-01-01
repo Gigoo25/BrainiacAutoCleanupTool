@@ -121,7 +121,6 @@ if exist "%TEMP%\Version_Check.txt" (
 
 ::Download version to compare from online
 "%Output%\Tools\WGET\wget.exe" -q "%REPO_URL%/%REPO_BRANCH%/Version.txt" -O "%TEMP%\Version_Check.txt" 2>NUL
-pause
 if /i %ERRORLEVEL%==0 (
 	set /p CHECK_UPDATE_VERSION=<%TEMP%\Version_Check.txt
 ) else (
