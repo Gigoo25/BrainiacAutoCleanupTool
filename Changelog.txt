@@ -1,0 +1,47 @@
+
+CHANGELOG
+===================================================================================
+Brainiacs Cleanup Tool v1.2 (2018-12-31)
+
+-Fixed check for restore point always failing if above Win7 and reg key was not
+added.
+-Updated TDSS Killer tool.
+-Updated TDSS Killer tool url location.
+-Fixed update script from pausing when selecting "Yes" to update.
+-Added update version file when selecting yes to update.
+-Removed read-only permissions to files.
+-Fixed abrupt stop of updater.
+-Fixed updater updating itself.
+-Added alert message to notify the update was completed.
+-Cleaned up the code all around to prevent further issues from arising.
+
+Brainiacs Cleanup Tool v1.1 (2018-12-27)
+
+-Added initial update function to tool
+-Removed version numbers from tools
+
+Brainiacs Cleanup Tool v1 (2018-12-24)
+*RELEASE CANIDATE*
+
+-Reverted version back to V1.
+-Revamped menu system.
+-Cleaned up spaghetti code.
+-Cleaned up folder structure.
+-Made code more uniform across the tool/scripts.
+-Cleanup tools updated to latest versions.
+-Separated Open/Delete notes function.
+-Improved restore function incase of accidental tool exit.
+-Added CHKDSK function.
+-Added Caffeine to prevent the screen saver from turning the screen off.
+-Added titles for all functions.
+-Added additional dialogs for more information.
+-Added README/CHANGELOG function to the menu.
+-Added multiple checks to prevent damage/accidental run.
+-Added removal of random past logs + tools.
+-Added small readme to top of the menu.
+-Added preset options.
+-Added restore point fail check.
+-Fixed correct OS check message.
+-Fixed restore points for Spybot/Malwarebytes functions.
+-Fixed ADW logs review.
+-Fixed bug that would not clear menu on non existent input.
