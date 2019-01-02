@@ -103,6 +103,12 @@ if exist "%Output%\Version.txt" (
     )
 )
 
+::Move update function file if it was updated
+if exist "%TEMP%\Update_function.bat" (
+    move "%TEMP%\Update_function.bat" "%Output%\Functions\Update_function.bat" 2>NUL
+    CLS
+)
+
 ::Check for updates
 call functions\Update_function
 
@@ -117,12 +123,6 @@ attrib "%Output%\Version.txt" +h -r
 echo.>"%Output%\Readme.txt":Zone.Identifier
 echo.>"%Output%\Changelog.txt":Zone.Identifier
 echo.>"%Output%\Version.txt":Zone.Identifier
-
-::Move update function file if it was updated
-if exist "%TEMP%\Update_function.bat" (
-    move "%TEMP%\Update_function.bat" "%Output%\Functions\Update_function.bat" 2>NUL
-    CLS
-)
 
 :: Set the window title
 title Brainiacs Cleanup Tool v%TOOL_VERSION%
