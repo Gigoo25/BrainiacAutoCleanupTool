@@ -211,7 +211,7 @@ if /i not "%SAFE_MODE%"=="yes" (
 CLS
 
 ::Check for supported os
-if "%WIN_VER_NUM%" LSS 6.1 (
+if "%WIN_VER_NUM%" LSS 6.0 (
 	color 0c
 	echo.
 	echo  ^! ERROR
