@@ -7,6 +7,7 @@ Brainiacs Cleanup Tool v1.2.1 (2019-01-01)
 -Added checks for Spybot/Malwarebytes to not run below Windows 7.
 -Added removal of TDSS logs if found.
 -Added 0 as the default value for infection amount.
+-Updated Zemana/TDSS tool versions.
 
 Brainiacs Cleanup Tool v1.2 (2018-12-31)
 
