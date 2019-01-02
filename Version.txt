@@ -68,11 +68,11 @@ Caffeine_Tool
 
 no
 no
-no
+yes
 unidentified
 no
 no
-unidentified
+yes
 unidentified
 unidentified
 unidentified
