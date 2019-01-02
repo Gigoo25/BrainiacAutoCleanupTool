@@ -4,6 +4,7 @@ CHANGELOG
 Brainiacs Cleanup Tool v1.2.1 (2019-01-01)
 
 -Allow to be run on Windows Vista.
+-Added checks for Spybot/Malwarebytes to not run below Windows 7.
 
 Brainiacs Cleanup Tool v1.2 (2018-12-31)
 
