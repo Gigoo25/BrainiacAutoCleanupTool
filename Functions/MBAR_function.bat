@@ -1,5 +1,8 @@
 @echo off
 
+::Variables
+set VarMBAR=0
+
 ::Start MBAR service.
 CLS
 SETLOCAL ENABLEDELAYEDEXPANSION

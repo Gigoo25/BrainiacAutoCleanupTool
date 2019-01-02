@@ -1,5 +1,8 @@
 @echo off
 
+::Variables
+set VarTDSSKiller=0
+
 ::Start TDSS Killer service.
 CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
