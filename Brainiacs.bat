@@ -23,6 +23,7 @@ set WIN_VER=undetected
 set WIN_VER_NUM=undetected
 set SAFE_MODE=no
 set DELETEFUNCTIONS=yes
+set ABORT=no
 set VarID=unidentified
 set VarACC=unidentified
 set VarPHN=unidentified
@@ -134,6 +135,9 @@ if /i "%SAFEBOOT_OPTION%"=="NETWORK" set SAFE_MODE=yes
 for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName ^| %FIND% "ProductName"') DO set WIN_VER=%%i %%j
 for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentVersion ^| %FIND% "CurrentVersion"') DO set WIN_VER_NUM=%%i
 
+::If unsupported os then set variable to abort.
+if %WIN_VER_NUM% LSS 6.0 set ABORT=yes
+
 ::Check if 32/64bit windows
 reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set OS=32BIT || set OS=64BIT
 
@@ -210,8 +214,8 @@ if /i not "%SAFE_MODE%"=="yes" (
 )
 CLS
 
-::Check for supported os
-if "%WIN_VER_NUM%" LEQ 5.1 (
+::Quit if windows version is unsupported
+if %ABORT%==yes (
 	color 0c
 	echo.
 	echo  ^! ERROR
