@@ -1,6 +1,10 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.2.1 (2019-01-01)
+
+-Allow to be run on Windows Vista.
+
 Brainiacs Cleanup Tool v1.2 (2018-12-31)
 
 -Fixed check for restore point always failing if above Win7 and reg key was not
