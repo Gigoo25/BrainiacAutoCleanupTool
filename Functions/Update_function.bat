@@ -1,10 +1,22 @@
 @echo off
 
-::Set variables
+::Set repo variables
 set REPO_URL=https://raw.githubusercontent.com/Gigoo25/BrainiacAutoCleanupTool
 set REPO_BRANCH=master
+
+::Set tool verison check variables
 set CURRENT_VERSION=unidentified
 set CHECK_UPDATE_VERSION=unidentified
+
+::Text files local variables
+set Readme_Local=unidentified
+set Version_Local=unidentified
+set Changelog_Local=unidentified
+
+::Text files online variables
+set Readme_Online=unidentified
+set Version_Online=unidentified
+set Changelog_Online=unidentified
 
 ::Function local variables
 set RKill_Update_Function_Local=unidentified
@@ -226,9 +238,25 @@ goto end
 ::Set default Color
 color 07
 
+::Set variables for local text files
+< "%Output%\Version.txt" (
+	for /l %%i in (1,1,9) do set /p =
+	set /p Readme_Local=
+	set /p Version_Local=
+	set /p Changelog_Local=
+)
+
+::Set variables for online text files
+< "%Output%\Version.txt" (
+	for /l %%i in (1,1,9) do set /p =
+	set /p Readme_Online=
+	set /p Version_Online=
+	set /p Changelog_Online=
+)
+
 ::Set variables for Functions_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,28) do set /p =
+	for /l %%i in (1,1,38) do set /p =
 	set /p RKill_Update_Function_Local=
 	set /p JRT_Update_Function_Local=
 	set /p TDSS_Update_Function_Local=
@@ -255,7 +283,7 @@ color 07
 	
 ::Set variables for Tools_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,68) do set /p =
+	for /l %%i in (1,1,78) do set /p =
 	set /p RKill_Update_Tool_Local=
 	set /p JRT_Update_Tool_Local=
 	set /p TDSS_Update_Tool_Local=
@@ -274,7 +302,7 @@ color 07
 
 ::Set variables for Functions_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,28) do set /p =
+	for /l %%i in (1,1,38) do set /p =
 	set /p RKill_Update_Function_Online=
 	set /p JRT_Update_Function_Online=
 	set /p TDSS_Update_Function_Online=
@@ -301,7 +329,7 @@ color 07
 	
 ::Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,68) do set /p =
+	for /l %%i in (1,1,78) do set /p =
 	set /p RKill_Update_Tool_Online=
 	set /p JRT_Update_Tool_Online=
 	set /p TDSS_Update_Tool_Online=
@@ -758,14 +786,41 @@ if "%Update_Update_Function_Online%" GTR "%Update_Update_Function_Local%" (
 	CLS
 )
 
-::Update version file
-"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Version.txt" -O "%Output%\Version.txt"
-
 ::Update Readme file
-"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Readme.txt" -O "%Output%\Readme.txt"
+if "%Readme_Online%" GTR "%Readme_Local%" (
+	CLS
+	echo Updating Readme file...
+	echo.
+	"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Readme.txt" -O "%Output%\Readme.txt"
+	CLS
+	echo Done updating Readme file.
+	TIMEOUT 2
+	CLS
+)
+
+::Update Version file
+if "%Version_Online%" GTR "%Version_Local%" (
+	CLS
+	echo Updating Verison file...
+	echo.
+	"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Version.txt" -O "%Output%\Version.txt"
+	CLS
+	echo Done updating Verison file.
+	TIMEOUT 2
+	CLS
+)
 
 ::Update Changelog file
-"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Changelog.txt" -O "%Output%\Changelog.txt"
+if "%Changelog_Online%" GTR "%Changelog_Local%" (
+	CLS
+	echo Updating Changelog file...
+	echo.
+	"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Changelog.txt" -O "%Output%\Changelog.txt"
+	CLS
+	echo Done updating Changelog file.
+	TIMEOUT 2
+	CLS
+)
 
 ::Set the window title
 title [Update] Brainiacs Cleanup Tool v%TOOL_VERSION%

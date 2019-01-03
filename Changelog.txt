@@ -6,6 +6,7 @@ Brainiacs Cleanup Tool v1.2.2 (2019-01-03)
 -Updater will now check individual file version opposed to a binary yes/no to update
  individual files. This will prevent tool from downloading unecessary files down the
  road.
+-Added a version number to the Readme/Version/Changelog files.
 
 Brainiacs Cleanup Tool v1.2.1 (2019-01-01)
 ----
@@ -15,7 +16,7 @@ Brainiacs Cleanup Tool v1.2.1 (2019-01-01)
 -Added 0 as the default value for infection amount.
 -Updated Zemana/TDSS tool versions.
 -Added progress bar for updater.
--Added re-entry on fail for updater
+-Added re-entry on fail for updater.
 
 Brainiacs Cleanup Tool v1.2 (2018-12-31)
 ----

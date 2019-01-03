@@ -3,6 +3,16 @@
 
 Functions Legend
 --------------
+Readme
+Version
+Changelog
+
+1.2.1
+1.2.2
+1.2.2
+
+Functions Legend
+--------------
 RKill_Function
 JRT_Function
 TDSS_Function
