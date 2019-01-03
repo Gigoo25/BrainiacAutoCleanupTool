@@ -247,7 +247,7 @@ color 07
 )
 
 ::Set variables for online text files
-< "%Output%\Version.txt" (
+< "%TEMP%\Version_Check.txt" (
 	for /l %%i in (1,1,9) do set /p =
 	set /p Readme_Online=
 	set /p Version_Online=
