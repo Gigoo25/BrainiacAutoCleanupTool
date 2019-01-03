@@ -6,45 +6,85 @@ set REPO_BRANCH=master
 set CURRENT_VERSION=unidentified
 set CHECK_UPDATE_VERSION=unidentified
 
-::Function variables
-set RKill_Update_Function=unidentified
-set JRT_Update_Function=unidentified
-set TDSS_Update_Function=unidentified
-set Rogue_Update_Function=unidentified
-set ADW_Update_Function=unidentified
-set HitmanPro_Update_Function=unidentified
-set Zemana_Update_Function=unidentified
-set MBAR_Update_Function=unidentified
-set Malwarebytes_Update_Function=unidentified
-set Spybot_Update_Function=unidentified
-set CCleaner_Update_Function=unidentified
-set DefragSystem_A_Update_Function=unidentified
-set DefragSystem_D_Update_Function=unidentified
-set ImageChecker_Update_Function=unidentified
-set CHKDSK_Update_Function=unidentified
-set SFChecker_Update_Function=unidentified
-set SystemRestore_Update_Function=unidentified
-set DeleteNotes_Update_Function=unidentified
-set DeleteLogs_Update_Function=unidentified
-set DeleteTools_Update_Function=unidentified
-set Brainiacs_Update_Function=unidentified
-set Update_Update_Function=unidentified
+::Function local variables
+set RKill_Update_Function_Local=unidentified
+set JRT_Update_Function_Local=unidentified
+set TDSS_Update_Function_Local=unidentified
+set Rogue_Update_Function_Local=unidentified
+set ADW_Update_Function_Local=unidentified
+set HitmanPro_Update_Function_Local=unidentified
+set Zemana_Update_Function_Local=unidentified
+set MBAR_Update_Function_Local=unidentified
+set Malwarebytes_Update_Function_Local=unidentified
+set Spybot_Update_Function_Local=unidentified
+set CCleaner_Update_Function_Local=unidentified
+set DefragSystem_A_Update_Function_Local=unidentified
+set DefragSystem_D_Update_Function_Local=unidentified
+set ImageChecker_Update_Function_Local=unidentified
+set CHKDSK_Update_Function_Local=unidentified
+set SFChecker_Update_Function_Local=unidentified
+set SystemRestore_Update_Function_Local=unidentified
+set DeleteNotes_Update_Function_Local=unidentified
+set DeleteLogs_Update_Function_Local=unidentified
+set DeleteTools_Update_Function_Local=unidentified
+set Brainiacs_Update_Function_Local=unidentified
+set Update_Update_Function_Local=unidentified
 
-::Tool variables
-set RKill_Update_Tool=unidentified
-set JRT_Update_Tool=unidentified
-set TDSS_Update_Tool=unidentified
-set Rogue_Update_Tool=unidentified
-set ADW_Update_Tool=unidentified
-set HitmanPro_Update_Tool=unidentified
-set Zemana_Update_Tool=unidentified
-set MBAR_Update_Tool=unidentified
-set Malwarebytes_Update_Tool=unidentified
-set Spybot_Update_Tool=unidentified
-set CCleaner_Update_Tool=unidentified
-set DefragSystem_A_Update_Tool=unidentified
-set DefragSystem_D_Update_Tool=unidentified
-set Caffeine_Update_Tool=unidentified
+::Function online variables
+set RKill_Update_Function_Online=unidentified
+set JRT_Update_Function_Online=unidentified
+set TDSS_Update_Function_Online=unidentified
+set Rogue_Update_Function_Online=unidentified
+set ADW_Update_Function_Online=unidentified
+set HitmanPro_Update_Function_Online=unidentified
+set Zemana_Update_Function_Online=unidentified
+set MBAR_Update_Function_Online=unidentified
+set Malwarebytes_Update_Function_Online=unidentified
+set Spybot_Update_Function_Online=unidentified
+set CCleaner_Update_Function_Online=unidentified
+set DefragSystem_A_Update_Function_Online=unidentified
+set DefragSystem_D_Update_Function_Online=unidentified
+set ImageChecker_Update_Function_Online=unidentified
+set CHKDSK_Update_Function_Online=unidentified
+set SFChecker_Update_Function_Online=unidentified
+set SystemRestore_Update_Function_Online=unidentified
+set DeleteNotes_Update_Function_Online=unidentified
+set DeleteLogs_Update_Function_Online=unidentified
+set DeleteTools_Update_Function_Online=unidentified
+set Brainiacs_Update_Function_Online=unidentified
+set Update_Update_Function_Online=unidentified
+
+::Tool local variables
+set RKill_Update_Tool_Local=unidentified
+set JRT_Update_Tool_Local=unidentified
+set TDSS_Update_Tool_Local=unidentified
+set Rogue_Update_Tool_Local=unidentified
+set ADW_Update_Tool_Local=unidentified
+set HitmanPro_Update_Tool_Local=unidentified
+set Zemana_Update_Tool_Local=unidentified
+set MBAR_Update_Tool_Local=unidentified
+set Malwarebytes_Update_Tool_Local=unidentified
+set Spybot_Update_Tool_Local=unidentified
+set CCleaner_Update_Tool_Local=unidentified
+set DefragSystem_A_Update_Tool_Local=unidentified
+set DefragSystem_D_Update_Tool_Local=unidentified
+set Caffeine_Update_Tool_Local=unidentified
+
+::Tool online variables
+set RKill_Update_Tool_Online=unidentified
+set JRT_Update_Tool_Online=unidentified
+set TDSS_Update_Tool_Online=unidentified
+set Rogue_Update_Tool_Online=unidentified
+set ADW_Update_Tool_Online=unidentified
+set HitmanPro_Update_Tool_Online=unidentified
+set Zemana_Update_Tool_Online=unidentified
+set MBAR_Update_Tool_Online=unidentified
+set Malwarebytes_Update_Tool_Online=unidentified
+set Spybot_Update_Tool_Online=unidentified
+set CCleaner_Update_Tool_Online=unidentified
+set DefragSystem_A_Update_Tool_Online=unidentified
+set DefragSystem_D_Update_Tool_Online=unidentified
+set Caffeine_Update_Tool_Online=unidentified
 
 ::Tool download location variables
 set RKill_Url=https://download.bleepingcomputer.com/dl/0bd7abe3ef66cddbcd7a872fb55eb82c/5c247388/windows/security/security-utilities/r/rkill/rkill.exe
@@ -186,65 +226,102 @@ goto end
 ::Set default Color
 color 07
 
-::Update version file
-"%Output%\Tools\WGET\wget.exe" -q "%REPO_URL%/%REPO_BRANCH%/Version.txt" -O "%Output%\Version.txt"
-
-::Update Readme file
-"%Output%\Tools\WGET\wget.exe" -q "%REPO_URL%/%REPO_BRANCH%/Readme.txt" -O "%Output%\Readme.txt"
-
-::Update Changelog file
-"%Output%\Tools\WGET\wget.exe" -q "%REPO_URL%/%REPO_BRANCH%/Changelog.txt" -O "%Output%\Changelog.txt"
-
-::Set variables for functions to update
-< "%TEMP%\Version_Check.txt" (
+::Set variables for Functions_Local
+< "%Output%\Version.txt" (
 	for /l %%i in (1,1,28) do set /p =
-	set /p RKill_Update_Function=
-	set /p JRT_Update_Function=
-	set /p TDSS_Update_Function=
-	set /p Rogue_Update_Function=
-	set /p ADW_Update_Function=
-	set /p HitmanPro_Update_Function=
-	set /p Zemana_Update_Function=
-	set /p MBAR_Update_Function=
-	set /p Malwarebytes_Update_Function=
-	set /p Spybot_Update_Function=
-	set /p CCleaner_Update_Function=
-	set /p DefragSystem_A_Update_Function=
-	set /p DefragSystem_D_Update_Function=
-	set /p ImageChecker_Update_Function=
-	set /p CHKDSK_Update_Function=
-	set /p SFChecker_Update_Function=
-	set /p SystemRestore_Update_Function=
-	set /p DeleteNotes_Update_Function=
-	set /p DeleteLogs_Update_Function=
-	set /p DeleteTools_Update_Function=
-	set /p Brainiacs_Update_Function=
-	set /p Update_Update_Function=
+	set /p RKill_Update_Function_Local=
+	set /p JRT_Update_Function_Local=
+	set /p TDSS_Update_Function_Local=
+	set /p Rogue_Update_Function_Local=
+	set /p ADW_Update_Function_Local=
+	set /p HitmanPro_Update_Function_Local=
+	set /p Zemana_Update_Function_Local=
+	set /p MBAR_Update_Function_Local=
+	set /p Malwarebytes_Update_Function_Local=
+	set /p Spybot_Update_Function_Local=
+	set /p CCleaner_Update_Function_Local=
+	set /p DefragSystem_A_Update_Function_Local=
+	set /p DefragSystem_D_Update_Function_Local=
+	set /p ImageChecker_Update_Function_Local=
+	set /p CHKDSK_Update_Function_Local=
+	set /p SFChecker_Update_Function_Local=
+	set /p SystemRestore_Update_Function_Local=
+	set /p DeleteNotes_Update_Function_Local=
+	set /p DeleteLogs_Update_Function_Local=
+	set /p DeleteTools_Update_Function_Local=
+	set /p Brainiacs_Update_Function_Local=
+	set /p Update_Update_Function_Local=
 )
 	
-::Set variables for tools to update
+::Set variables for Tools_Local
+< "%Output%\Version.txt" (
+	for /l %%i in (1,1,68) do set /p =
+	set /p RKill_Update_Tool_Local=
+	set /p JRT_Update_Tool_Local=
+	set /p TDSS_Update_Tool_Local=
+	set /p Rogue_Update_Tool_Local=
+	set /p ADW_Update_Tool_Local=
+	set /p HitmanPro_Update_Tool_Local=
+	set /p Zemana_Update_Tool_Local=
+	set /p MBAR_Update_Tool_Local=
+	set /p Malwarebytes_Update_Tool_Local=
+	set /p Spybot_Update_Tool_Local=
+	set /p CCleaner_Update_Tool_Local=
+	set /p DefragSystem_A_Update_Tool_Local=
+	set /p DefragSystem_D_Update_Tool_Local=
+	set /p Caffeine_Update_Tool_Local=
+)
+
+::Set variables for Functions_Online
+< "%TEMP%\Version_Check.txt" (
+	for /l %%i in (1,1,28) do set /p =
+	set /p RKill_Update_Function_Online=
+	set /p JRT_Update_Function_Online=
+	set /p TDSS_Update_Function_Online=
+	set /p Rogue_Update_Function_Online=
+	set /p ADW_Update_Function_Online=
+	set /p HitmanPro_Update_Function_Online=
+	set /p Zemana_Update_Function_Online=
+	set /p MBAR_Update_Function_Online=
+	set /p Malwarebytes_Update_Function_Online=
+	set /p Spybot_Update_Function_Online=
+	set /p CCleaner_Update_Function_Online=
+	set /p DefragSystem_A_Update_Function_Online=
+	set /p DefragSystem_D_Update_Function_Online=
+	set /p ImageChecker_Update_Function_Online=
+	set /p CHKDSK_Update_Function_Online=
+	set /p SFChecker_Update_Function_Online=
+	set /p SystemRestore_Update_Function_Online=
+	set /p DeleteNotes_Update_Function_Online=
+	set /p DeleteLogs_Update_Function_Online=
+	set /p DeleteTools_Update_Function_Online=
+	set /p Brainiacs_Update_Function_Online=
+	set /p Update_Update_Function_Online=
+)
+	
+::Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
 	for /l %%i in (1,1,68) do set /p =
-	set /p RKill_Update_Tool=
-	set /p JRT_Update_Tool=
-	set /p TDSS_Update_Tool=
-	set /p Rogue_Update_Tool=
-	set /p ADW_Update_Tool=
-	set /p HitmanPro_Update_Tool=
-	set /p Zemana_Update_Tool=
-	set /p MBAR_Update_Tool=
-	set /p Malwarebytes_Update_Tool=
-	set /p Spybot_Update_Tool=
-	set /p CCleaner_Update_Tool=
-	set /p DefragSystem_A_Update_Tool=
-	set /p DefragSystem_D_Update_Tool=
-	set /p Caffeine_Update_Tool=
+	set /p RKill_Update_Tool_Online=
+	set /p JRT_Update_Tool_Online=
+	set /p TDSS_Update_Tool_Online=
+	set /p Rogue_Update_Tool_Online=
+	set /p ADW_Update_Tool_Online=
+	set /p HitmanPro_Update_Tool_Online=
+	set /p Zemana_Update_Tool_Online=
+	set /p MBAR_Update_Tool_Online=
+	set /p Malwarebytes_Update_Tool_Online=
+	set /p Spybot_Update_Tool_Online=
+	set /p CCleaner_Update_Tool_Online=
+	set /p DefragSystem_A_Update_Tool_Online=
+	set /p DefragSystem_D_Update_Tool_Online=
+	set /p Caffeine_Update_Tool_Online=
 )
 
 ::Update functions based on variables
 
 ::Rkill_Function
-if "%RKill_Update_Function%"=="yes" (
+if "%RKill_Update_Function_Online%" GTR "%RKill_Update_Function_Local%" (
 	CLS
 	echo Updating Rkill_Function...
 	echo.
@@ -256,7 +333,7 @@ if "%RKill_Update_Function%"=="yes" (
 )
 
 ::JRT_Function
-if "%JRT_Update_Function%"=="yes" (
+if "%JRT_Update_Function_Online%" GTR "%JRT_Update_Function_Local%" (
 	CLS
 	echo Updating JRT_Function...
 	echo.
@@ -268,7 +345,7 @@ if "%JRT_Update_Function%"=="yes" (
 )
 
 ::TDSS_Function
-if "%TDSS_Update_Function%"=="yes" (
+if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 	CLS
 	echo Updating TDSS_Function...
 	echo.
@@ -280,7 +357,7 @@ if "%TDSS_Update_Function%"=="yes" (
 )
 
 ::Rogue_Function
-if "%Rogue_Update_Function%"=="yes" (
+if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 	CLS
 	echo Updating Rogue_Function...
 	echo.
@@ -292,7 +369,7 @@ if "%Rogue_Update_Function%"=="yes" (
 )
 
 ::ADW_Function
-if "%ADW_Update_Function%"=="yes" (
+if "%ADW_Update_Function_Online%" GTR "%ADW_Update_Function_Local%" (
 	CLS
 	echo Updating ADW_Function...
 	echo.
@@ -304,7 +381,7 @@ if "%ADW_Update_Function%"=="yes" (
 )
 
 ::HitmanPro_Function
-if "%HitmanPro_Update_Function%"=="yes" (
+if "%HitmanPro_Update_Function_Online%" GTR "%HitmanPro_Update_Function_Local%" (
 	CLS
 	echo Updating HitmanPro_Function...
 	echo.
@@ -316,7 +393,7 @@ if "%HitmanPro_Update_Function%"=="yes" (
 )
 
 ::Zemana_Function
-if "%Zemana_Update_Function%"=="yes" (
+if "%Zemana_Update_Function_Online%" GTR "%Zemana_Update_Function_Local%" (
 	CLS
 	echo Updating Zemana_Function...
 	echo.
@@ -328,7 +405,7 @@ if "%Zemana_Update_Function%"=="yes" (
 )
 
 ::MBAR_Function
-if "%MBAR_Update_Function%"=="yes" (
+if "%MBAR_Update_Function_Online%" GTR "%MBAR_Update_Function_Local%" (
 	CLS
 	echo Updating MBAR_Function...
 	echo.
@@ -340,7 +417,7 @@ if "%MBAR_Update_Function%"=="yes" (
 )
 
 ::Malwarebytes_Function
-if "%Malwarebytes_Update_Function%"=="yes" (
+if "%Malwarebytes_Update_Function_Online%" GTR "%Malwarebytes_Update_Function_Local%" (
 	CLS
 	echo Updating Malwarebytes_Function...
 	echo.
@@ -352,7 +429,7 @@ if "%Malwarebytes_Update_Function%"=="yes" (
 )
 
 ::Spybot_Function
-if "%Spybot_Update_Function%"=="yes" (
+if "%Spybot_Update_Function_Online%" GTR "%Spybot_Update_Function_Local%" (
 	CLS
 	echo Updating Spybot_Function...
 	echo.
@@ -364,7 +441,7 @@ if "%Spybot_Update_Function%"=="yes" (
 )
 
 ::CCleaner_Function
-if "%CCleaner_Update_Function%"=="yes" (
+if "%CCleaner_Update_Function_Online%" GTR "%CCleaner_Update_Function_Local%" (
 	CLS
 	echo Updating CCleaner_Function...
 	echo.
@@ -376,7 +453,7 @@ if "%CCleaner_Update_Function%"=="yes" (
 )
 
 ::DefragSystem_A_Update_Function
-if "%DefragSystem_A_Update_Function%"=="yes" (
+if "%DefragSystem_A_Update_Function_Online%" GTR "%DefragSystem_A_Update_Function_Local%" (
 	CLS
 	echo Updating DefragSystem_A_Update_Function...
 	echo.
@@ -388,7 +465,7 @@ if "%DefragSystem_A_Update_Function%"=="yes" (
 )
 
 ::DefragSystem_D_Update_Function
-if "%DefragSystem_D_Update_Function%"=="yes" (
+if "%DefragSystem_D_Update_Function_Online%" GTR "%DefragSystem_D_Update_Function_Local%" (
 	CLS
 	echo Updating DefragSystem_D_Update_Function...
 	echo.
@@ -400,7 +477,7 @@ if "%DefragSystem_D_Update_Function%"=="yes" (
 )
 
 ::ImageChecker_Function
-if "%ImageChecker_Update_Function%"=="yes" (
+if "%ImageChecker_Update_Function_Online%" GTR "%ImageChecker_Update_Function_Local%" (
 	CLS
 	echo Updating ImageChecker_Function...
 	echo.
@@ -412,7 +489,7 @@ if "%ImageChecker_Update_Function%"=="yes" (
 )
 
 ::CHKDSK_Function
-if "%CHKDSK_Update_Function%"=="yes" (
+if "%CHKDSK_Update_Function_Online%" GTR "%CHKDSK_Update_Function_Local%" (
 	CLS
 	echo Updating CHKDSK_Function...
 	echo.
@@ -424,7 +501,7 @@ if "%CHKDSK_Update_Function%"=="yes" (
 )
 
 ::SFChecker_Function
-if "%SFChecker_Update_Function%"=="yes" (
+if "%SFChecker_Update_Function_Online%" GTR "%SFChecker_Update_Function_Local%" (
 	CLS
 	echo Updating SFChecker_Function...
 	echo.
@@ -436,7 +513,7 @@ if "%SFChecker_Update_Function%"=="yes" (
 )
 
 ::SystemRestore_Function
-if "%SystemRestore_Update_Function%"=="yes" (
+if "%SystemRestore_Update_Function_Online%" GTR "%SystemRestore_Update_Function_Local%" (
 	CLS
 	echo Updating SystemRestore_Function...
 	echo.
@@ -448,7 +525,7 @@ if "%SystemRestore_Update_Function%"=="yes" (
 )
 
 ::DeleteNotes_Function
-if "%DeleteNotes_Update_Function%"=="yes" (
+if "%DeleteNotes_Update_Function_Online%" GTR "%DeleteNotes_Update_Function_Local%" (
 	CLS
 	echo Updating DeleteNotes_Function...
 	echo.
@@ -460,7 +537,7 @@ if "%DeleteNotes_Update_Function%"=="yes" (
 )
 
 ::DeleteLogs_Function
-if "%DeleteLogs_Update_Function%"=="yes" (
+if "%DeleteLogs_Update_Function_Online%" GTR "%DeleteLogs_Update_Function_Local%" (
 	CLS
 	echo Updating DeleteLogs_Function...
 	echo.
@@ -472,7 +549,7 @@ if "%DeleteLogs_Update_Function%"=="yes" (
 )
 
 ::DeleteTools_Function
-if "%DeleteTools_Update_Function%"=="yes" (
+if "%DeleteTools_Update_Function_Online%" GTR "%DeleteTools_Update_Function_Local%" (
 	CLS
 	echo Updating DeleteTools_Function...
 	echo.
@@ -484,7 +561,7 @@ if "%DeleteTools_Update_Function%"=="yes" (
 )
 
 ::Brainiacs_Function
-if "%Brainiacs_Update_Function%"=="yes" (
+if "%Brainiacs_Update_Function_Online%" GTR "%Brainiacs_Update_Function_Local%" (
 	CLS
 	echo Updating Brainiacs_Function...
 	echo.
@@ -498,7 +575,7 @@ if "%Brainiacs_Update_Function%"=="yes" (
 ::Updated tools based on variables
 
 ::Rkill_Tool
-if "%RKill_Update_Tool%"=="yes" (
+if "%RKill_Update_Tool_Online%" GTR "%RKill_Update_Tool_Local%" (
 	CLS
 	echo Updating Rkill_Tool...
 	echo.
@@ -510,7 +587,7 @@ if "%RKill_Update_Tool%"=="yes" (
 )
 
 ::JRT_Tool
-if "%JRT_Update_Tool%"=="yes" (
+if "%JRT_Update_Tool_Online%" GTR "%JRT_Update_Tool_Local%" (
 	CLS
 	echo Updating JRT_Tool...
 	echo.
@@ -522,7 +599,7 @@ if "%JRT_Update_Tool%"=="yes" (
 )
 
 ::TDSS_Tool
-if "%TDSS_Update_Tool%"=="yes" (
+if "%TDSS_Update_Tool_Online%" GTR "%TDSS_Update_Tool_Local%" (
 	CLS
 	echo Updating TDSS Killer...
 	echo.
@@ -534,7 +611,7 @@ if "%TDSS_Update_Tool%"=="yes" (
 )
 
 ::Rogue_Tool
-if "%Rogue_Update_Tool%"=="yes" (
+if "%Rogue_Update_Tool_Online%" GTR "%Rogue_Update_Tool_Local%" (
 	CLS
 	echo Updating Rogue_Tool...
 	echo.
@@ -546,7 +623,7 @@ if "%Rogue_Update_Tool%"=="yes" (
 )
 
 ::ADW_Tool
-if "%ADW_Update_Tool%"=="yes" (
+if "%ADW_Update_Tool_Online%" GTR "%ADW_Update_Tool_Local%" (
 	CLS
 	echo Updating ADW_Tool...
 	echo.
@@ -558,7 +635,7 @@ if "%ADW_Update_Tool%"=="yes" (
 )
 
 ::HitmanPro_Tool
-if "%HitmanPro_Update_Tool%"=="yes" (
+if "%HitmanPro_Update_Tool_Online%" GTR "%HitmanPro_Update_Tool_Local%" (
 	CLS
 	echo Updating HitmanPro_Tool...
 	echo.
@@ -571,7 +648,7 @@ if "%HitmanPro_Update_Tool%"=="yes" (
 )
 
 ::Zemana_Tool
-if "%Zemana_Update_Tool%"=="yes" (
+if "%Zemana_Update_Tool_Online%" GTR "%Zemana_Update_Tool_Local%" (
 	CLS
 	echo Updating Zemana...
 	echo.
@@ -584,7 +661,7 @@ if "%Zemana_Update_Tool%"=="yes" (
 
 ::MBAR_Tool
 ::FIX DOWNLOAD DIR
-if "%MBAR_Update_Tool%"=="yes" (
+if "%MBAR_Update_Tool_Online%" GTR "%MBAR_Update_Tool_Local%" (
 	CLS
 	echo Updating MBAR_Tool...
 	echo.
@@ -596,7 +673,7 @@ if "%MBAR_Update_Tool%"=="yes" (
 )
 
 ::Malwarebytes_Tool
-if "%Malwarebytes_Update_Tool%"=="yes" (
+if "%Malwarebytes_Update_Tool_Online%" GTR "%Malwarebytes_Update_Tool_Local%" (
 	CLS
 	echo Updating Malwarebytes_Tool...
 	echo.
@@ -608,7 +685,7 @@ if "%Malwarebytes_Update_Tool%"=="yes" (
 )
 
 ::Spybot_Tool
-if "%Spybot_Update_Tool%"=="yes" (
+if "%Spybot_Update_Tool_Online%" GTR "%Spybot_Update_Tool_Local%" (
 	CLS
 	echo Updating Spybot_Tool...
 	echo.
@@ -621,7 +698,7 @@ if "%Spybot_Update_Tool%"=="yes" (
 
 ::CCleaner_Tool
 ::ADD 64 BIT VERSION
-if "%CCleaner_Update_Tool%"=="yes" (
+if "%CCleaner_Update_Tool_Online%" GTR "%CCleaner_Update_Tool_Local%" (
 	CLS
 	echo Updating CCleaner_Tool...
 	echo.
@@ -633,7 +710,7 @@ if "%CCleaner_Update_Tool%"=="yes" (
 )
 
 ::DefragSystem_A_Tool
-if "%DefragSystem_A_Update_Tool%"=="yes" (
+if "%DefragSystem_A_Update_Tool_Online%" GTR "%DefragSystem_A_Update_Tool_Local%" (
 	CLS
 	echo Updating DefragSystem_A_Tool...
 	echo.
@@ -646,7 +723,7 @@ if "%DefragSystem_A_Update_Tool%"=="yes" (
 
 ::DefragSystem_D_Tool
 ::ADD 64 BIT VERSION
-if "%DefragSystem_D_Update_Tool%"=="yes" (
+if "%DefragSystem_D_Update_Tool_Online%" GTR "%DefragSystem_D_Update_Tool_Local%" (
 	CLS
 	echo Updating DefragSystem_D_Tool...
 	echo.
@@ -658,7 +735,7 @@ if "%DefragSystem_D_Update_Tool%"=="yes" (
 )
 
 ::Caffeine_Update_Tool
-if "%Caffeine_Update_Tool%"=="yes" (
+if "%Caffeine_Update_Tool_Online%" GTR "%Caffeine_Update_Tool_Local%" (
 	CLS
 	echo Updating Caffeine_Update_Tool...
 	echo.
@@ -670,7 +747,7 @@ if "%Caffeine_Update_Tool%"=="yes" (
 )
 
 ::Update_Update_Function last
-if "%Update_Update_Function%"=="yes" (
+if "%Update_Update_Function_Online%" GTR "%Update_Update_Function_Local%" (
 	CLS
 	echo Updating Update_Update_Function...
 	echo.
@@ -680,6 +757,15 @@ if "%Update_Update_Function%"=="yes" (
 	TIMEOUT 2
 	CLS
 )
+
+::Update version file
+"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Version.txt" -O "%Output%\Version.txt"
+
+::Update Readme file
+"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Readme.txt" -O "%Output%\Readme.txt"
+
+::Update Changelog file
+"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Changelog.txt" -O "%Output%\Changelog.txt"
 
 ::Set the window title
 title [Update] Brainiacs Cleanup Tool v%TOOL_VERSION%

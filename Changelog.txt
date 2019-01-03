@@ -1,8 +1,14 @@
 
 CHANGELOG
 ===================================================================================
-Brainiacs Cleanup Tool v1.2.1 (2019-01-01)
+Brainiacs Cleanup Tool v1.2.2 (2019-01-03)
+----
+-Updater will now check individual file version opposed to a binary yes/no to update
+ individual files. This will prevent tool from downloading unecessary files down the
+ road.
 
+Brainiacs Cleanup Tool v1.2.1 (2019-01-01)
+----
 -Allow to be run on Windows Vista.
 -Added checks for Spybot/Malwarebytes to not run below Windows 7.
 -Added removal of TDSS logs if found.
@@ -12,7 +18,7 @@ Brainiacs Cleanup Tool v1.2.1 (2019-01-01)
 -Added re-entry on fail for updater
 
 Brainiacs Cleanup Tool v1.2 (2018-12-31)
-
+----
 -Fixed check for restore point always failing if above Win7 and reg key was not
 added.
 -Updated TDSS Killer tool.
@@ -26,13 +32,13 @@ added.
 -Cleaned up the code all around to prevent further issues from arising.
 
 Brainiacs Cleanup Tool v1.1 (2018-12-27)
-
+----
 -Added initial update function to tool
 -Removed version numbers from tools
 
 Brainiacs Cleanup Tool v1 (2018-12-24)
 *RELEASE CANIDATE*
-
+----
 -Reverted version back to V1.
 -Revamped menu system.
 -Cleaned up spaghetti code.
