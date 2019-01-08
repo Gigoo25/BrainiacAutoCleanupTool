@@ -1,6 +1,11 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.2.3 (2019-01-08)
+----
+-Added manual restore point on fail.
+-Fixed notes creation on CHDSK.
+
 Brainiacs Cleanup Tool v1.2.2 (2019-01-03)
 ----
 -Updater will now check individual file version opposed to a binary yes/no to update
