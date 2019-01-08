@@ -1,69 +1,92 @@
+1.2.3
+2019-01-08
 
-CHANGELOG
-===================================================================================
-Brainiacs Cleanup Tool v1.2.3 (2019-01-08)
-----
--Added manual restore point on fail.
--Fixed notes creation on CHDSK.
+Functions Legend
+--------------
+Readme
+Version
+Changelog
 
-Brainiacs Cleanup Tool v1.2.2 (2019-01-03)
-----
--Updater will now check individual file version opposed to a binary yes/no to update
- individual files. This will prevent tool from downloading unecessary files down the
- road.
--Added a version number to the Readme/Version/Changelog files.
+1.2.1
+1.2.3
+1.2.3
 
-Brainiacs Cleanup Tool v1.2.1 (2019-01-01)
-----
--Allow to be run on Windows Vista.
--Added checks for Spybot/Malwarebytes to not run below Windows 7.
--Added removal of TDSS logs if found.
--Added 0 as the default value for infection amount.
--Updated Zemana/TDSS tool versions.
--Added progress bar for updater.
--Added re-entry on fail for updater.
+Functions Legend
+--------------
+RKill_Function
+JRT_Function
+TDSS_Function
+Rogue_Function
+ADW_Function
+HitmanPro_Function
+Zemana_Function
+MBAR_Function
+Malwarebytes_Function
+Spybot_Function
+CCleaner_Function
+DefragSystem_A_Function
+DefragSystem_D_Function
+ImageChecker_Function
+CHKDSK_Function
+SFChecker_Function
+SystemRestore_Function
+DeleteNotes_Function
+DeleteLogs_Function
+DeleteTools_Function
+Brainiacs_Function
+Update_Update_Function
 
-Brainiacs Cleanup Tool v1.2 (2018-12-31)
-----
--Fixed check for restore point always failing if above Win7 and reg key was not
-added.
--Updated TDSS Killer tool.
--Updated TDSS Killer tool url location.
--Fixed update script from pausing when selecting "Yes" to update.
--Added update version file when selecting yes to update.
--Removed read-only permissions to files.
--Fixed abrupt stop of updater.
--Fixed updater updating itself.
--Added alert message to notify the update was completed.
--Cleaned up the code all around to prevent further issues from arising.
+1.0
+1.2.1
+1.2.1
+1.2.1
+1.2.1
+1.2.1
+1.2.1
+1.2.1
+1.2.1
+1.2.1
+1.0
+1.0
+1.0
+1.0
+1.2.3
+1.0
+1.2.3
+1.0
+1.0
+1.0
+1.2.1
+1.2.2
 
-Brainiacs Cleanup Tool v1.1 (2018-12-27)
-----
--Added initial update function to tool
--Removed version numbers from tools
+Tools Legend
+--------------
+RKill_Tool
+JRT_Tool
+TDSS_Tool
+Rogue_Tool
+ADW_Tool
+HitmanPro_Tool
+Zemana_Tool
+MBAR_Tool
+Malwarebytes_Tool
+Spybot_Tool
+CCleaner_Tool
+DefragSystem_A_Tool
+DefragSystem_D_Tool
+Caffeine_Tool
 
-Brainiacs Cleanup Tool v1 (2018-12-24)
-*RELEASE CANIDATE*
-----
--Reverted version back to V1.
--Revamped menu system.
--Cleaned up spaghetti code.
--Cleaned up folder structure.
--Made code more uniform across the tool/scripts.
--Cleanup tools updated to latest versions.
--Separated Open/Delete notes function.
--Improved restore function incase of accidental tool exit.
--Added CHKDSK function.
--Added Caffeine to prevent the screen saver from turning the screen off.
--Added titles for all functions.
--Added additional dialogs for more information.
--Added README/CHANGELOG function to the menu.
--Added multiple checks to prevent damage/accidental run.
--Added removal of random past logs + tools.
--Added small readme to top of the menu.
--Added preset options.
--Added restore point fail check.
--Fixed correct OS check message.
--Fixed restore points for Spybot/Malwarebytes functions.
--Fixed ADW logs review.
--Fixed bug that would not clear menu on non existent input.
+1.0
+1.0
+1.2.1
+1.0
+1.0
+1.0
+1.2.1
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
+1.0
