@@ -21,7 +21,7 @@ if /i not %ERRORLEVEL%==0 (
 	echo.
     echo Continuing in 10 seconds.
 	TIMEOUT 10 >NUL 2>&1
-	echo -Ran CHKDSK errors were found
+	echo -Ran CHKDSK errors were found >> %Output%\Notes\Comments.txt
 	echo -Scheduled a fix for next reboot >> %Output%\Notes\Comments.txt
 	fsutil dirty set %SystemDrive%
   	goto :eof
