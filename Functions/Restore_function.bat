@@ -51,13 +51,17 @@ if %WIN_VER_NUM% geq 6.1 (
 			echo ===================================================================================
 			echo.
 			echo    Brainiacs - %DATE%: Pre-run checkpoint failed!
-			echo.                                                        
-			echo    Manually create this restore point or continue but be aware of the consequences!    
+			echo.                                                 
+			echo    Opening manual restore point creation in 10 seconds. Close the next window to 
+			echo    skip but be aware of the consequences!
 			echo.
 			echo    Consequences: Bad things will happen.
 			echo.
 			echo ===================================================================================
-			pause
+			TIMEOUT 10
+			start /WAIT "RESTORE" "%SystemRoot%\System32\SystemPropertiesProtection.exe"
+			echo Manual restore point created!
+			echo -Created a manual restore point >> %Output%\Notes\Comments.txt
 			::Set Color
 			color 07
 			goto :skip_restore_point_creation
@@ -86,8 +90,8 @@ echo "%WIN_VER%" | findstr /i /c:"server" >NUL || (
 		echo.
 		echo    Brainiacs - %DATE%: Pre-run checkpoint failed!
 		echo.                                                 
-		echo	Opening manual restore point creation in 10 seconds. Close the next window to 
-		echo	skip but be aware of the consequences!
+		echo    Opening manual restore point creation in 10 seconds. Close the next window to 
+		echo    skip but be aware of the consequences!
 		echo.
 		echo    Consequences: Bad things will happen.
 		echo.
