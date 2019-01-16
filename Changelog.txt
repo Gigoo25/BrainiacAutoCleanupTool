@@ -1,6 +1,13 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.2.4 (2019-01-15)
+----
+-Enable delayed expansion on system restore function.
+-Minor visual tweaks in system restore function.
+-Added password prompt to prevent non-beta testers from using the tool.
+-Updated TDSS Killer exe.
+
 Brainiacs Cleanup Tool v1.2.3 (2019-01-08)
 ----
 -Added manual restore point on fail.

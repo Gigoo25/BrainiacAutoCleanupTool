@@ -1,13 +1,14 @@
 @echo off
+setlocal enableDelayedExpansion
 
 ::Set variables
 set DELETE_COOLDOWN=unidentified
 
 ::Start System restore service.
 CLS
-title [System Restore Point] Brainiacs Cleanup Tool v%TOOL_VERSION%
-if /i "%WIN_VER:~0,9%"=="Windows 1" (
-	if  %SAFE_MODE%==yes (
+title [System Restore Point] Brainiacs Cleanup Tool v!TOOL_VERSION!
+if /i "!WIN_VER:~0,9!"=="Windows 1" (
+	if !SAFE_MODE!==yes (
 		::Set Color
 		color 0c
 		cls
@@ -31,18 +32,18 @@ if /i "%WIN_VER:~0,9%"=="Windows 1" (
 
 ::Detect if reg key has been added already to prevent false positive
 reg query "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v SystemRestorePointCreationFrequency >nul 2>&1
-if /i not %ERRORLEVEL%==0 (
+if /i not !ERRORLEVEL!==0 (
 	set DELETE_COOLDOWN=yes
 ) else (
 	set DELETE_COOLDOWN=no
 )
 
 ::Win7 and up only: Remove the cooldown timer (via reg command) and enable System Restore
-if %WIN_VER_NUM% geq 6.1 (
-	if /i "%DELETE_COOLDOWN%"=="yes" (
+if /i !WIN_VER_NUM! geq 6.1 (
+	if /i "!DELETE_COOLDOWN!"=="yes" (
 		reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /t reg_dword /v SystemRestorePointCreationFrequency /d 0 /f >nul 2>&1
-		powershell "Enable-ComputerRestore -Drive "%SystemDrive%" | Out-Null" 2>&1
-		if /i not %ERRORLEVEL%==0 (
+		powershell "Enable-ComputerRestore -Drive "!SystemDrive!" | Out-Null" 2>&1
+		if /i not !ERRORLEVEL!==0 (
 			::Set Color
 			color 0c
 			cls
@@ -50,7 +51,7 @@ if %WIN_VER_NUM% geq 6.1 (
 			echo  ^! ERROR
 			echo ===================================================================================
 			echo.
-			echo    Brainiacs - %DATE%: Pre-run checkpoint failed!
+			echo    Brainiacs - !DATE!: Pre-run checkpoint failed!
 			echo.                                                 
 			echo    Opening manual restore point creation in 10 seconds. Close the next window to 
 			echo    skip but be aware of the consequences!
@@ -59,13 +60,14 @@ if %WIN_VER_NUM% geq 6.1 (
 			echo.
 			echo ===================================================================================
 			TIMEOUT 10
-			start /WAIT "RESTORE" "%SystemRoot%\System32\SystemPropertiesProtection.exe"
+			start /WAIT "RESTORE" "!SystemRoot!\System32\SystemPropertiesProtection.exe"
 			echo Manual restore point created!
-			echo -Created a manual restore point >> %Output%\Notes\Comments.txt
+			echo -Created a manual restore point >> !Output!\Notes\Comments.txt
 			::Set Color
 			color 07
 			goto :skip_restore_point_creation
 		) else (
+			CLS
 			echo Removing system restore cooldown timer...
 			::Set variable to skip windows timer if previously ran.
 			set DELETE_COOLDOWN=no
@@ -75,12 +77,12 @@ if %WIN_VER_NUM% geq 6.1 (
 )
 
 ::Create restore point
-echo "%WIN_VER%" | findstr /i /c:"server" >NUL || (
+echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
 	echo Creating restore point...
 	TIMEOUT 1 >NUL 2>&1
 	CLS
-	powershell "Checkpoint-Computer -Description 'Brainiacs - %DATE%: Pre-run checkpoint' | Out-Null" 2>&1
-	if /i not %ERRORLEVEL%==0 (
+	powershell "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
+	if /i not !ERRORLEVEL!==0 (
 		::Set Color
 		color 0c
 		cls
@@ -88,7 +90,7 @@ echo "%WIN_VER%" | findstr /i /c:"server" >NUL || (
 		echo  ^! ERROR
 		echo ===================================================================================
 		echo.
-		echo    Brainiacs - %DATE%: Pre-run checkpoint failed!
+		echo    Brainiacs - !DATE!: Pre-run checkpoint failed!
 		echo.                                                 
 		echo    Opening manual restore point creation in 10 seconds. Close the next window to 
 		echo    skip but be aware of the consequences!
@@ -97,18 +99,19 @@ echo "%WIN_VER%" | findstr /i /c:"server" >NUL || (
 		echo.
 		echo ===================================================================================
 		TIMEOUT 10
-		start /WAIT "RESTORE" "%SystemRoot%\System32\SystemPropertiesProtection.exe"
+		start /WAIT "RESTORE" "!SystemRoot!\System32\SystemPropertiesProtection.exe"
 		echo Manual restore point created!
-		echo -Created a manual restore point >> %Output%\Notes\Comments.txt
+		echo -Created a manual restore point >> !Output!\Notes\Comments.txt
 		::Set Color
 		color 07
 		goto :skip_restore_point_creation
 	) else (
 		CLS
-		echo Restore point 'Brainiacs - %DATE%: Pre-run checkpoint' created!
-		echo -Created a system restore point 'Brainiacs - %DATE%: Pre-run checkpoint' >> %Output%\Notes\Comments.txt
+		echo Restore point 'Brainiacs - !DATE!: Pre-run checkpoint' created!
+		echo -Created a system restore point 'Brainiacs - !DATE!: Pre-run checkpoint' >> !Output!\Notes\Comments.txt
 		TIMEOUT 3 >nul 2>&1
 	)
 )
 :skip_restore_point_creation
 CLS
+ENDLOCAL DISABLEDELAYEDEXPANSION

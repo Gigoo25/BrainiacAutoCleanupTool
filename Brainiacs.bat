@@ -103,6 +103,34 @@ if exist "%Output%\Version.txt" (
     )
 )
 
+::Ask for password for beta testing purposes.
+echo.
+echo  ^! PASSWORD
+echo ===================================================================================
+echo.
+echo    Enter the password in order to access the tool.
+echo.
+echo    If you do not have the password please close out of this tool.
+echo.
+echo ===================================================================================
+set /p password="Enter password: "
+if /I NOT "%password%"=="Beta" (
+    color 0c
+    cls
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo Password is incorrect.
+    echo.
+    echo The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 30 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 30
+    exit /b
+)
+CLS
+
 ::Move update function file if it was updated
 if exist "%TEMP%\Update_function.bat" (
     move "%TEMP%\Update_function.bat" "%Output%\Functions\Update_function.bat" 2>NUL
