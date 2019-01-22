@@ -11,7 +11,6 @@ if exist "%Output%\Tools\TDSS\TDSSKiller.exe" (
 	echo Running TDSS Killer...
 	start /WAIT "TDS" "%Output%\Tools\TDSS\TDSSKiller.exe" -l "%Output%\Logs\tdsskiller.log" -accepteula -accepteulaksn
 	CLS
-	TIMEOUT 2 >nul 2>&1
 	:TDSSKILLER_RUN_LOOP
 	CLS
 	tasklist | find /i "TDSSKiller.exe" >nul 2>&1

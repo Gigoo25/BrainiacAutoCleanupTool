@@ -12,10 +12,8 @@ if exist "%Output%\Tools\HitmanPro\HitmanPro*" (
 	if exist "%systemdrive%\ProgramData\HitmanPro" (
 		rmdir /s /q "%systemdrive%\ProgramData\HitmanPro" >nul 2>&1
 	)
-	TIMEOUT 1 >nul 2>&1
 	if %OS%==32BIT start /WAIT "HMP" "%Output%\Tools\HitmanPro\HitmanPro.exe" /noupload /noinstall /scan
 	if %OS%==64BIT start /WAIT "HMP" "%Output%\Tools\HitmanPro\HitmanPro_x64.exe" /noupload /noinstall /scan
-	TIMEOUT 1 >nul 2>&1
 	if exist "%systemdrive%\ProgramData\HitmanPro" (
 		rmdir /s /q "%systemdrive%\ProgramData\HitmanPro" >nul 2>&1
 	)

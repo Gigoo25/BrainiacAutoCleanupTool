@@ -10,7 +10,7 @@ if exist "%SystemRoot%\System32\sfc.exe" (
 	title [SFC] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	echo Checking System Files for corruptions...
 	TIMEOUT 1 >nul 2>&1
-	CLS
+	echo.
 	if %WIN_VER_NUM% geq 6.0 (
 		%SystemRoot%\System32\sfc.exe /scannow
 		%SystemRoot%\System32\findstr.exe /c:"[SR]" %SystemRoot%\logs\cbs\cbs.log

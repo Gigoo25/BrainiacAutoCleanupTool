@@ -101,7 +101,7 @@ set Caffeine_Update_Tool_Online=unidentified
 ::Tool download location variables
 set RKill_Url=https://download.bleepingcomputer.com/dl/0bd7abe3ef66cddbcd7a872fb55eb82c/5c247388/windows/security/security-utilities/r/rkill/rkill.exe
 set JRT_Url=unidentified
-set TDSS_Url=http://media.kaspersky.com/utilities/VirusUtilities/EN/tdsskiller.exe
+set TDSS_Url=http://media.kaspersky.com/utilities/VirusUtilities/EN/tdsskiller.zip
 set Rogue_Url=unidentified
 set ADW_Url=https://download.bleepingcomputer.com/dl/186de3aee284d53245e950977b00e955/5c247462/windows/security/security-utilities/a/adwcleaner/AdwCleaner.exe
 set HitmanPro_Url=https://dl.surfright.nl/HitmanPro.exe
@@ -110,7 +110,7 @@ set Zemana_Url=http://dl12.zemana.com/AntiMalware/2.74.2.150/Zemana.AntiMalware.
 set MBAR_Url=unidentified
 set Malwarebytes_Url=unidentified
 set Spybot_Url=unidentified
-set CCleaner_Url=unidentified
+set CCleaner_Url=https://download.ccleaner.com/portable/ccsetup552.zip
 set DefragSystem_A_Url=unidentified
 set DefragSystem_D_Url=unidentified
 set Caffeine_Url=unidentified
@@ -631,9 +631,15 @@ if "%TDSS_Update_Tool_Online%" GTR "%TDSS_Update_Tool_Local%" (
 	CLS
 	echo Updating TDSS Killer...
 	echo.
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%TDSS_Url%" -O "%Output%\Tools\TDSS\TDSSKiller.exe" 2>NUL
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%TDSS_Url%" -O "%Output%/TDSSKiller.zip" 2>NUL
 	CLS
-	echo Done updating TDSS Killer.
+	echo Unzipping file.
+	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\TDSS'); $zip = $shell.NameSpace('%Output%\TDSSKiller.zip'); $target.CopyHere($zip.Items(), 16); }"
+	CLS
+	echo Deleting downloaded file
+	del "%Output%\TDSSKiller.zip"
+	CLS
+	echo Done updating TDSS_Tool.
 	TIMEOUT 2
 	CLS
 )
@@ -725,12 +731,17 @@ if "%Spybot_Update_Tool_Online%" GTR "%Spybot_Update_Tool_Local%" (
 )
 
 ::CCleaner_Tool
-::ADD 64 BIT VERSION
 if "%CCleaner_Update_Tool_Online%" GTR "%CCleaner_Update_Tool_Local%" (
 	CLS
 	echo Updating CCleaner_Tool...
 	echo.
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%CCleaner_Url%" -O "%Output%\Tools\CCleaner\CCleaner.exe" 2>NUL
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%CCleaner_Url%" -O "%Output%/ccsetup.zip" 2>NUL
+	CLS
+	echo Unzipping file.
+	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\CCleaner'); $zip = $shell.NameSpace('%Output%\ccsetup.zip'); $target.CopyHere($zip.Items(), 16); }"
+	CLS
+	echo Deleting downloaded file
+	del "%Output%\ccsetup.zip"
 	CLS
 	echo Done updating CCleaner_Tool.
 	TIMEOUT 2

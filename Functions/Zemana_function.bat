@@ -10,7 +10,6 @@ if exist "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" (
 	title [Zemana] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	echo Running Zemana...
 	start /WAIT "ZMN" "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" /scan SmartScan /clean
-	TIMEOUT 2 >nul 2>&1
 	CLS
 	echo -Ran Zemana >> %Output%\Notes\Comments.txt
 	set /p VarZemana=Enter the amount of infections found:

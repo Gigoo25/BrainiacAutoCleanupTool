@@ -1,6 +1,27 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.2.5 (2019-01-18)
+----
+-Fixed bug that would stop JRT, TDSS, ADW, HMP & Zemana from showing infection input without key input.
+-Added more comments in the code of some functions.
+-Fixed option # 13 not changing to "No" after execution.
+-Cleaned up Malwarebytes function code.
+-Added uninstall option for Malwarebytes that was pre-installed.
+-Updated function code URLs and allowed it to unzip new content.
+-Update CCleaner tool version.
+-Fixed defraggler going to AUS defrag after execution.
+-Fixed self-destruct feature.
+-Changed default cleanup selections.
+-Added multiple checks to menu to prevent harm/options that are not intended.
+	-If you select "Self Destruct" it will now check for "Autoclose" or "Reboot" when done to be enabled.
+	-If you select "Delete Tools" it will now check for "Autoclose" or "Reboot" when done to be enabled.
+	-If you select "Malwarebytes" it will now check for "Create System Restore" to be enabled.
+	-If you select "Spybot" it will now check for "Create System Restore" to be enabled.
+-Added more directories for automated tool deletion.
+-Added detection for the tool abruptly closing and will now allow the option to start from where it left off.
+-The session will now restore from the last agent when "Pickup Session" has been chosen.
+
 Brainiacs Cleanup Tool v1.2.4 (2019-01-15)
 ----
 -Enable delayed expansion on system restore function.

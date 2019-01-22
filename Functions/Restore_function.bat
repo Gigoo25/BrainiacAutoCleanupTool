@@ -1,4 +1,6 @@
 @echo off
+
+::Enable delayed expansion
 setlocal enableDelayedExpansion
 
 ::Set variables
@@ -114,4 +116,5 @@ echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
 )
 :skip_restore_point_creation
 CLS
+::Disable delayed expansion
 ENDLOCAL DISABLEDELAYEDEXPANSION

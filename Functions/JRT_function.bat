@@ -10,7 +10,6 @@ if exist "%Output%\Tools\JRT\JRT.exe" (
 	title [JRT] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	echo Running JRT...
 	start /WAIT "JRT" "%Output%\Tools\JRT\JRT.exe"
-	TIMEOUT 2 >nul 2>&1
 	CLS
 	echo -Ran JRT >> %Output%\Notes\Comments.txt
 	set /p VarJRT=Enter the amount of infections found:

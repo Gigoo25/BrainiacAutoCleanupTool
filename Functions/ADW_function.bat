@@ -10,7 +10,7 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
 	title [AdwCleaner] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	echo Running ADW Cleaner...
 	start /WAIT "ADW" "%Output%\Tools\ADW\adwcleaner.exe"
-	TIMEOUT 2 >nul 2>&1
+	CLS
 	:ADW_RUN_LOOP
 	CLS
 	tasklist | find /i "ADW.exe" >nul 2>&1

@@ -23,6 +23,8 @@ set WIN_VER=undetected
 set WIN_VER_NUM=undetected
 set SAFE_MODE=no
 set DELETEFUNCTIONS=yes
+set DELETERESTORE=undetected
+set ABRUPTCLOSE=undetected
 set ABORT=no
 set VarID=unidentified
 set VarACC=unidentified
@@ -43,7 +45,7 @@ call:setPersist HitmanPro=Yes
 set             Zemana_choice=,Yes,No,
 call:setPersist Zemana=Yes
 set             MBAR_choice=,Yes,No,
-call:setPersist MBAR=Yes
+call:setPersist MBAR=No
 set             Malwarebytes_choice=,Yes,No,
 call:setPersist Malwarebytes=Yes
 set             Spybot_choice=,Yes,No,
@@ -53,11 +55,11 @@ call:setPersist CCleaner=Yes
 set             DefragSystem_choice=,Yes,No,
 call:setPersist DefragSystem=Yes
 set             ImageChecker_choice=,Yes,No,
-call:setPersist ImageChecker=No
+call:setPersist ImageChecker=Yes
 set             DriveChecker_choice=,Yes,No,
-call:setPersist DriveChecker=No
+call:setPersist DriveChecker=Yes
 set             SFChecker_choice=,Yes,No,
-call:setPersist SFChecker=No
+call:setPersist SFChecker=Yes
 set             SystemRestore_choice=,Yes,No,
 call:setPersist SystemRestore=Yes
 set             AutoClose_choice=,Yes,No,
@@ -103,6 +105,14 @@ if exist "%Output%\Version.txt" (
     )
 )
 
+::Pull ABRUPTCLOSE var if present
+if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
+    set /p ABRUPTCLOSE=<!Output!\Functions\ABRUPTCLOSE.txt
+)
+
+::Set Color
+color 07
+
 ::Ask for password for beta testing purposes.
 echo.
 echo  ^! PASSWORD
@@ -114,6 +124,13 @@ echo    If you do not have the password please close out of this tool.
 echo.
 echo ===================================================================================
 set /p password="Enter password: "
+if /I "%password%"=="Testing" (
+    color 0c
+    cls
+    echo Bypasing checks!!
+    TIMEOUT 5
+    goto FunctionsContinue
+)
 if /I NOT "%password%"=="Beta" (
     color 0c
     cls
@@ -168,9 +185,6 @@ if %WIN_VER_NUM% LSS 6.0 set ABORT=yes
 
 ::Check if 32/64bit windows
 reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set OS=32BIT || set OS=64BIT
-
-::Set Color
-color 07
 
 :: Kill off any running Caffeine instances first + run caffeine.
 taskkill /f /im "caffeine.exe" >nul 2>&1
@@ -308,18 +322,32 @@ if exist "%Output%\Functions" (
 CLS
 
 ::Setup resume state if not found, if found ask if you want to resume
-if exist "%FilePersist%" (
-	choice /M "Previous state found, do you want to restore the previous session" /c YN
+if /I "!ABRUPTCLOSE!"=="Y" (
+    color 0c
+    cls
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    Abrupt stop detected!
+    echo    Do you want to restore the session?
+    echo.
+    echo ===================================================================================
+	choice /M "[Y]es or [N]o" /c YN
 	IF errorlevel 2 goto :restore_no
 	IF errorlevel 1 goto :restore_yes
 	:restore_yes
 	call:restorePersistentVars "%FilePersist%"
 	CLS
-	::Start menu
+	::Skip to menu
 	goto :menuLOOP
+    :restore_no
+    set DELETERESTORE=Yes
+) else (
+    if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
+        del "%Output%\Functions\ABRUPTCLOSE.txt"
+    )
 )
-:restore_no
-del /Q "%FilePersist%"  >NUL 2>&1
 
 ::Delete notes if exist
 if exist "%Output%\Notes" (
@@ -347,6 +375,10 @@ IF errorlevel 1 goto :Session_Pickup
 
 ::Ask for user input for session pickup
 :Session_Pickup
+::Restore variables from last session if present.
+if exist "%FilePersist%" (
+    call:restorePersistentVars "%FilePersist%"
+)
 CLS
 set /p VarID=Enter your CSG user ID: 
 echo "%VarID%" >> "%Output%\Notes\Comments.txt"
@@ -379,6 +411,10 @@ set /p VarAddtlNote=Enter any additional notes:
 echo Additional Notes: "%VarAddtlNote%" >> "%Output%\Notes\Comments.txt"
 echo --- >> "%Output%\Notes\Comments.txt"
 CLS
+::Add check for restore deletion
+if /i "!DELETERESTORE!"=="Yes" (
+    del /Q "%FilePersist%"  >NUL 2>&1
+)
 goto menuLOOP
 
 ::Start Menu
@@ -468,12 +504,44 @@ GOTO:EOF
 :menu_9   Run Malwarebytes?                         : '!Malwarebytes!' [!Malwarebytes_choice:~1,-1!]
 call:getNextInList Malwarebytes "!Malwarebytes_choice!"
 cls
+if /i "!SystemRestore!"=="No" (
+    color 0c
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo Malwarebytes requires you to have the option "Create system restore point" to be 
+    echo enabled. Please enable this option and try again.
+    echo.
+    echo The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 30
+    color 07
+    set Malwarebytes=No
+)
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 ::Start Spybot service
 :menu_10   Run Spybot? (Advanced Tool)              : '!Spybot!' [!Spybot_choice:~1,-1!]
 call:getNextInList Spybot "!Spybot_choice!"
 cls
+if /i "!SystemRestore!"=="No" (
+    color 0c
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo Spybot requires you to have the option "Create system restore point" to be 
+    echo enabled. Please enable this option and try again.
+    echo.
+    echo The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 30
+    color 07
+    set Spybot=No
+)
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 ::Start CCleaner service
@@ -514,12 +582,36 @@ GOTO:EOF
 :menu_R    Create system restore point?              : '!SystemRestore!' [!SystemRestore_choice:~1,-1!]
 call:getNextInList SystemRestore "!SystemRestore_choice!"
 cls
+if /i "!SystemRestore!"=="No" (
+    if /i "!Malwarebytes!"=="Yes" (
+        set Malwarebytes=No
+    )
+    if /i "!Spybot!"=="Yes" (
+        set Spybot=No
+    )
+)
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 ::Start Auto close service
 :menu_A   Auto close when done?                     : '!AutoClose!' [!AutoClose_choice:~1,-1!]
 call:getNextInList AutoClose "!AutoClose_choice!"
 cls
+if /i "!SelfDestruct!"=="Yes" (
+    if /i "!AutoClose!"=="No" (
+        if /i "!Reboot!"=="No" (
+            set SelfDestruct=No
+            )
+        )
+    )
+)
+if /i "!DeleteTools!"=="Yes" (
+    if /i "!AutoClose!"=="No" (
+        if /i "!Reboot!"=="No" (
+            set DeleteTools=No
+            )
+        )
+    )
+)  
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 ::Start Review Logs service
@@ -532,12 +624,33 @@ GOTO:EOF
 :menu_C   Open comments when done?                  : '!OpenNotes!' [!OpenNotes_choice:~1,-1!]
 call:getNextInList OpenNotes "!OpenNotes_choice!"
 cls
+if /i "!OpenNotes!"=="No" (    
+    if /i "!DeleteNotes!"=="Yes" (
+        set DeleteNotes=No
+    )
+)
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 ::Start Delete comments service
 :menu_DC   Delete comments when done?               : '!DeleteNotes!' [!DeleteNotes_choice:~1,-1!]
 call:getNextInList DeleteNotes "!DeleteNotes_choice!"
 cls
+if /i "!OpenNotes!"=="No" (
+    color 0c
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo Delete comments requires you to have the option "Open comments when done" to be 
+    echo enabled. Please enable this option and try again.
+    echo.
+    echo The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 30
+    color 07
+    set DeleteNotes=No
+)
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 ::Start Delete logs service
@@ -550,18 +663,89 @@ GOTO:EOF
 :menu_DT    Delete tools when done?                  : '!DeleteTools!' [!DeleteTools_choice:~1,-1!]
 call:getNextInList DeleteTools "!DeleteTools_choice!"
 cls
+if /i "!DeleteTools!"=="Yes" (
+    if /i "!AutoClose!"=="No" (
+        if /i "!Reboot!"=="No" (
+            color 0c
+            echo.
+            echo  ^! ERROR
+            echo ===================================================================================
+            echo.
+            echo Delete tools requires you to have the options "Auto close when done" or 
+            echo "Reboot when done" to be enabled.
+            echo.
+            echo ===================================================================================
+            choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
+            IF errorlevel 2 goto Reboot_selfdestruct_choice
+            IF errorlevel 1 goto AutoClose_selfdestruct_choice
+            :AutoClose_deletetools_choice
+            set AutoClose=Yes
+            set Reboot=No
+            GOTO:Deletetools_Continue
+            :Reboot_deletetools_choice
+            set AutoClose=No
+            set Reboot=Yes
+        )
+    )
+)
+:Deletetools_Continue
+color 07
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 ::Start Self-Destruct service
 :menu_SD    Self-Destruct Cleanup Tool when done?    : '!SelfDestruct!' [!SelfDestruct_choice:~1,-1!]
 call:getNextInList SelfDestruct "!SelfDestruct_choice!"
 cls
+if /i "!SelfDestruct!"=="Yes" (
+    if /i "!AutoClose!"=="No" (
+        if /i "!Reboot!"=="No" (
+            color 0c
+            echo.
+            echo  ^! ERROR
+            echo ===================================================================================
+            echo.
+            echo Self-Destruct requires you to have the options "Auto close when done" or 
+            echo "Reboot when done" to be enabled.
+            echo.
+            echo ===================================================================================
+            choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
+            IF errorlevel 2 goto Reboot_selfdestruct_choice
+            IF errorlevel 1 goto AutoClose_selfdestruct_choice
+            :AutoClose_selfdestruct_choice
+            set AutoClose=Yes
+            set Reboot=No
+            GOTO:SelfDestruct_Continue
+            :Reboot_selfdestruct_choice
+            set AutoClose=No
+            set Reboot=Yes
+        )
+    )
+)
+:SelfDestruct_Continue
+color 07
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
+
 ::Start Reboot service
 :menu_B   Reboot when done?                         : '!Reboot!' [!Reboot_choice:~1,-1!]
 call:getNextInList Reboot "!Reboot_choice!"
 cls
+if /i "!SelfDestruct!"=="Yes" (
+    if /i "!AutoClose!"=="No" (
+        if /i "!Reboot!"=="No" (
+            set SelfDestruct=No
+            )
+        )
+    )
+)
+if /i "!DeleteTools!"=="Yes" (
+    if /i "!AutoClose!"=="No" (
+        if /i "!Reboot!"=="No" (
+            set DeleteTools=No
+            )
+        )
+    )
+)  
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
@@ -578,14 +762,14 @@ set             Rogue=Yes
 set             ADW=Yes
 set             HitmanPro=Yes
 set             Zemana=Yes
-set             MBAR=Yes
+set             MBAR=No
 set             Malwarebytes=Yes
 set             Spybot=No
 set             CCleaner=Yes
 set             DefragSystem=Yes
-set             ImageChecker=No
-set             DriveChecker=No
-set             SFChecker=No
+set             ImageChecker=Yes
+set             DriveChecker=Yes
+set             SFChecker=Yes
 set             SystemRestore=Yes
 set             AutoClose=Yes
 set             ReviewLogs=Yes
@@ -666,7 +850,9 @@ S
 if /i "%SystemRestore:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
 	call functions\Restore_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set SystemRestore=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -677,7 +863,9 @@ if /i "%SystemRestore:~0,1%"=="Y" (
 if /i "%RKill:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\Rkill_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set RKill=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -687,7 +875,9 @@ if /i "%RKill:~0,1%"=="Y" (
 if /i "%JRT:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\JRT_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set JRT=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -697,7 +887,9 @@ if /i "%JRT:~0,1%"=="Y" (
 if /i "%TDSS:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\TDSS_Killer_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set TDSS=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -707,7 +899,9 @@ if /i "%TDSS:~0,1%"=="Y" (
 if /i "%Rogue:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\RogueKiller_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set Rogue=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -717,7 +911,9 @@ if /i "%Rogue:~0,1%"=="Y" (
 if /i "%ADW:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\ADW_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set ADW=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -727,7 +923,9 @@ if /i "%ADW:~0,1%"=="Y" (
 if /i "%HitmanPro:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\HitmanPro_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set HitmanPro=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -737,7 +935,9 @@ if /i "%HitmanPro:~0,1%"=="Y" (
 if /i "%Zemana:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\Zemana_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set Zemana=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -747,7 +947,9 @@ if /i "%Zemana:~0,1%"=="Y" (
 if /i "%MBAR:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\MBAR_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set MBAR=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -757,7 +959,9 @@ if /i "%MBAR:~0,1%"=="Y" (
 if /i "%Malwarebytes:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\Malwarebytes_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set Malwarebytes=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -767,7 +971,9 @@ if /i "%Malwarebytes:~0,1%"=="Y" (
 if /i "%Spybot:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\Spybot_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set Spybot=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -777,7 +983,9 @@ if /i "%Spybot:~0,1%"=="Y" (
 if /i "%CCleaner:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\CCleaner_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set CCleaner=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -795,9 +1003,13 @@ if /i "%DefragSystem:~0,1%"=="Y" (
     ::Open Defraggler_function.
     :Defraggler
     call functions\Defraggler_function
+    goto Defrag_Done
     ::Open AusDefrag_function.
     :AusDefrag
     call functions\AusDefrag_function
+    goto Defrag_Done
+    :Defrag_Done
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set DefragSystem=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -807,7 +1019,9 @@ if /i "%DefragSystem:~0,1%"=="Y" (
 if /i "%ImageChecker:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\Image_Checker_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set ImageChecker=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -817,7 +1031,9 @@ if /i "%ImageChecker:~0,1%"=="Y" (
 if /i "%SFChecker:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\SFC_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
     set SFChecker=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -827,9 +1043,11 @@ if /i "%SFChecker:~0,1%"=="Y" (
 if /i "%DriveChecker:~0,1%"=="Y" (
     CLS
     ::Call function
+    echo Y >!Output!\Functions\ABRUPTCLOSE.txt
     call functions\CHKDSK_function
+    echo No >!Output!\Functions\ABRUPTCLOSE.txt
     ::Create restore point
-    set SystemChecker=No
+    set DriveChecker=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
     ::Set title
     title Brainiacs Cleanup Tool v%TOOL_VERSION%
@@ -885,10 +1103,8 @@ if /i "%DeleteTools:~0,1%"=="Y" (
     title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 
-if /i "%SelfDestruct:~0,1%"=="N" (
+if /i "%SelfDestruct:~0,1%"=="Y" (
     CLS
-    ::Set Variable
-	set SelfDestruct=No
     call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
     ::Set title
     title Brainiacs Cleanup Tool v%TOOL_VERSION%
@@ -912,7 +1128,7 @@ if /i "%AutoClose:~0,1%"=="Y" (
 	echo.
 	echo ===================================================================================
     TIMEOUT 15
-    if %SelfDestruct%==yes ( 
+    if /i "%SelfDestruct:~0,1%"=="Y" (
         if exist "%Output%\Functions" (
             rmdir /s /q "%Output%\Functions" >nul 2>&1  
         )
@@ -948,7 +1164,7 @@ if /i "%Reboot:~0,1%"=="Y" (
     TIMEOUT 10
     shutdown -r -f -t 0
     ::Self-Destruct
-    if %SelfDestruct%==yes (
+    if /i "%SelfDestruct:~0,1%"=="Y" (
         if exist "%Output%\Functions" (
             rmdir /s /q "%Output%\Functions" >nul 2>&1  
         )
