@@ -1,6 +1,13 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.2.6 (2019-01-23)
+----
+-Fixed minor bug with color not changing if you denied the update.
+-Disabled old Update_Function method as it would not update tools to the correct version
+until I can re-design the method used.
+-Made Update_Function always update on start to counter the previously mentioned change.
+
 Brainiacs Cleanup Tool v1.2.5 (2019-01-18)
 ----
 -Fixed bug that would stop JRT, TDSS, ADW, HMP & Zemana from showing infection input without key input.

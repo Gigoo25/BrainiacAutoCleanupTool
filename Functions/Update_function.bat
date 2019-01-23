@@ -232,6 +232,8 @@ echo    Update will be skipped.
 echo.
 echo ===================================================================================
 TIMEOUT 10
+::Set default Color
+color 07
 goto end
 
 :update_yes
@@ -785,17 +787,18 @@ if "%Caffeine_Update_Tool_Online%" GTR "%Caffeine_Update_Tool_Local%" (
 	CLS
 )
 
+::DISABLED FOR NOW
 ::Update_Update_Function last
-if "%Update_Update_Function_Online%" GTR "%Update_Update_Function_Local%" (
-	CLS
-	echo Updating Update_Update_Function...
-	echo.
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
-	CLS
-	echo Done updating Update_Update_Function.
-	TIMEOUT 2
-	CLS
-)
+::if "%Update_Update_Function_Online%" GTR "%Update_Update_Function_Local%" (
+::	CLS
+::	echo Updating Update_Update_Function...
+::	echo.
+::	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
+::	CLS
+::	echo Done updating Update_Update_Function.
+::	TIMEOUT 2
+::	CLS
+::)
 
 ::Update Readme file
 if "%Readme_Online%" GTR "%Readme_Local%" (
