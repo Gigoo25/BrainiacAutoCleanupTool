@@ -34,7 +34,6 @@ set DefragSystem_A_Update_Function_Local=unidentified
 set DefragSystem_D_Update_Function_Local=unidentified
 set ImageChecker_Update_Function_Local=unidentified
 set CHKDSK_Update_Function_Local=unidentified
-set SFChecker_Update_Function_Local=unidentified
 set SystemRestore_Update_Function_Local=unidentified
 set DeleteNotes_Update_Function_Local=unidentified
 set DeleteLogs_Update_Function_Local=unidentified
@@ -58,7 +57,6 @@ set DefragSystem_A_Update_Function_Online=unidentified
 set DefragSystem_D_Update_Function_Online=unidentified
 set ImageChecker_Update_Function_Online=unidentified
 set CHKDSK_Update_Function_Online=unidentified
-set SFChecker_Update_Function_Online=unidentified
 set SystemRestore_Update_Function_Online=unidentified
 set DeleteNotes_Update_Function_Online=unidentified
 set DeleteLogs_Update_Function_Online=unidentified
@@ -120,7 +118,7 @@ title [Update] Brainiacs Cleanup Tool v%TOOL_VERSION%
 
 ::Check that wget is present
 if not exist "%Output%\Tools\WGET\wget.exe" (
-	::Set red Color
+	REM Set red Color
 	color 0c
 	cls
 	echo.
@@ -135,18 +133,18 @@ if not exist "%Output%\Tools\WGET\wget.exe" (
 	echo.
 	echo ===================================================================================
 	TIMEOUT 10
-	::Set default Color
+	REM Set default Color
 	color 07
 	goto end
 )
 
 ::Check for version file
 if exist "%Output%\Version.txt" (
-	::Set current version as variable
+	REM Set current version as variable
 	set /p CURRENT_VERSION=<%Output%\Version.txt
 ) else (
-	::Skip update check
-	::Set red Color
+	REM Skip update check
+	REM Set red Color
 	color 0c
 	cls
 	echo.
@@ -161,7 +159,7 @@ if exist "%Output%\Version.txt" (
 	echo.
 	echo ===================================================================================
 	TIMEOUT 10
-	::Set default Color
+	REM Set default Color
 	color 07
 	goto end
 )
@@ -176,7 +174,7 @@ if exist "%TEMP%\Version_Check.txt" (
 if /i %ERRORLEVEL%==0 (
 	set /p CHECK_UPDATE_VERSION=<%TEMP%\Version_Check.txt
 ) else (
-	::Set red Color
+	REM Set red Color
 	color 0c
 	cls
 	echo.
@@ -191,14 +189,14 @@ if /i %ERRORLEVEL%==0 (
 	echo.
 	echo ===================================================================================
 	TIMEOUT 10
-	::Set default Color
+	REM Set default Color
 	color 07
 	goto end
 )
 
 ::Check if downloaded version is greater
 if "%CHECK_UPDATE_VERSION%" GTR "%CURRENT_VERSION%" (
-	::Set red Color
+	REM Set red Color
 	color 0c
 	cls
 	echo.
@@ -208,7 +206,7 @@ if "%CHECK_UPDATE_VERSION%" GTR "%CURRENT_VERSION%" (
 	echo    Update found!
 	echo.
 	echo ===================================================================================
-	::Ask if the user wants to update
+	REM Ask if the user wants to update
 	choice /M "Do you want to update the tool" /c YN 
 	IF errorlevel 2 goto :update_no
 	IF errorlevel 1 goto :update_yes
@@ -258,7 +256,7 @@ color 07
 
 ::Set variables for Functions_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,38) do set /p =
+	for /l %%i in (1,1,37) do set /p =
 	set /p RKill_Update_Function_Local=
 	set /p JRT_Update_Function_Local=
 	set /p TDSS_Update_Function_Local=
@@ -274,7 +272,6 @@ color 07
 	set /p DefragSystem_D_Update_Function_Local=
 	set /p ImageChecker_Update_Function_Local=
 	set /p CHKDSK_Update_Function_Local=
-	set /p SFChecker_Update_Function_Local=
 	set /p SystemRestore_Update_Function_Local=
 	set /p DeleteNotes_Update_Function_Local=
 	set /p DeleteLogs_Update_Function_Local=
@@ -285,7 +282,7 @@ color 07
 	
 ::Set variables for Tools_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,78) do set /p =
+	for /l %%i in (1,1,76) do set /p =
 	set /p RKill_Update_Tool_Local=
 	set /p JRT_Update_Tool_Local=
 	set /p TDSS_Update_Tool_Local=
@@ -304,7 +301,7 @@ color 07
 
 ::Set variables for Functions_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,38) do set /p =
+	for /l %%i in (1,1,37) do set /p =
 	set /p RKill_Update_Function_Online=
 	set /p JRT_Update_Function_Online=
 	set /p TDSS_Update_Function_Online=
@@ -320,7 +317,6 @@ color 07
 	set /p DefragSystem_D_Update_Function_Online=
 	set /p ImageChecker_Update_Function_Online=
 	set /p CHKDSK_Update_Function_Online=
-	set /p SFChecker_Update_Function_Online=
 	set /p SystemRestore_Update_Function_Online=
 	set /p DeleteNotes_Update_Function_Online=
 	set /p DeleteLogs_Update_Function_Online=
@@ -331,7 +327,7 @@ color 07
 	
 ::Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,78) do set /p =
+	for /l %%i in (1,1,76) do set /p =
 	set /p RKill_Update_Tool_Online=
 	set /p JRT_Update_Tool_Online=
 	set /p TDSS_Update_Tool_Online=
@@ -526,18 +522,6 @@ if "%CHKDSK_Update_Function_Online%" GTR "%CHKDSK_Update_Function_Local%" (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CHKDSK_function.bat" -O "%Output%\Functions\CHKDSK_function.bat" 2>NUL
 	CLS
 	echo Done updating CHKDSK_Function.
-	TIMEOUT 2
-	CLS
-)
-
-::SFChecker_Function
-if "%SFChecker_Update_Function_Online%" GTR "%SFChecker_Update_Function_Local%" (
-	CLS
-	echo Updating SFChecker_Function...
-	echo.
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/SFC_function.bat" -O "%Output%\Functions\SFC_function.bat" 2>NUL
-	CLS
-	echo Done updating SFChecker_Function.
 	TIMEOUT 2
 	CLS
 )

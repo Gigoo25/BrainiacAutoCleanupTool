@@ -13,13 +13,22 @@ if exist "%Output%\Tools\RKill\rkill.exe" (
   	TIMEOUT 2 >nul 2>&1
 	goto eof
 ) else (
-	echo RKill not found.
-	echo.
-	echo Skipping...
-	echo.
-    echo Continuing in 5 seconds.
-	TIMEOUT 5 >NUL 2>&1
-	goto eof
+	CLS
+    color 0c
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo    RKill not found.
+    echo.
+    echo    Skipping...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 10
+    color 07
+  	goto :eof
 )
 :eof
 CLS

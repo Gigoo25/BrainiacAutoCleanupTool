@@ -12,12 +12,21 @@ if exist "%Output%\Logs\rkill.log" (
 	pause
 	CLS
 ) else (
-	echo Rkill log not found.
-	echo.
-	echo Skipping...
-	echo.
-   	echo Continuing in 3 seconds.
-	TIMEOUT 3 >NUL 2>&1
+	CLS
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    Rkill log not found.
+    echo.
+    echo    Skipping...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 5
+    color 07
 	CLS
 )
 if exist "%Output%\Logs\rogue.log" (
@@ -29,12 +38,21 @@ if exist "%Output%\Logs\rogue.log" (
 	pause
 	CLS
 ) else (
-	echo RogueKiller log not found.
-	echo.
-	echo Skipping...
-	echo.
-   	echo Continuing in 3 seconds.
-	TIMEOUT 3 >NUL 2>&1
+	CLS
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    RogueKiller log not found.
+    echo.
+    echo    Skipping...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 5
+    color 07
 	CLS
 )
 if exist "%HOMEDRIVE%\AdwCleaner\Logs" (
@@ -46,12 +64,21 @@ if exist "%HOMEDRIVE%\AdwCleaner\Logs" (
 	pause
 	CLS
 ) else (
-	echo AdwCleaner log not found.
-	echo.
-	echo Skipping...
-	echo.
-   	echo Continuing in 3 seconds.
-	TIMEOUT 3 >NUL 2>&1
+	CLS
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    AdwCleaner log not found.
+    echo.
+    echo    Skipping...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 5
+    color 07
 	CLS
 )
 if exist "%Output%\Logs\tdsskiller.log" (
@@ -63,12 +90,21 @@ if exist "%Output%\Logs\tdsskiller.log" (
 	pause
 	CLS
 ) else (
-	echo TDSSkiller log not found.
-	echo.
-	echo Skipping...
-	echo.
-   	echo Continuing in 3 seconds.
-	TIMEOUT 3 >NUL 2>&1
+	CLS
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    TDSSkiller log not found.
+    echo.
+    echo    Skipping...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 5
+    color 07
 	CLS
 )
 if exist "%Output%\Logs\JRT.txt" (
@@ -80,12 +116,21 @@ if exist "%Output%\Logs\JRT.txt" (
 	pause
 	CLS
 ) else (
-	echo JRT log not found.
-	echo.
-	echo Skipping...
-	echo.
-   	echo Continuing in 3 seconds.
-	TIMEOUT 3 >NUL 2>&1
+	CLS
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    JRT log not found.
+    echo.
+    echo    Skipping...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 5
+    color 07
 	CLS
 )
 if exist "%SystemRoot%\Windows_Image_Check.txt" (
@@ -97,29 +142,21 @@ if exist "%SystemRoot%\Windows_Image_Check.txt" (
 	pause
 	CLS
 ) else (
-	echo Windows Image Check log not found.
-	echo.
-	echo Skipping...
-	echo.
-    echo Continuing in 3 seconds.
-	TIMEOUT 3 >NUL 2>&1
 	CLS
-)
-if exist "%SystemRoot%\Windows_Image_Check.txt" (
-	title [Windows Image Check Log] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Opening Windows Image Check log...
-	TIMEOUT 2 >nul 2>&1
-	CLS
-	type %SystemRoot%\Windows_Image_Check.txt
-	pause
-	CLS
-) else (
-	echo Windows Image Check log not found.
-	echo.
-	echo Skipping...
-	echo.
-    echo Continuing in 3 seconds.
-	TIMEOUT 3 >NUL 2>&1
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    Windows Image Check log not found.
+    echo.
+    echo    Skipping...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 5
+    color 07
 	CLS
 )
 if exist "%SystemRoot%\logs\cbs\cbs.log" (
@@ -131,12 +168,21 @@ if exist "%SystemRoot%\logs\cbs\cbs.log" (
 	pause
 	CLS
 ) else (
-	echo System File Checker log not found.
-	echo.
-	echo Skipping...
-	echo.
-    echo Continuing in 3 seconds.
-	TIMEOUT 3 >NUL 2>&1
+	CLS
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    System File Checker log not found.
+    echo.
+    echo    Skipping...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 5
+    color 07
 	CLS
 )
 :eof

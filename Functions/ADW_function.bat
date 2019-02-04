@@ -28,12 +28,21 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
   		GOTO ADW_RUN_LOOP
 	)
 ) else (
-	echo Adw Cleaner not found.
-	echo.
-	echo Skipping...
-	echo.
-    echo Continuing in 5 seconds.
-	TIMEOUT 5 >NUL 2>&1
+	CLS
+    color 0c
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo    Adw Cleaner not found.
+    echo.
+    echo    Skipping...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 10
+    color 07
 	goto eof
 )
 :eof

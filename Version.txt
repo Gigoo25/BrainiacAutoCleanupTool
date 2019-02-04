@@ -1,5 +1,5 @@
-1.2.6
-2019-01-23
+1.3
+2019-02-04
 
 Functions Legend
 --------------
@@ -8,73 +8,71 @@ Version
 Changelog
 
 1.2.1
-1.2.6
-1.2.6
+1.3
+1.3
 
 Functions Legend
 --------------
-RKill_Function
-JRT_Function
-TDSS_Function
-Rogue_Function
-ADW_Function
-HitmanPro_Function
-Zemana_Function
-MBAR_Function
-Malwarebytes_Function
-Spybot_Function
-CCleaner_Function
-DefragSystem_A_Function
-DefragSystem_D_Function
-ImageChecker_Function
-CHKDSK_Function
-SFChecker_Function
-SystemRestore_Function
-DeleteNotes_Function
-DeleteLogs_Function
-DeleteTools_Function
-Brainiacs_Function
-Update_Update_Function
+1 - RKill_Function
+2 - JRT_Function
+3 - TDSS_Function
+4 - Rogue_Function
+5 - ADW_Function
+6 - HitmanPro_Function
+7 - Zemana_Function
+8 - MBAR_Function
+9 - Malwarebytes_Function
+10 - Spybot_Function
+11 - CCleaner_Function
+12 - DefragSystem_A_Function
+13 - DefragSystem_D_Function
+14 - ImageChecker_Function
+15 - CHKDSK_Function
+16 - SystemRestore_Function
+17 - DeleteNotes_Function
+18 - DeleteLogs_Function
+19 - DeleteTools_Function
+20 - Brainiacs_Function
+21 - Update_Update_Function
 
-1.0
-1.2.5
-1.2.5
-1.2.1
-1.2.5
-1.2.5
-1.2.5
-1.2.1
-1.2.5
-1.2.1
-1.0
-1.0
-1.0
-1.0
-1.2.3
-1.2.5
-1.2.5
-1.0
-1.0
-1.2.5
-1.2.6
-1.2.6
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
+1.3
 
 Tools Legend
 --------------
-RKill_Tool
-JRT_Tool
-TDSS_Tool
-Rogue_Tool
-ADW_Tool
-HitmanPro_Tool
-Zemana_Tool
-MBAR_Tool
-Malwarebytes_Tool
-Spybot_Tool
-CCleaner_Tool
-DefragSystem_A_Tool
-DefragSystem_D_Tool
-Caffeine_Tool
+1 - RKill_Tool
+2 - JRT_Tool
+3 - TDSS_Tool
+4 - Rogue_Tool
+5 - ADW_Tool
+6 - HitmanPro_Tool
+7 - Zemana_Tool
+8 - MBAR_Tool
+9 - Malwarebytes_Tool
+10 - Spybot_Tool
+11 - CCleaner_Tool
+12 - DefragSystem_A_Tool
+13 - DefragSystem_D_Tool
+14 - Caffeine_Tool
 
 1.0
 1.0
@@ -86,7 +84,7 @@ Caffeine_Tool
 1.0
 1.0
 1.0
-1.2.5
+5.52
 1.0
 1.0
 1.0

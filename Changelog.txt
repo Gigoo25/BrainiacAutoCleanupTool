@@ -1,6 +1,46 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.3 (2019-02-04)
+*RELEASE CANIDATE 2*
+---
+-Added clearing recyclebin to "DeleteTools_Function"
+-Fixed some deletions paths in the "DeleteTools_Function"
+-Removed deletion of the "Cleanup" folder. This was erasing notes even when the user 
+	did not want to.
+-Added more detections to the "DeleteTools_Function"
+-Added prompt to confirm deletion of notes.
+-Added Windows version checks to Malwarebytes + Spybot installations.
+-Changed Malwarebytes + Spybot option in menu to "Experimental" until stable.
+-Set Malwarebytes installation to "No" by default.
+-Updated all skip/error/warning messages on all functions to match the rest of the tool.
+-Reduced the loop timeout for "TDSS_Killer_Function" to increase responsiveness.
+-Fixed SAFE MODE detection on "Restore_Function".
+-Added option to skip manual restore point creation and added notes that correspond with the
+	choice made by the user.
+-Cleaned up code/fixed some bugs in the code.
+-Fixed notes/logs deleting even if the user chose the session was picked up, the tool will
+	now continue with note taking from where the last agent has left off.
+-Combined the functions "SFC_function" & "Image_Checker_function" as they do the same thing
+	but vary which Windows version you are running. It will now check for the Windows version
+	and run the appropriate file checker.
+-Added option to review the log after checking system in "Image_Checker_Function".
+-Hid all files before run except "Brainiacs.bat" to avoid confusion.
+-Updated CCleaner version
+
+Brainiacs Cleanup Tool v1.2.7 (2019-01-23)
+----
+-Malwarebytes set to uninstall by default.
+-Fixed abrupt stop detection.
+-Minor tweaks to output of restore function.
+-Minor tweaks to output of Image Checker function.
+-Updated Legend in version file.
+-Cleaned up DeleteLogs/DeleteTools functions and added more automated notes.
+-Re-worked self-destruct to only delete batch file/functions folder opposed to entire folder.
+-Cleaned up Malwarebytes function.
+-Cleaned up Spybot function.
+-Added note creation when rebooting PC.
+
 Brainiacs Cleanup Tool v1.2.6 (2019-01-23)
 ----
 -Fixed minor bug with color not changing if you denied the update.
