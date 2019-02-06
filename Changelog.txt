@@ -1,6 +1,13 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.3.1 (2019-02-05)
+*HOTFIX*
+---
+-Cleaned up some more coding errors
+-Removed double note taking from "CHKDSK_function"
+-Created notes/logs folders if non existant to prevent path errors.
+
 Brainiacs Cleanup Tool v1.3 (2019-02-04)
 *RELEASE CANIDATE 2*
 ---

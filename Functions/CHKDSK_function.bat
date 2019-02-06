@@ -10,8 +10,6 @@ echo Checking Windows System Files for corruptions...
 echo.
 ::Start function
 %SystemRoot%\System32\chkdsk.exe %SystemDrive%
-::Create notes
-echo -Checked Windows Drive for corruptions >> %Output%\Notes\Comments.txt
 ::If errors found then schedule a fix on reboot
 if /i not %ERRORLEVEL%==0 (
 	CLS

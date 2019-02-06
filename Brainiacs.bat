@@ -354,6 +354,16 @@ if "%ABRUPTCLOSE%"=="yes" (
     )
 )
 
+::Create notes folder if non-existant
+if not exist "%Output%\Notes\" (
+    mkdir "%Output%\Notes" >NUL 2>&1
+)
+
+::Create logs folder if non-existant
+if not exist "%Output%\Logs\" (
+    mkdir "%Output%\Logs" >NUL 2>&1
+)
+
 ::Ask for user input & write to notes
 echo ----------------------------------------- >> %Output%\Notes\Comments.txt
 ::Ask if the session was picked up
@@ -793,7 +803,6 @@ if /i "!SelfDestruct!"=="Yes" (
     if /i "!AutoClose!"=="No" (
         if /i "!Reboot!"=="No" (
             set SelfDestruct=No
-            )
         )
     )
 )
@@ -801,10 +810,9 @@ if /i "!DeleteTools!"=="Yes" (
     if /i "!AutoClose!"=="No" (
         if /i "!Reboot!"=="No" (
             set DeleteTools=No
-            )
         )
     )
-)  
+)
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
