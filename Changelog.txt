@@ -1,6 +1,13 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.3.2 (2019-02-14)
+---
+-Added limited SSD check for defrag.
+-Added warning on Auslogic defrag warning the user it does not check for an SSD.
+-Made Defraggler the default defragging program.
+-Updated AdwCleaner to v7.2.7
+
 Brainiacs Cleanup Tool v1.3.1 (2019-02-05)
 *HOTFIX*
 ---

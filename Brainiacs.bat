@@ -30,6 +30,7 @@ set VarID=unidentified
 set VarACC=unidentified
 set VarPHN=unidentified
 set VarAddtlNote=None
+set SKIP_DEFRAG=no
 set Skip_Comments=unidentified
 set             RKill_choice=,Yes,No,
 call:setPersist RKill=Yes
@@ -1058,10 +1059,72 @@ if /i "%CCleaner:~0,1%"=="Y" (
 )
 if /i "%DefragSystem:~0,1%"=="Y" (
     CLS
+    REM Check for SSD and skip if detected.
+    for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FINDSTR% /i "Solid SSD RAID SandForce" >NUL && set SKIP_DEFRAG=yes_ssd
+    for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FINDSTR% /i "VMware VBOX XENSRC PVDISK" >NUL && set SKIP_DEFRAG=yes_vm
+    for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FIND% /i "Read Device Identity Failed" >NUL && set SKIP_DEFRAG=yes_disk_smart_read_error
+    REM Output messages.
+    REM Skip defrag due to SSD detected
+    if /i "%SKIP_DEFRAG%"=="yes_ssd" (
+        CLS
+        color 0c
+        echo.
+        echo  ^! ERROR
+        echo ===================================================================================
+        echo.
+        echo    SSD Detected.
+        echo.
+        echo    Skipping defrag function...
+        echo.
+        echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+        echo.
+        echo ===================================================================================
+        TIMEOUT 10
+        color 07
+        goto Defrag_Done
+    )
+    REM Skip defrag due to Virtual machine detected
+    if /i "%SKIP_DEFRAG%"=="yes_vm" (
+        CLS
+        color 0c
+        echo.
+        echo  ^! ERROR
+        echo ===================================================================================
+        echo.
+        echo    Virtual Machine Detected.
+        echo.
+        echo    Skipping defrag function...
+        echo.
+        echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+        echo.
+        echo ===================================================================================
+        TIMEOUT 10
+        color 07
+        goto Defrag_Done
+    )
+    REM Skip defrag due to error reading disk stats detected
+    if /i "%SKIP_DEFRAG%"=="yes_disk_smart_read_error" (
+        CLS
+        color 0c
+        echo.
+        echo  ^! ERROR
+        echo ===================================================================================
+        echo.
+        echo    SSD Detected.
+        echo.
+        echo    Skipping defrag function...
+        echo.
+        echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+        echo.
+        echo ===================================================================================
+        TIMEOUT 10
+        color 07
+        goto Defrag_Done
+    )
     REM Ask which program to use to defrag
     :choice_start
     CLS
-    choice /C AD /T 20 /D A /M "Which program do you want to defrag with [A] AusDefrag or [D] Defraggler"
+    choice /C AD /T 20 /D D /M "Which program do you want to defrag with [A] AusDefrag or [D] Defraggler"
     IF errorlevel 2 goto Defraggler
     IF errorlevel 1 goto AusDefrag
     REM Open Defraggler_function.
@@ -1071,6 +1134,26 @@ if /i "%DefragSystem:~0,1%"=="Y" (
     goto Defrag_Done
     REM Open AusDefrag_function.
     :AusDefrag
+    REM Display disclaimer on checking for SSD.
+    CLS
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    Auslogic Defrag does not check for an SSD!
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% does have a limited check for SSD but
+    echo    it is not bulletprof.
+    echo.
+    echo    Be sure that you are not running this on an SSD and reducing the span of the drive.
+    echo.   
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 15 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 15
+    color 07
+    CLS
     echo yes>!Output!\Functions\ABRUPTCLOSE.txt
     call functions\AusDefrag_function
     goto Defrag_Done
