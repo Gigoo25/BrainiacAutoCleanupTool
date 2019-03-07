@@ -1307,6 +1307,39 @@ if /i "%Reboot:~0,1%"=="Y" (
 
 GOTO:EOF
 
+::Start Geek Uninstaller
+:menu_GK   Run Geek Uninstaller
+CLS
+if exist "%Output%\Tools\Geek\geek.exe" (
+    CLS
+    title [Geek Uninstaller] Brainiacs Cleanup Tool v%TOOL_VERSION%
+    echo Running Geek Uninstaller...
+    start /WAIT "Geek" "%Output%\Tools\Geek\geek.exe" 
+    CLS
+    echo -Ran Geek Uninsaller >> %Output%\Notes\Comments.txt
+    set /p VarGeek=Enter any uninstalled programs separated by a comma:
+    echo Uninstalled programs-!!VarGeek!! >> %Output%\Notes\Comments.txt
+    CLS
+    REM Set title
+    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+) else (
+    CLS
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    Geek Uninstaller not found.
+    echo.
+    echo    Returning to menu...
+    echo.
+    echo ===================================================================================
+    TIMEOUT 5
+    color 07
+    CLS
+)
+GOTO:EOF
+
 :menu_VR   View Readme
 CLS
 if exist "%Output%\Readme.txt" (

@@ -1,6 +1,11 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.3.3 (2019-03-07)
+---
+-Added Geek Unistaller as an executable option.
+-Added ability to download Geek Uninstaller + updates.
+
 Brainiacs Cleanup Tool v1.3.2 (2019-02-14)
 ---
 -Added limited SSD check for defrag.

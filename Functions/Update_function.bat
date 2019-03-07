@@ -79,6 +79,7 @@ set CCleaner_Update_Tool_Local=unidentified
 set DefragSystem_A_Update_Tool_Local=unidentified
 set DefragSystem_D_Update_Tool_Local=unidentified
 set Caffeine_Update_Tool_Local=unidentified
+set Geek_Update_Tool_Local=unidentified
 
 ::Tool online variables
 set RKill_Update_Tool_Online=unidentified
@@ -95,13 +96,14 @@ set CCleaner_Update_Tool_Online=unidentified
 set DefragSystem_A_Update_Tool_Online=unidentified
 set DefragSystem_D_Update_Tool_Online=unidentified
 set Caffeine_Update_Tool_Online=unidentified
+set Geek_Update_Tool_Online=unidentified
 
 ::Tool download location variables
 set RKill_Url=https://download.bleepingcomputer.com/dl/0bd7abe3ef66cddbcd7a872fb55eb82c/5c247388/windows/security/security-utilities/r/rkill/rkill.exe
 set JRT_Url=unidentified
 set TDSS_Url=http://media.kaspersky.com/utilities/VirusUtilities/EN/tdsskiller.zip
 set Rogue_Url=unidentified
-set ADW_Url=https://download.bleepingcomputer.com/dl/186de3aee284d53245e950977b00e955/5c247462/windows/security/security-utilities/a/adwcleaner/AdwCleaner.exe
+set ADW_Url=https://downloads.malwarebytes.com/file/adwcleaner/adwcleaner_7.2.7.0.exe
 set HitmanPro_Url=https://dl.surfright.nl/HitmanPro.exe
 set HitmanPro_64_Url=https://dl.surfright.nl/HitmanPro_x64.exe
 set Zemana_Url=http://dl12.zemana.com/AntiMalware/2.74.2.150/Zemana.AntiMalware.Portable.exe
@@ -112,6 +114,7 @@ set CCleaner_Url=https://download.ccleaner.com/portable/ccsetup552.zip
 set DefragSystem_A_Url=unidentified
 set DefragSystem_D_Url=unidentified
 set Caffeine_Url=unidentified
+set Geek_Url=https://geekuninstaller.com/geek.zip
 
 ::Set the window title
 title [Update] Brainiacs Cleanup Tool v%TOOL_VERSION%
@@ -282,7 +285,7 @@ color 07
 	
 ::Set variables for Tools_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,76) do set /p =
+	for /l %%i in (1,1,77) do set /p =
 	set /p RKill_Update_Tool_Local=
 	set /p JRT_Update_Tool_Local=
 	set /p TDSS_Update_Tool_Local=
@@ -297,6 +300,7 @@ color 07
 	set /p DefragSystem_A_Update_Tool_Local=
 	set /p DefragSystem_D_Update_Tool_Local=
 	set /p Caffeine_Update_Tool_Local=
+	set /p Geek_Update_Tool_Local=
 )
 
 ::Set variables for Functions_Online
@@ -327,7 +331,7 @@ color 07
 	
 ::Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,76) do set /p =
+	for /l %%i in (1,1,77) do set /p =
 	set /p RKill_Update_Tool_Online=
 	set /p JRT_Update_Tool_Online=
 	set /p TDSS_Update_Tool_Online=
@@ -342,6 +346,7 @@ color 07
 	set /p DefragSystem_A_Update_Tool_Online=
 	set /p DefragSystem_D_Update_Tool_Online=
 	set /p Caffeine_Update_Tool_Online=
+	set /p Geek_Update_Tool_Online=
 )
 
 ::Update functions based on variables
@@ -767,6 +772,30 @@ if "%Caffeine_Update_Tool_Online%" GTR "%Caffeine_Update_Tool_Local%" (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Caffeine_Url%" -O "%Output%\Tools\Caffeine\caffeine.exe" 2>NUL
 	CLS
 	echo Done updating Caffeine_Update_Tool.
+	TIMEOUT 2
+	CLS
+)
+
+::Geek_Update_Tool
+if not exist "%Output%\Tools\Geek\geek.exe" (
+	mkdir "%Output%\Tools\Geek\"
+)
+if "%Geek_Update_Tool_Online%" GTR "%Geek_Update_Tool_Local%" (
+	CLS
+	echo Updating Geek_Update_Tool...
+	echo.
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Geek_Url%" -O "%Output%\Tools\Geek\geek.zip" 2>NUL
+	CLS
+	echo Unzipping file.
+	echo.
+	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Geek'); $zip = $shell.NameSpace('%Output%\geek.zip'); $target.CopyHere($zip.Items(), 16); }"
+	CLS
+	echo Deleting downloaded file
+	echo.
+	del "%Output%\Tools\Geek\geek.zip"
+	CLS
+	echo Done updating Geek_Update_Tool.
+	echo.
 	TIMEOUT 2
 	CLS
 )
