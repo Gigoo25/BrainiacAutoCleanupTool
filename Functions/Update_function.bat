@@ -198,23 +198,27 @@ if /i %ERRORLEVEL%==0 (
 )
 
 ::Check if downloaded version is greater
-if "%CHECK_UPDATE_VERSION%" GTR "%CURRENT_VERSION%" (
-	REM Set red Color
-	color 0c
-	cls
-	echo.
-	echo  ^! ALERT
-	echo ===================================================================================
-	echo.
-	echo    Update found!
-	echo.
-	echo ===================================================================================
-	REM Ask if the user wants to update
-	choice /M "Do you want to update the tool" /c YN 
-	IF errorlevel 2 goto :update_no
-	IF errorlevel 1 goto :update_yes
+if not DEFINED Skip_Update (
+	if "%CHECK_UPDATE_VERSION%" GTR "%CURRENT_VERSION%" (
+		REM Set red Color
+		color 0c
+		cls
+		echo.
+		echo  ^! ALERT
+		echo ===================================================================================
+		echo.
+		echo    Update found!
+		echo.
+		echo ===================================================================================
+		REM Ask if the user wants to update
+		choice /M "Do you want to update the tool" /c YN 
+		IF errorlevel 2 goto :update_no
+		IF errorlevel 1 goto :update_yes
+	) else (
+		goto end
+	)
 ) else (
-	goto end
+	goto update_yes
 )
 
 :update_no
@@ -350,6 +354,24 @@ color 07
 )
 
 ::Update functions based on variables
+
+::DISABLED FOR NOW
+::Update_Update_Function
+if not DEFINED Skip_Update (
+	if "%Update_Update_Function_Online%" GTR "%Update_Update_Function_Local%" (
+		CLS
+		echo Updating Update_Update_Function...
+		echo.
+		"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
+		CLS
+		echo Done updating Update_Update_Function.
+		TIMEOUT 2
+		CLS
+		set Skip_Update=yes
+		if not DEFINED Skip_Update set Skip_Update=yes
+		if not DEFINED IS_MAXIMIZED set IS_MAXIMIZED=1 && start "" /max "%~dpnx0" %* && exit
+	)
+)
 
 ::Rkill_Function
 if "%RKill_Update_Function_Online%" GTR "%RKill_Update_Function_Local%" (
@@ -752,7 +774,6 @@ if "%DefragSystem_A_Update_Tool_Online%" GTR "%DefragSystem_A_Update_Tool_Local%
 )
 
 ::DefragSystem_D_Tool
-::ADD 64 BIT VERSION
 if "%DefragSystem_D_Update_Tool_Online%" GTR "%DefragSystem_D_Update_Tool_Local%" (
 	CLS
 	echo Updating DefragSystem_D_Tool...
@@ -767,51 +788,55 @@ if "%DefragSystem_D_Update_Tool_Online%" GTR "%DefragSystem_D_Update_Tool_Local%
 ::Caffeine_Update_Tool
 if "%Caffeine_Update_Tool_Online%" GTR "%Caffeine_Update_Tool_Local%" (
 	CLS
-	echo Updating Caffeine_Update_Tool...
+	echo Updating Caffeine_Tool...
 	echo.
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Caffeine_Url%" -O "%Output%\Tools\Caffeine\caffeine.exe" 2>NUL
 	CLS
-	echo Done updating Caffeine_Update_Tool.
+	echo Done updating Caffeine_Tool.
 	TIMEOUT 2
 	CLS
 )
 
 ::Geek_Update_Tool
-if not exist "%Output%\Tools\Geek\geek.exe" (
+::Download Geek Uninstaller if not present
+if not exist "%Output%\Tools\Geek\" (
+	CLS
+	echo Geek_Tool not present. 
+	echo.
+	echo Downloading Geek_Tool. 
+	echo.
 	mkdir "%Output%\Tools\Geek\"
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Geek_Url%" -O "%Output%\Tools\Geek\geek.zip" 2>NUL
+	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Geek'); $zip = $shell.NameSpace('%Output%\Tools\Geek\geek.zip'); $target.CopyHere($zip.Items(), 16); }"
+	del "%Output%\Tools\Geek\geek.zip"
+	CLS
+	echo Done downloading Geek_Tool.
+	echo.
+	TIMEOUT 2
+	CLS
+	goto Skip_Geek_Update
 )
+::Update Geek Uninstaller
 if "%Geek_Update_Tool_Online%" GTR "%Geek_Update_Tool_Local%" (
 	CLS
-	echo Updating Geek_Update_Tool...
+	echo Updating Geek_Tool...
 	echo.
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Geek_Url%" -O "%Output%\Tools\Geek\geek.zip" 2>NUL
 	CLS
 	echo Unzipping file.
 	echo.
-	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Geek'); $zip = $shell.NameSpace('%Output%\geek.zip'); $target.CopyHere($zip.Items(), 16); }"
+	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Geek'); $zip = $shell.NameSpace('%Output%\Tools\Geek\geek.zip'); $target.CopyHere($zip.Items(), 16); }"
 	CLS
 	echo Deleting downloaded file
 	echo.
 	del "%Output%\Tools\Geek\geek.zip"
 	CLS
-	echo Done updating Geek_Update_Tool.
+	echo Done updating Geek_Tool.
 	echo.
 	TIMEOUT 2
 	CLS
 )
-
-::DISABLED FOR NOW
-::Update_Update_Function last
-::if "%Update_Update_Function_Online%" GTR "%Update_Update_Function_Local%" (
-::	CLS
-::	echo Updating Update_Update_Function...
-::	echo.
-::	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
-::	CLS
-::	echo Done updating Update_Update_Function.
-::	TIMEOUT 2
-::	CLS
-::)
+:Skip_Geek_Update
 
 ::Update Readme file
 if "%Readme_Online%" GTR "%Readme_Local%" (
@@ -861,16 +886,18 @@ echo  ^! WARNING
 echo ===================================================================================
 echo.
 echo    Update successful.
-echo.                                                        
-echo    Tool will now close.
 echo.
-echo    Please re-open the tool to load the new version.
+echo    Re-open the tool to load the new version.
 echo.
 echo ===================================================================================
 TIMEOUT 10
-::Set default Color
-color 07
+::Start Brainiacs tool 
+set Skip_Update=yes
 exit
 
+::Set default Color
+color 07
+
+::Re-Open main file
 :end
 CLS

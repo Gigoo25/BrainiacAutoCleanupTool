@@ -32,6 +32,7 @@ set VarPHN=unidentified
 set VarAddtlNote=None
 set SKIP_DEFRAG=no
 set Skip_Comments=unidentified
+set VarGeek=None
 set             RKill_choice=,Yes,No,
 call:setPersist RKill=Yes
 set             JRT_choice=,Yes,No,
@@ -131,7 +132,7 @@ if "%password%"=="RedRuby" (
     echo.
     echo Bypassing checks
     TIMEOUT 5
-    goto FunctionsContinue
+    goto menuLOOP
 )
 if /I NOT "%password%"=="Bluemoon" (
     color 0c
@@ -149,15 +150,6 @@ if /I NOT "%password%"=="Bluemoon" (
     exit /b
 )
 CLS
-
-::Move update function file if it was updated
-::if exist "%TEMP%\Update_function.bat" (
-::    move "%TEMP%\Update_function.bat" "%Output%\Functions\Update_function.bat" 2>NUL
-::    CLS
-::)
-
-::Update update function everytime cause i'm lazy.
-"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "https://raw.githubusercontent.com/Gigoo25/BrainiacAutoCleanupTool/master/Functions/Update_function.bat" -O "%Output%\Functions\Update_function.bat" 2>NUL
 
 ::Check for updates
 call functions\Update_function
@@ -256,7 +248,7 @@ if /i not "%SAFE_MODE%"=="yes" (
         echo.
         echo ===================================================================================
         pause
-        exit 1
+        exit
     )
 )
 CLS

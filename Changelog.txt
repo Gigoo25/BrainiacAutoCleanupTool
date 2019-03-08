@@ -1,6 +1,15 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.3.4 (2019-03-08)
+*HOTFIX*
+---
+-Fixed ability to download Geek Uninstaller + updates.
+-Re-worked updating Update_function. (It now wont update everytime.) 
+-Removed unused code.
+-Added default comment var for Geek Uninstaller.
+-Fixed bug with Administration check not exiting.
+
 Brainiacs Cleanup Tool v1.3.3 (2019-03-07)
 ---
 -Added Geek Unistaller as an executable option.
