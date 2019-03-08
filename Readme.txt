@@ -50,6 +50,7 @@ README
 	DA) Disables all tools from running in the cleanup.
 
 	SC) Starts the cleanup with the selected options.
+	GK) Starts Geek Uninstaller + notes.
 	VR) View this readme.
 	VC) Shows the comments that have been created by the tool.
 	VH) Shows the changelog.
