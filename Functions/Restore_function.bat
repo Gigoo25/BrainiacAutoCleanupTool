@@ -18,8 +18,8 @@ if !SAFE_MODE!==yes (
 	echo ===================================================================================
 	echo.
 	echo    "%WIN_VER%" blocks creating SysRestore points in Safe Mode. Why? Because Microsoft.
-	echo.                                                        
-	echo    Skipping restore point creation.    
+	echo.
+	echo    Skipping restore point creation.
 	echo.
 	echo    Reboot to Normal mode and re-run the Autocleanup tool if you absolutely require one.
 	echo.
@@ -53,12 +53,12 @@ if /i !WIN_VER_NUM! geq 6.1 (
 			echo ===================================================================================
 			echo.
 			echo    Brainiacs - !DATE!: Pre-run checkpoint failed!
-			echo.                                                 
+			echo.
 			echo    Would you like to create a manual restore point prior to start?
-			echo.                                
+			echo.
 			echo    You can skip this step but be aware of the consequences!
 			echo.
-			echo.                                
+			echo.
 			echo    Consequences: Bad things will happen.
 			echo.
 			echo ===================================================================================
@@ -72,7 +72,7 @@ if /i !WIN_VER_NUM! geq 6.1 (
 			echo ===================================================================================
 			echo.
 			echo    Skipping manual restore point!
-			echo.                                                 
+			echo.
 			echo    I hope you are aware of the consequences!!
 			echo.
 			echo ===================================================================================
@@ -115,12 +115,12 @@ echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
 		echo ===================================================================================
 		echo.
 		echo    Brainiacs - !DATE!: Pre-run checkpoint failed!
-		echo.                                                 
+		echo.
 		echo    Would you like to create a manual restore point prior to start?
-		echo.                                
+		echo.
 		echo    You can skip this step but be aware of the consequences!
 		echo.
-		echo.                                
+		echo.
 		echo    Consequences: Bad things will happen.
 		echo.
 		echo ===================================================================================
@@ -134,7 +134,7 @@ echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
 		echo ===================================================================================
 		echo.
 		echo    Skipping manual restore point!
-		echo.                                                 
+		echo.
 		echo    I hope you are aware of the consequences!!
 		echo.
 		echo ===================================================================================

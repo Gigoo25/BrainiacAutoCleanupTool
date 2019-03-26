@@ -42,7 +42,7 @@ if %LOG_REMNANTS%==yes (
 ::Start DeleteLogs service.
 if exist "%Output%\Logs" (
 	title [Deleting Logs] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Deleting logs/temp files...	
+	echo Deleting logs/temp files...
 	rmdir /s /q "%Output%\Logs" >nul 2>&1
 	echo -Deleted logs >> %Output%\Notes\Comments.txt
 	CLS
@@ -51,20 +51,20 @@ if exist "%Output%\Logs" (
 	goto eof
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    Logs not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 10
-    color 07
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    Logs not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 10
+  color 07
 	goto eof
 )
 :eof

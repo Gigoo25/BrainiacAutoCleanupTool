@@ -20,25 +20,25 @@ if exist "%Output%\Tools\JRT\JRT.exe" (
 	)
 	CLS
 	echo Done running JRT!
-  	TIMEOUT 2 >nul 2>&1
-  	GOTO eof
+  TIMEOUT 2 >nul 2>&1
+  GOTO eof
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    JRT not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 10
-    color 07
-  	goto :eof
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    JRT not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 10
+  color 07
+  goto :eof
 )
 :eof
 ENDLOCAL DISABLEDELAYEDEXPANSION

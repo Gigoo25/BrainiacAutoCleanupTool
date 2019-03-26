@@ -12,25 +12,25 @@ if exist "%Output%\Notes\Comments.txt" (
 	echo Opening Comments...
 	start "notepad" /wait notepad "%Output%\Notes\Comments.txt"
 	CLS
-  	GOTO eof
+  GOTO eof
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    Comments not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 10
-    color 07
-  	goto :eof
-    set Skip_Comments=yes
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    Comments not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 10
+  color 07
+  goto :eof
+  set Skip_Comments=yes
 )
 :eof
 CLS

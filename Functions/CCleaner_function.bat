@@ -3,6 +3,7 @@
 ::Start CCleaner service.
 CLS
 title [CCleaner] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
 ::Check if already installed and run if it is, if not run portable version.
 if exist "%systemdrive%\Program Files\CCleaner\CCleaner.exe" (
 	echo CCleaner installed already!

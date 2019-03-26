@@ -15,25 +15,25 @@ if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
 	echo Infections-!!VarRougueKiller!! >> %Output%\Notes\Comments.txt
 	CLS
 	echo Done running RougueKiller!
-  	TIMEOUT 2 >nul 2>&1
+  TIMEOUT 2 >nul 2>&1
 	goto :eof
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    RogueKiller not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 10
-    color 07
-  	goto :eof
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    RogueKiller not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 10
+  color 07
+  goto :eof
 )
 :eof
 ENDLOCAL DISABLEDELAYEDEXPANSION

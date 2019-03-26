@@ -29,21 +29,21 @@ if exist "%Output%\Tools\TDSS\TDSSKiller.exe" (
 	)
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    TDSS Killer not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 10
-    color 07
-  	goto :eof
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    TDSS Killer not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 10
+  color 07
+  goto :eof
 )
 :eof
 ENDLOCAL DISABLEDELAYEDEXPANSION

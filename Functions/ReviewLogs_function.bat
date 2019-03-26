@@ -13,20 +13,20 @@ if exist "%Output%\Logs\rkill.log" (
 	CLS
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    Rkill log not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Rkill log not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
 	CLS
 )
 if exist "%Output%\Logs\rogue.log" (
@@ -39,20 +39,20 @@ if exist "%Output%\Logs\rogue.log" (
 	CLS
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    RogueKiller log not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    RogueKiller log not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
 	CLS
 )
 if exist "%HOMEDRIVE%\AdwCleaner\Logs" (
@@ -65,20 +65,20 @@ if exist "%HOMEDRIVE%\AdwCleaner\Logs" (
 	CLS
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    AdwCleaner log not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    AdwCleaner log not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
 	CLS
 )
 if exist "%Output%\Logs\tdsskiller.log" (
@@ -91,20 +91,20 @@ if exist "%Output%\Logs\tdsskiller.log" (
 	CLS
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    TDSSkiller log not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    TDSSkiller log not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
 	CLS
 )
 if exist "%Output%\Logs\JRT.txt" (
@@ -117,20 +117,20 @@ if exist "%Output%\Logs\JRT.txt" (
 	CLS
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    JRT log not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    JRT log not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
 	CLS
 )
 if exist "%SystemRoot%\Windows_Image_Check.txt" (
@@ -143,20 +143,20 @@ if exist "%SystemRoot%\Windows_Image_Check.txt" (
 	CLS
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    Windows Image Check log not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Windows Image Check log not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
 	CLS
 )
 if exist "%SystemRoot%\logs\cbs\cbs.log" (
@@ -169,20 +169,20 @@ if exist "%SystemRoot%\logs\cbs\cbs.log" (
 	CLS
 ) else (
 	CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    System File Checker log not found.
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    System File Checker log not found.
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
 	CLS
 )
 :eof

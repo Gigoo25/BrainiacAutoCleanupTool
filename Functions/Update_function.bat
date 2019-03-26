@@ -129,7 +129,7 @@ if not exist "%Output%\Tools\WGET\wget.exe" (
 	echo ===================================================================================
 	echo.
 	echo    WGET not found!
-	echo.                                                        
+	echo.
 	echo    Please check to make sure WGET.exe is found.
 	echo.
 	echo    Checking for updates will be skipped.
@@ -155,7 +155,7 @@ if exist "%Output%\Version.txt" (
 	echo ===================================================================================
 	echo.
 	echo    Cannot detect tool version!
-	echo.                                                        
+	echo.
 	echo    The cleanup tool will not be able to update.
 	echo.
 	echo    Skipping update.
@@ -185,7 +185,7 @@ if /i %ERRORLEVEL%==0 (
 	echo ===================================================================================
 	echo.
 	echo    Failed to check for updates!
-	echo.                                                        
+	echo.
 	echo    The cleanup tool will not be able to update.
 	echo.
 	echo    Skipping update.
@@ -211,7 +211,7 @@ if not DEFINED Skip_Update (
 		echo.
 		echo ===================================================================================
 		REM Ask if the user wants to update
-		choice /M "Do you want to update the tool" /c YN 
+		choice /M "Do you want to update the tool" /c YN
 		IF errorlevel 2 goto :update_no
 		IF errorlevel 1 goto :update_yes
 	) else (
@@ -230,8 +230,8 @@ echo  ^! ALERT
 echo ===================================================================================
 echo.
 echo    You did not accept to update the tool.
-echo.                                                        
-echo    Remember that this is your decision.   
+echo.
+echo    Remember that this is your decision.
 echo.
 echo    Update will be skipped.
 echo.
@@ -286,7 +286,7 @@ color 07
 	set /p Brainiacs_Update_Function_Local=
 	set /p Update_Update_Function_Local=
 )
-	
+
 ::Set variables for Tools_Local
 < "%Output%\Version.txt" (
 	for /l %%i in (1,1,77) do set /p =
@@ -332,7 +332,7 @@ color 07
 	set /p Brainiacs_Update_Function_Online=
 	set /p Update_Update_Function_Online=
 )
-	
+
 ::Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
 	for /l %%i in (1,1,77) do set /p =
@@ -801,9 +801,9 @@ if "%Caffeine_Update_Tool_Online%" GTR "%Caffeine_Update_Tool_Local%" (
 ::Download Geek Uninstaller if not present
 if not exist "%Output%\Tools\Geek\" (
 	CLS
-	echo Geek_Tool not present. 
+	echo Geek_Tool not present.
 	echo.
-	echo Downloading Geek_Tool. 
+	echo Downloading Geek_Tool.
 	echo.
 	mkdir "%Output%\Tools\Geek\"
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Geek_Url%" -O "%Output%\Tools\Geek\geek.zip" 2>NUL
@@ -816,6 +816,7 @@ if not exist "%Output%\Tools\Geek\" (
 	CLS
 	goto Skip_Geek_Update
 )
+
 ::Update Geek Uninstaller
 if "%Geek_Update_Tool_Online%" GTR "%Geek_Update_Tool_Local%" (
 	CLS
@@ -891,7 +892,7 @@ echo    Re-open the tool to load the new version.
 echo.
 echo ===================================================================================
 TIMEOUT 10
-::Start Brainiacs tool 
+::Start Brainiacs tool
 set Skip_Update=yes
 exit
 
