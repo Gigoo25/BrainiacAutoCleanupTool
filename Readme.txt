@@ -5,13 +5,13 @@ README
 	-This tool is an automated tool to facilitate the cleanup process of a computer.
 
 -Before running the tool-
-	-Be sure to read the onscreen instructions carefully (Atleast on the first run). 
-	-Be sure to run the tool as an administrator or it will not run. 
+	-Be sure to read the onscreen instructions carefully (At least on the first run).
+	-Be sure to run the tool as an administrator or it will not run.
 	-Do not try to run this tool on anything below Windows XP. It won't work.
 
 -When running the tool-
-	-It is wise to not reboot the computer until the process is done. Although the tool 
-	 has a restore point feature and will start where you have left off it is better to 
+	-It is wise to not reboot the computer until the process is done. Although the tool
+	 has a restore point feature and will start where you have left off it is better to
 	 close out of any programs that ask for a restart until fully done. (E.g. ADW Cleaner)
 	-The tool will open tasks automatically but it is not fully automated, it still needs user input and there is a reason
 	 for that. You do not want to delete random files without knowledge of it.
@@ -36,8 +36,8 @@ README
 	R) Will create a restore point prior to running the tool.
 	A) This will auto close the tool when done running the tool.
 	L) This will show you the output logs of the tools that have ran.
-	C) This will open the coments once when done running the tool to be able to paste them
-	 into logmein.
+	C) This will open the comments once when done running the tool to be able to paste them
+	 into log-me-in.
 	DC) This will delete the comments when done running the tool.
 	DL) This will delete the logs when done running the tool.
 	DT) This will delete the tools/functions when done running the tool.
