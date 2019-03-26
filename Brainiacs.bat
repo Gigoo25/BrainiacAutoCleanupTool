@@ -210,8 +210,8 @@ choice /M "Do you accept responsibility for running this tool" /c YN
 IF errorlevel 2 goto :accept_no
 IF errorlevel 1 goto :accept_yes
 
-:accept_no
 ::Display message if they do not accept the disclaimer
+:accept_no
 color 0c
 cls
 echo.
@@ -229,8 +229,8 @@ echo ===========================================================================
 TIMEOUT 60
 exit 1
 
+::If disclaimer was accepted check for administrator privilage
 :accept_yes
-::Check for administrator privilage
 if /i not "%SAFE_MODE%"=="yes" (
   fsutil dirty query %systemdrive% >NUL 2>&1
   if /i not !ERRORLEVEL!==0 (
@@ -274,7 +274,7 @@ if %ABORT%==yes (
 )
 CLS
 
-::Check for tools folder
+::Check if tools folder exists
 if exist "%Output%\Tools" (
   goto ToolsContinue
 ) else (
@@ -318,7 +318,7 @@ if exist "%Output%\Functions" (
 :FunctionsContinue
 CLS
 
-::Setup resume state if not found, if found ask if you want to resume
+::Setup resume state if not found, if found ask if you want to resume the last state
 if "%ABRUPTCLOSE%"=="yes" (
   color 0c
   cls
@@ -359,34 +359,41 @@ if not exist "%Output%\Logs\" (
 
 ::Ask for user input & write to notes
 echo ----------------------------------------- >> %Output%\Notes\Comments.txt
+
 ::Ask if the session was picked up
 choice /T 20 /D N /M "Did you pickup this session" /c YN
 IF errorlevel 2 goto :Session_New
 IF errorlevel 1 goto :Session_Pickup
 
-::Ask for user input for session pickup
 :Session_Pickup
 ::Restore variables from last session if present.
 if exist "%FilePersist%" (
   call:restorePersistentVars "%FilePersist%"
 )
 CLS
+
+::Ask & enter CSG user ID into notes
 set /p VarID=Enter your CSG user ID:
 echo "%VarID%" >> "%Output%\Notes\Comments.txt"
 CLS
 echo. >> "%Output%\Notes\Comments.txt"
+
+::Enter general cleanup reason
 echo General Cleanup. >> "%Output%\Notes\Comments.txt"
 echo. >> "%Output%\Notes\Comments.txt"
+
+::Ask & enter any additional notes
 set /p VarAddtlNote=Enter any additional notes:
 echo Additional notes: "%VarAddtlNote%" >> "%Output%\Notes\Comments.txt"
 echo --- >> "%Output%\Notes\Comments.txt"
 echo -Picked up session >> "%Output%\Notes\Comments.txt"
 CLS
+
+::Goto menu
 goto menuLOOP
 
-::Ask for user input for new session
-:Session_New
 
+:Session_New
 ::Delete notes if exist
 if exist "%Output%\Notes" (
   del /Q "%Output%\Notes\*.*" >NUL 2>&1
@@ -403,26 +410,38 @@ if not exist "%Output%\Logs\" (
   mkdir "%Output%\Logs" >NUL 2>&1
 )
 
+::Ask & enter CSG user ID into notes
 CLS
 set /p VarID=Enter your CSG user ID:
 echo "%VarID%" >> "%Output%\Notes\Comments.txt"
 CLS
+
+::Ask & enter Account number notes
 set /p VarACC=Enter the subscribers Account number:
 echo ACC#"%VarACC%" >> "%Output%\Notes\Comments.txt"
 CLS
+
+::Ask & enter Phone number into notes
 set /p VarPHN=Enter the subscribers Phone number:
 echo PHN#"%VarPHN%" >> "%Output%\Notes\Comments.txt"
 CLS
 echo. >> "%Output%\Notes\Comments.txt"
+
+::Enter general cleanup reason
 echo General Cleanup. >> "%Output%\Notes\Comments.txt"
+
+::Ask & enter any additional notes
 set /p VarAddtlNote=Enter any additional notes:
 echo Additional Notes: "%VarAddtlNote%" >> "%Output%\Notes\Comments.txt"
 echo --- >> "%Output%\Notes\Comments.txt"
 CLS
+
 ::Add check for restore deletion
 if /i "!DELETERESTORE!"=="Yes" (
   del /Q "%FilePersist%"  >NUL 2>&1
 )
+
+::Goto menu
 goto menuLOOP
 
 ::Start Menu
@@ -449,7 +468,7 @@ echo.&set /p choice=Make a choice: ||(
 echo.&call:menu_%choice%
 GOTO:menuLOOP
 
-::Menu functions
+::Display notes
 :menu_CSG ID: !VarID!
 :menu_Account#: !VarACC!
 :menu_Phone#: !VarPHN!
@@ -458,6 +477,7 @@ GOTO:menuLOOP
 :menu_Additional Notes:
 :menu_!VarAddtlNote!
 
+::Display menu functions
 :menu_
 :menu_Tools:
 ::Start RKill service
