@@ -1,8 +1,5 @@
 @echo off
 
-::Variables
-set VarZemana=0
-
 ::Start Zemana service.
 CLS
 SETLOCAL ENABLEDELAYEDEXPANSION

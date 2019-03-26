@@ -1,8 +1,5 @@
 @echo off
 
-::Variables
-set VarRougueKiller=0
-
 ::Start RogueKiller service.
 CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
