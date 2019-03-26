@@ -33,51 +33,51 @@ set VarAddtlNote=None
 set SKIP_DEFRAG=no
 set Skip_Comments=unidentified
 set VarGeek=None
-set             RKill_choice=,Yes,No,
+set RKill_choice=,Yes,No,
 call:setPersist RKill=Yes
-set             JRT_choice=,Yes,No,
+set JRT_choice=,Yes,No,
 call:setPersist JRT=Yes
-set             TDSS_choice=,Yes,No,
+set TDSS_choice=,Yes,No,
 call:setPersist TDSS=Yes
-set             Rogue_choice=,Yes,No,
+set Rogue_choice=,Yes,No,
 call:setPersist Rogue=Yes
-set             ADW_choice=,Yes,No,
+set ADW_choice=,Yes,No,
 call:setPersist ADW=Yes
-set             HitmanPro_choice=,Yes,No,
+set HitmanPro_choice=,Yes,No,
 call:setPersist HitmanPro=Yes
-set             Zemana_choice=,Yes,No,
+set Zemana_choice=,Yes,No,
 call:setPersist Zemana=Yes
-set             MBAR_choice=,Yes,No,
+set MBAR_choice=,Yes,No,
 call:setPersist MBAR=No
-set             Malwarebytes_choice=,Yes,No,
+set Malwarebytes_choice=,Yes,No,
 call:setPersist Malwarebytes=No
-set             Spybot_choice=,Yes,No,
+set Spybot_choice=,Yes,No,
 call:setPersist Spybot=No
-set             CCleaner_choice=,Yes,No,
+set CCleaner_choice=,Yes,No,
 call:setPersist CCleaner=Yes
-set             DefragSystem_choice=,Yes,No,
+set DefragSystem_choice=,Yes,No,
 call:setPersist DefragSystem=Yes
-set             ImageChecker_choice=,Yes,No,
+set ImageChecker_choice=,Yes,No,
 call:setPersist ImageChecker=Yes
-set             DriveChecker_choice=,Yes,No,
+set DriveChecker_choice=,Yes,No,
 call:setPersist DriveChecker=Yes
-set             SystemRestore_choice=,Yes,No,
+set SystemRestore_choice=,Yes,No,
 call:setPersist SystemRestore=Yes
-set             AutoClose_choice=,Yes,No,
+set AutoClose_choice=,Yes,No,
 call:setPersist AutoClose=Yes
-set             ReviewLogs_choice=,Yes,No,
+set ReviewLogs_choice=,Yes,No,
 call:setPersist ReviewLogs=Yes
-set             OpenNotes_choice=,Yes,No,
+set OpenNotes_choice=,Yes,No,
 call:setPersist OpenNotes=Yes
-set             DeleteNotes_choice=,Yes,No,
+set DeleteNotes_choice=,Yes,No,
 call:setPersist DeleteNotes=No
-set             DeleteLogs_choice=,Yes,No,
+set DeleteLogs_choice=,Yes,No,
 call:setPersist DeleteLogs=No
-set             DeleteTools_choice=,Yes,No,
+set DeleteTools_choice=,Yes,No,
 call:setPersist DeleteTools=Yes
-set             SelfDestruct_choice=,Yes,No,
+set SelfDestruct_choice=,Yes,No,
 call:setPersist SelfDestruct=Yes
-set             Reboot_choice=,Yes,No,
+set Reboot_choice=,Yes,No,
 call:setPersist Reboot=No
 
 :: Force path to some system utilities in case the system PATH is messed up
@@ -100,10 +100,10 @@ echo.>"%Output%\Version.txt":Zone.Identifier
 
 ::Set tool version/date
 if exist "%Output%\Version.txt" (
-    < "%Output%\Version.txt" (
-        set /p TOOL_VERSION=
-        set /p TOOL_DATE=
-    )
+  < "%Output%\Version.txt" (
+      set /p TOOL_VERSION=
+      set /p TOOL_DATE=
+  )
 )
 
 ::Pull ABRUPTCLOSE var if present
@@ -126,28 +126,28 @@ echo.
 echo ===================================================================================
 set /p password="Enter password: "
 if "%password%"=="RedRuby" (
-    color 0c
-    cls
-    echo Entering hidden testing mode.
-    echo.
-    echo Bypassing checks
-    TIMEOUT 5
-    goto menuLOOP
+  color 0c
+  cls
+  echo Entering hidden testing mode.
+  echo.
+  echo Bypassing checks
+  TIMEOUT 5
+  goto menuLOOP
 )
 if /I NOT "%password%"=="Bluemoon" (
-    color 0c
-    cls
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo Password is incorrect.
-    echo.
-    echo The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 30 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 30
-    exit /b
+  color 0c
+  cls
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo Password is incorrect.
+  echo.
+  echo The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 30 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 30
+  exit /b
 )
 CLS
 
@@ -186,7 +186,7 @@ reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" 
 :: Kill off any running Caffeine instances first + run caffeine.
 taskkill /f /im "caffeine.exe" >nul 2>&1
 if exist "%Output%\Tools\Caffeine\caffeine.exe" (
-    start "Caffeine" "%Output%\Tools\Caffeine\caffeine.exe"
+  start "Caffeine" "%Output%\Tools\Caffeine\caffeine.exe"
 )
 
 ::Start interface
@@ -201,7 +201,7 @@ echo.
 echo    All logs will be placed in the folder "%cd%\Logs".
 echo    This tools also generates notes for the account. These will be
 echo    placed in the folder "%cd%\Notes".
-echo. 
+echo.
 echo    Please run the program as administrator. Otherwise you'll have to
 echo    you'll have to accept UAC for each program that tries to run.
 echo.
@@ -219,8 +219,8 @@ echo  ^! ERROR
 echo ===================================================================================
 echo.
 echo    You did not accept responsibility for running this tool.
-echo.                                                        
-echo    If you decide to grow up and accept responsibility re-run the tool    
+echo.
+echo    If you decide to grow up and accept responsibility re-run the tool
 echo    and accept the disclaimer.
 echo.
 echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 60 seconds.
@@ -232,24 +232,24 @@ exit 1
 :accept_yes
 ::Check for administrator privilage
 if /i not "%SAFE_MODE%"=="yes" (
-    fsutil dirty query %systemdrive% >NUL 2>&1
-    if /i not !ERRORLEVEL!==0 (
-        color 0c
-        cls
-        echo.
-        echo  ^! ERROR
-        echo ===================================================================================
-        echo.
-        echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% doesn't think it is running as an Administrator.
-        echo    You MUST run with full Administrator rights to function correctly.
-        echo.
-        echo    Close this window and re-run the cleanup tool as an Administrator.
-        echo    ^(right-click Brainiacs.bat and click "Run as Administrator"^)
-        echo.
-        echo ===================================================================================
-        pause
-        exit
-    )
+  fsutil dirty query %systemdrive% >NUL 2>&1
+  if /i not !ERRORLEVEL!==0 (
+    color 0c
+    cls
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% doesn't think it is running as an Administrator.
+    echo    You MUST run with full Administrator rights to function correctly.
+    echo.
+    echo    Close this window and re-run the cleanup tool as an Administrator.
+    echo    ^(right-click Brainiacs.bat and click "Run as Administrator"^)
+    echo.
+    echo ===================================================================================
+    pause
+    exit
+  )
 )
 CLS
 
@@ -266,95 +266,95 @@ if %ABORT%==yes (
 	echo.
 	echo    Sorry.
 	echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
 	echo.
 	echo ===================================================================================
-    TIMEOUT 15
+  TIMEOUT 15
 	exit 1
 )
 CLS
 
 ::Check for tools folder
 if exist "%Output%\Tools" (
-    goto ToolsContinue  
-    ) else (
-        color 0c
-        cls
-        echo.
-		echo  ^! ERROR
-		echo ===================================================================================
-        echo.
-        echo 	Tools folder not found.
-        echo 	You MUST have tools folder under %Output%
-        echo.
-    	echo 	The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
-		echo.
-		echo ===================================================================================
-    	TIMEOUT 15
-		exit 1
-    )
+  goto ToolsContinue
+) else (
+  color 0c
+  cls
+  echo.
+	echo  ^! ERROR
+	echo ===================================================================================
+  echo.
+  echo 	Tools folder not found.
+  echo 	You MUST have tools folder under %Output%
+  echo.
+  echo 	The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
+	echo.
+	echo ===================================================================================
+  TIMEOUT 15
+	exit 1
+)
 :ToolsContinue
 CLS
 
 ::Check for functions folder
 if exist "%Output%\Functions" (
-    goto FunctionsContinue
-    ) else (
-        color 0c
-        cls
-        echo.
-		echo  ^! ERROR
-		echo ===================================================================================
-        echo.
-        echo 	Functions folder not found.
-        echo 	You MUST have functions folder under %Output%
-        echo.
-    	echo 	The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
-		echo.
-		echo ===================================================================================
-    	TIMEOUT 15
-		exit 1
-    )
+  goto FunctionsContinue
+) else (
+  color 0c
+  cls
+  echo.
+	echo  ^! ERROR
+	echo ===================================================================================
+  echo.
+  echo 	Functions folder not found.
+  echo 	You MUST have functions folder under %Output%
+  echo.
+  echo 	The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
+	echo.
+	echo ===================================================================================
+  TIMEOUT 15
+	exit 1
+)
 :FunctionsContinue
 CLS
 
 ::Setup resume state if not found, if found ask if you want to resume
 if "%ABRUPTCLOSE%"=="yes" (
-    color 0c
-    cls
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    Abrupt stop detected!
-    echo    Do you want to restore the session?
-    echo.
-    echo ===================================================================================
+  color 0c
+  cls
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Abrupt stop detected!
+  echo    Do you want to restore the session?
+  echo.
+  echo ===================================================================================
 	choice /M "[Y]es or [N]o" /c YN
 	IF errorlevel 2 goto :restore_no
 	IF errorlevel 1 goto :restore_yes
 	:restore_yes
 	call:restorePersistentVars "%FilePersist%"
 	CLS
-    color 07
+  color 07
 	REM Skip to menu
 	goto :menuLOOP
-    :restore_no
-    set DELETERESTORE=Yes
+  :restore_no
+  set DELETERESTORE=Yes
 ) else (
-    if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
-        del "%Output%\Functions\ABRUPTCLOSE.txt"
-    )
+  if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
+    del "%Output%\Functions\ABRUPTCLOSE.txt"
+  )
 )
 
 ::Create notes folder if non-existant
 if not exist "%Output%\Notes\" (
-    mkdir "%Output%\Notes" >NUL 2>&1
+  mkdir "%Output%\Notes" >NUL 2>&1
 )
 
 ::Create logs folder if non-existant
 if not exist "%Output%\Logs\" (
-    mkdir "%Output%\Logs" >NUL 2>&1
+  mkdir "%Output%\Logs" >NUL 2>&1
 )
 
 ::Ask for user input & write to notes
@@ -368,10 +368,10 @@ IF errorlevel 1 goto :Session_Pickup
 :Session_Pickup
 ::Restore variables from last session if present.
 if exist "%FilePersist%" (
-    call:restorePersistentVars "%FilePersist%"
+  call:restorePersistentVars "%FilePersist%"
 )
 CLS
-set /p VarID=Enter your CSG user ID: 
+set /p VarID=Enter your CSG user ID:
 echo "%VarID%" >> "%Output%\Notes\Comments.txt"
 CLS
 echo. >> "%Output%\Notes\Comments.txt"
@@ -389,28 +389,28 @@ goto menuLOOP
 
 ::Delete notes if exist
 if exist "%Output%\Notes" (
-    del /Q "%Output%\Notes\*.*" >NUL 2>&1
-) 
+  del /Q "%Output%\Notes\*.*" >NUL 2>&1
+)
 if not exist "%Output%\Notes\" (
-    mkdir "%Output%\Notes" >NUL 2>&1
+  mkdir "%Output%\Notes" >NUL 2>&1
 )
 
 ::Delete logs if exist
 if exist "%Output%\Logs" (
-    del /Q "%Output%\Logs\*.*" >NUL 2>&1
-) 
+  del /Q "%Output%\Logs\*.*" >NUL 2>&1
+)
 if not exist "%Output%\Logs\" (
-    mkdir "%Output%\Logs" >NUL 2>&1
+  mkdir "%Output%\Logs" >NUL 2>&1
 )
 
 CLS
-set /p VarID=Enter your CSG user ID: 
+set /p VarID=Enter your CSG user ID:
 echo "%VarID%" >> "%Output%\Notes\Comments.txt"
 CLS
-set /p VarACC=Enter the subscribers Account number: 
+set /p VarACC=Enter the subscribers Account number:
 echo ACC#"%VarACC%" >> "%Output%\Notes\Comments.txt"
 CLS
-set /p VarPHN=Enter the subscribers Phone number: 
+set /p VarPHN=Enter the subscribers Phone number:
 echo PHN#"%VarPHN%" >> "%Output%\Notes\Comments.txt"
 CLS
 echo. >> "%Output%\Notes\Comments.txt"
@@ -421,7 +421,7 @@ echo --- >> "%Output%\Notes\Comments.txt"
 CLS
 ::Add check for restore deletion
 if /i "!DELETERESTORE!"=="Yes" (
-    del /Q "%FilePersist%"  >NUL 2>&1
+  del /Q "%FilePersist%"  >NUL 2>&1
 )
 goto menuLOOP
 
@@ -434,7 +434,7 @@ echo  ^! MENU
 echo ===================================================================================
 echo.
 echo  ^! Select a tool, option or preset from the list below by inputting the corresponding
-echo  ^! character. Once you are okay with your selection type "SC" and then enter to 
+echo  ^! character. Once you are okay with your selection type "SC" and then enter to
 echo  ^! start the automated process.
 echo.
 echo ===================================================================================
@@ -443,8 +443,8 @@ for /f "tokens=1,2,* delims=_ " %%A in ('"findstr /b /c:":menu_" "%~f0""') do ec
 set choice=
 echo.
 echo ===================================================================================
-echo.&set /p choice=Make a choice or hit ENTER to quit: ||(
-	GOTO:EOF
+echo.&set /p choice=Make a choice: ||(
+	GOTO:menuLOOP
 )
 echo.&call:menu_%choice%
 GOTO:menuLOOP
@@ -513,84 +513,84 @@ GOTO:EOF
 call:getNextInList Malwarebytes "!Malwarebytes_choice!"
 cls
 if /i "!SystemRestore!"=="No" (
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    Malwarebytes requires you to have the option "Create system restore point" to be 
-    echo    enabled. Please enable this option and try again.
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 30
-    color 07
-    set Malwarebytes=No
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    Malwarebytes requires you to have the option "Create system restore point" to be
+  echo    enabled. Please enable this option and try again.
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 30
+  color 07
+  set Malwarebytes=No
 )
 ::Check for windows 8 or above
 if %WIN_VER_NUM% geq 6.2 (
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    GOTO:EOF
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  GOTO:EOF
 ) else (
-    CLS
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    Malwarebytes does not support "%WIN_VER%".
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 10
-    color 07
-    goto :eof
+  CLS
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    Malwarebytes does not support "%WIN_VER%".
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 10
+  color 07
+  goto :eof
 )
 ::Start Spybot service
 :menu_10   Run Spybot? (Experimental Tool)          : '!Spybot!' [!Spybot_choice:~1,-1!]
 call:getNextInList Spybot "!Spybot_choice!"
 cls
 if /i "!SystemRestore!"=="No" (
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    Spybot requires you to have the option "Create system restore point" to be 
-    echo    enabled. Please enable this option and try again.
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 30
-    color 07
-    set Spybot=No
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    Spybot requires you to have the option "Create system restore point" to be
+  echo    enabled. Please enable this option and try again.
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 30
+  color 07
+  set Spybot=No
 )
 ::Check for windows 8 or above
 if %WIN_VER_NUM% geq 6.2 (
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    GOTO:EOF
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  GOTO:EOF
 ) else (
-    CLS
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    Spybot does not support "%WIN_VER%".
-    echo.
-    echo    Skipping...
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 10
-    color 07
-    goto :eof
+  CLS
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    Spybot does not support "%WIN_VER%".
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 10
+  color 07
+  goto :eof
 )
 ::Start CCleaner service
 :menu_11   Run CCleaner?                            : '!CCleaner!' [!CCleaner_choice:~1,-1!]
@@ -624,12 +624,12 @@ GOTO:EOF
 call:getNextInList SystemRestore "!SystemRestore_choice!"
 cls
 if /i "!SystemRestore!"=="No" (
-    if /i "!Malwarebytes!"=="Yes" (
-        set Malwarebytes=No
-    )
-    if /i "!Spybot!"=="Yes" (
-        set Spybot=No
-    )
+  if /i "!Malwarebytes!"=="Yes" (
+    set Malwarebytes=No
+  )
+  if /i "!Spybot!"=="Yes" (
+    set Spybot=No
+  )
 )
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
@@ -638,18 +638,18 @@ GOTO:EOF
 call:getNextInList AutoClose "!AutoClose_choice!"
 cls
 if /i "!SelfDestruct!"=="Yes" (
-    if /i "!AutoClose!"=="No" (
-        if /i "!Reboot!"=="No" (
-            set SelfDestruct=No
-        )
+  if /i "!AutoClose!"=="No" (
+    if /i "!Reboot!"=="No" (
+      set SelfDestruct=No
     )
+  )
 )
 if /i "!DeleteTools!"=="Yes" (
-    if /i "!AutoClose!"=="No" (
-        if /i "!Reboot!"=="No" (
-            set DeleteTools=No
-        )
+  if /i "!AutoClose!"=="No" (
+    if /i "!Reboot!"=="No" (
+      set DeleteTools=No
     )
+  )
 )
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
@@ -663,10 +663,10 @@ GOTO:EOF
 :menu_C   Open comments when done?                  : '!OpenNotes!' [!OpenNotes_choice:~1,-1!]
 call:getNextInList OpenNotes "!OpenNotes_choice!"
 cls
-if /i "!OpenNotes!"=="No" (    
-    if /i "!DeleteNotes!"=="Yes" (
-        set DeleteNotes=No
-    )
+if /i "!OpenNotes!"=="No" (
+  if /i "!DeleteNotes!"=="Yes" (
+    set DeleteNotes=No
+  )
 )
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
@@ -675,41 +675,41 @@ GOTO:EOF
 call:getNextInList DeleteNotes "!DeleteNotes_choice!"
 cls
 if /i "!OpenNotes!"=="No" (
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    Delete comments requires you to have the option "Open comments when done" to be 
-    echo    enabled. Please enable this option and try again.
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 30
-    color 07
-    set DeleteNotes=No
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    Delete comments requires you to have the option "Open comments when done" to be
+  echo    enabled. Please enable this option and try again.
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 30
+  color 07
+  set DeleteNotes=No
 )
 if /i "!DeleteNotes!"=="Yes" (
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    You have selected to delete the comments when done. The comments will still open
-    echo    before deletion for you to copy but once you close the prompt it will all be gone.
-    echo.
-    echo    Are you really sure you want to delete the notes after run?
-    echo.
-    echo ===================================================================================
-    choice /C YN /T 20 /D N /M "[Y]es or [N]o"
-    IF errorlevel 2 goto DontDeleteNotes_Prompt_choice
-    IF errorlevel 1 goto DeleteNotes_Prompt_Continue
-    :DontDeleteNotes_Prompt_choice
-    set DeleteNotes=No
-    GOTO DeleteNotes_Prompt_Continue
-    :DeleteNotes_Prompt_choice
-    set DeleteNotes=Yes
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    You have selected to delete the comments when done. The comments will still open
+  echo    before deletion for you to copy but once you close the prompt it will all be gone.
+  echo.
+  echo    Are you really sure you want to delete the notes after run?
+  echo.
+  echo ===================================================================================
+  choice /C YN /T 20 /D N /M "[Y]es or [N]o"
+  IF errorlevel 2 goto DontDeleteNotes_Prompt_choice
+  IF errorlevel 1 goto DeleteNotes_Prompt_Continue
+  :DontDeleteNotes_Prompt_choice
+  set DeleteNotes=No
+  GOTO DeleteNotes_Prompt_Continue
+  :DeleteNotes_Prompt_choice
+  set DeleteNotes=Yes
 )
 :DeleteNotes_Prompt_Continue
 color 07
@@ -726,29 +726,29 @@ GOTO:EOF
 call:getNextInList DeleteTools "!DeleteTools_choice!"
 cls
 if /i "!DeleteTools!"=="Yes" (
-    if /i "!AutoClose!"=="No" (
-        if /i "!Reboot!"=="No" (
-            color 0c
-            echo.
-            echo  ^! ERROR
-            echo ===================================================================================
-            echo.
-            echo    Delete tools requires you to have the options "Auto close when done" or 
-            echo    "Reboot when done" to be enabled.
-            echo.
-            echo ===================================================================================
-            choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
-            IF errorlevel 2 goto Reboot_selfdestruct_choice
-            IF errorlevel 1 goto AutoClose_selfdestruct_choice
-            :AutoClose_deletetools_choice
-            set AutoClose=Yes
-            set Reboot=No
-            GOTO Deletetools_Continue
-            :Reboot_deletetools_choice
-            set AutoClose=No
-            set Reboot=Yes
-        )
+  if /i "!AutoClose!"=="No" (
+    if /i "!Reboot!"=="No" (
+      color 0c
+      echo.
+      echo  ^! ERROR
+      echo ===================================================================================
+      echo.
+      echo    Delete tools requires you to have the options "Auto close when done" or
+      echo    "Reboot when done" to be enabled.
+      echo.
+      echo ===================================================================================
+      choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
+      IF errorlevel 2 goto Reboot_selfdestruct_choice
+      IF errorlevel 1 goto AutoClose_selfdestruct_choice
+      :AutoClose_deletetools_choice
+      set AutoClose=Yes
+      set Reboot=No
+      GOTO Deletetools_Continue
+      :Reboot_deletetools_choice
+      set AutoClose=No
+      set Reboot=Yes
     )
+  )
 )
 :Deletetools_Continue
 color 07
@@ -759,29 +759,29 @@ GOTO:EOF
 call:getNextInList SelfDestruct "!SelfDestruct_choice!"
 cls
 if /i "!SelfDestruct!"=="Yes" (
-    if /i "!AutoClose!"=="No" (
-        if /i "!Reboot!"=="No" (
-            color 0c
-            echo.
-            echo  ^! ERROR
-            echo ===================================================================================
-            echo.
-            echo    Self-Destruct requires you to have the options "Auto close when done" or 
-            echo    "Reboot when done" to be enabled.
-            echo.
-            echo ===================================================================================
-            choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
-            IF errorlevel 2 goto Reboot_selfdestruct_choice
-            IF errorlevel 1 goto AutoClose_selfdestruct_choice
-            :AutoClose_selfdestruct_choice
-            set AutoClose=Yes
-            set Reboot=No
-            GOTO:SelfDestruct_Continue
-            :Reboot_selfdestruct_choice
-            set AutoClose=No
-            set Reboot=Yes
-        )
+  if /i "!AutoClose!"=="No" (
+    if /i "!Reboot!"=="No" (
+      color 0c
+      echo.
+      echo  ^! ERROR
+      echo ===================================================================================
+      echo.
+      echo    Self-Destruct requires you to have the options "Auto close when done" or
+      echo    "Reboot when done" to be enabled.
+      echo.
+      echo ===================================================================================
+      choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
+      IF errorlevel 2 goto Reboot_selfdestruct_choice
+      IF errorlevel 1 goto AutoClose_selfdestruct_choice
+      :AutoClose_selfdestruct_choice
+      set AutoClose=Yes
+      set Reboot=No
+      GOTO:SelfDestruct_Continue
+      :Reboot_selfdestruct_choice
+      set AutoClose=No
+      set Reboot=Yes
     )
+  )
 )
 :SelfDestruct_Continue
 color 07
@@ -793,18 +793,18 @@ GOTO:EOF
 call:getNextInList Reboot "!Reboot_choice!"
 cls
 if /i "!SelfDestruct!"=="Yes" (
-    if /i "!AutoClose!"=="No" (
-        if /i "!Reboot!"=="No" (
-            set SelfDestruct=No
-        )
+  if /i "!AutoClose!"=="No" (
+    if /i "!Reboot!"=="No" (
+      set SelfDestruct=No
     )
+  )
 )
 if /i "!DeleteTools!"=="Yes" (
-    if /i "!AutoClose!"=="No" (
-        if /i "!Reboot!"=="No" (
-            set DeleteTools=No
-        )
+  if /i "!AutoClose!"=="No" (
+    if /i "!Reboot!"=="No" (
+      set DeleteTools=No
     )
+  )
 )
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
@@ -815,87 +815,87 @@ GOTO:EOF
 ::Display default cleanup preset.
 :menu_DP    Default cleanup preset.
 cls
-set             RKill=Yes
-set             JRT=Yes
-set             TDSS=Yes
-set             Rogue=Yes
-set             ADW=Yes
-set             HitmanPro=Yes
-set             Zemana=Yes
-set             MBAR=No
-set             Malwarebytes=No
-set             Spybot=No
-set             CCleaner=Yes
-set             DefragSystem=Yes
-set             ImageChecker=Yes
-set             DriveChecker=Yes
-set             SystemRestore=Yes
-set             AutoClose=Yes
-set             ReviewLogs=Yes
-set             OpenNotes=Yes
-set             DeleteNotes=No
-set             DeleteLogs=No
-set             DeleteTools=Yes
-set             SelfDestruct=Yes
-set             Reboot=No
+set RKill=Yes
+set JRT=Yes
+set TDSS=Yes
+set Rogue=Yes
+set ADW=Yes
+set HitmanPro=Yes
+set Zemana=Yes
+set MBAR=No
+set Malwarebytes=No
+set Spybot=No
+set CCleaner=Yes
+set DefragSystem=Yes
+set ImageChecker=Yes
+set DriveChecker=Yes
+set SystemRestore=Yes
+set AutoClose=Yes
+set ReviewLogs=Yes
+set OpenNotes=Yes
+set DeleteNotes=No
+set DeleteLogs=No
+set DeleteTools=Yes
+set SelfDestruct=Yes
+set Reboot=No
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
 ::Display enable all preset.
 :menu_EA    Enable all preset.
 cls
-set             RKill=Yes
-set             JRT=Yes
-set             TDSS=Yes
-set             Rogue=Yes
-set             ADW=Yes
-set             HitmanPro=Yes
-set             Zemana=Yes
-set             MBAR=Yes
-set             Malwarebytes=Yes
-set             Spybot=Yes
-set             CCleaner=Yes
-set             DefragSystem=Yes
-set             ImageChecker=Yes
-set             DriveChecker=Yes
-set             SystemRestore=Yes
-set             AutoClose=Yes
-set             ReviewLogs=Yes
-set             OpenNotes=Yes
-set             DeleteNotes=Yes
-set             DeleteLogs=Yes
-set             DeleteTools=Yes
-set             SelfDestruct=Yes
-set             Reboot=Yes
+set RKill=Yes
+set JRT=Yes
+set TDSS=Yes
+set Rogue=Yes
+set ADW=Yes
+set HitmanPro=Yes
+set Zemana=Yes
+set MBAR=Yes
+set Malwarebytes=Yes
+set Spybot=Yes
+set CCleaner=Yes
+set DefragSystem=Yes
+set ImageChecker=Yes
+set DriveChecker=Yes
+set SystemRestore=Yes
+set AutoClose=Yes
+set ReviewLogs=Yes
+set OpenNotes=Yes
+set DeleteNotes=Yes
+set DeleteLogs=Yes
+set DeleteTools=Yes
+set SelfDestruct=Yes
+set Reboot=Yes
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
 ::Display disable all preset.
 :menu_DA    Disable all preset.
 cls
-set             RKill=No
-set             JRT=No
-set             TDSS=No
-set             Rogue=No
-set             ADW=No
-set             HitmanPro=No
-set             Zemana=No
-set             MBAR=No
-set             Malwarebytes=No
-set             Spybot=No
-set             CCleaner=No
-set             DefragSystem=No
-set             ImageChecker=No
-set             DriveChecker=No
-set             SystemRestore=No
-set             AutoClose=No
-set             ReviewLogs=No
-set             OpenNotes=No
-set             DeleteNotes=No
-set             DeleteLogs=No
-set             DeleteTools=No
-set             SelfDestruct=No
-set             Reboot=No
+set RKill=No
+set JRT=No
+set TDSS=No
+set Rogue=No
+set ADW=No
+set HitmanPro=No
+set Zemana=No
+set MBAR=No
+set Malwarebytes=No
+set Spybot=No
+set CCleaner=No
+set DefragSystem=No
+set ImageChecker=No
+set DriveChecker=No
+set SystemRestore=No
+set AutoClose=No
+set ReviewLogs=No
+set OpenNotes=No
+set DeleteNotes=No
+set DeleteLogs=No
+set DeleteTools=No
+set SelfDestruct=No
+set Reboot=No
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
@@ -905,396 +905,396 @@ S
 :menu_SC   Start Cleanup
 
 if /i "%SystemRestore:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-	call functions\Restore_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set SystemRestore=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\Restore_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set SystemRestore=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 
 if /i "%RKill:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\Rkill_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set RKill=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\Rkill_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set RKill=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%JRT:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\JRT_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set JRT=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\JRT_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set JRT=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%TDSS:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\TDSS_Killer_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set TDSS=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\TDSS_Killer_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set TDSS=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%Rogue:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\RogueKiller_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set Rogue=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\RogueKiller_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set Rogue=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%ADW:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\ADW_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set ADW=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\ADW_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set ADW=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%HitmanPro:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\HitmanPro_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set HitmanPro=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\HitmanPro_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set HitmanPro=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%Zemana:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\Zemana_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set Zemana=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\Zemana_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set Zemana=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%MBAR:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\MBAR_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set MBAR=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\MBAR_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set MBAR=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%Malwarebytes:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\Malwarebytes_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set Malwarebytes=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\Malwarebytes_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set Malwarebytes=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%Spybot:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\Spybot_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set Spybot=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\Spybot_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set Spybot=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%CCleaner:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\CCleaner_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set CCleaner=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\CCleaner_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set CCleaner=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%DefragSystem:~0,1%"=="Y" (
-    CLS
-    REM Check for SSD and skip if detected.
-    for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FINDSTR% /i "Solid SSD RAID SandForce" >NUL && set SKIP_DEFRAG=yes_ssd
-    for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FINDSTR% /i "VMware VBOX XENSRC PVDISK" >NUL && set SKIP_DEFRAG=yes_vm
-    for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FIND% /i "Read Device Identity Failed" >NUL && set SKIP_DEFRAG=yes_disk_smart_read_error
-    REM Output messages.
-    REM Skip defrag due to SSD detected
-    if /i "%SKIP_DEFRAG%"=="yes_ssd" (
-        CLS
-        color 0c
-        echo.
-        echo  ^! ERROR
-        echo ===================================================================================
-        echo.
-        echo    SSD Detected.
-        echo.
-        echo    Skipping defrag function...
-        echo.
-        echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-        echo.
-        echo ===================================================================================
-        TIMEOUT 10
-        color 07
-        goto Defrag_Done
-    )
-    REM Skip defrag due to Virtual machine detected
-    if /i "%SKIP_DEFRAG%"=="yes_vm" (
-        CLS
-        color 0c
-        echo.
-        echo  ^! ERROR
-        echo ===================================================================================
-        echo.
-        echo    Virtual Machine Detected.
-        echo.
-        echo    Skipping defrag function...
-        echo.
-        echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-        echo.
-        echo ===================================================================================
-        TIMEOUT 10
-        color 07
-        goto Defrag_Done
-    )
-    REM Skip defrag due to error reading disk stats detected
-    if /i "%SKIP_DEFRAG%"=="yes_disk_smart_read_error" (
-        CLS
-        color 0c
-        echo.
-        echo  ^! ERROR
-        echo ===================================================================================
-        echo.
-        echo    SSD Detected.
-        echo.
-        echo    Skipping defrag function...
-        echo.
-        echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-        echo.
-        echo ===================================================================================
-        TIMEOUT 10
-        color 07
-        goto Defrag_Done
-    )
-    REM Ask which program to use to defrag
-    :choice_start
-    CLS
-    choice /C AD /T 20 /D D /M "Which program do you want to defrag with [A] AusDefrag or [D] Defraggler"
-    IF errorlevel 2 goto Defraggler
-    IF errorlevel 1 goto AusDefrag
-    REM Open Defraggler_function.
-    :Defraggler
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\Defraggler_function
-    goto Defrag_Done
-    REM Open AusDefrag_function.
-    :AusDefrag
-    REM Display disclaimer on checking for SSD.
+  CLS
+  REM Check for SSD and skip if detected.
+  for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FINDSTR% /i "Solid SSD RAID SandForce" >NUL && set SKIP_DEFRAG=yes_ssd
+  for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FINDSTR% /i "VMware VBOX XENSRC PVDISK" >NUL && set SKIP_DEFRAG=yes_vm
+  for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FIND% /i "Read Device Identity Failed" >NUL && set SKIP_DEFRAG=yes_disk_smart_read_error
+  REM Output messages.
+  REM Skip defrag due to SSD detected
+  if /i "%SKIP_DEFRAG%"=="yes_ssd" (
     CLS
     color 0c
     echo.
-    echo  ^! WARNING
+    echo  ^! ERROR
     echo ===================================================================================
     echo.
-    echo    Auslogic Defrag does not check for an SSD!
+    echo    SSD Detected.
     echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% does have a limited check for SSD but
-    echo    it is not bulletprof.
+    echo    Skipping defrag function...
     echo.
-    echo    Be sure that you are not running this on an SSD and reducing the span of the drive.
-    echo.   
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 15 seconds.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
     echo.
     echo ===================================================================================
-    TIMEOUT 15
+    TIMEOUT 10
     color 07
-    CLS
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\AusDefrag_function
     goto Defrag_Done
-    :Defrag_Done
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set DefragSystem=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  )
+  REM Skip defrag due to Virtual machine detected
+  if /i "%SKIP_DEFRAG%"=="yes_vm" (
+    CLS
+    color 0c
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo    Virtual Machine Detected.
+    echo.
+    echo    Skipping defrag function...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 10
+    color 07
+    goto Defrag_Done
+  )
+  REM Skip defrag due to error reading disk stats detected
+  if /i "%SKIP_DEFRAG%"=="yes_disk_smart_read_error" (
+    CLS
+    color 0c
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo    SSD Detected.
+    echo.
+    echo    Skipping defrag function...
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 10
+    color 07
+    goto Defrag_Done
+  )
+  REM Ask which program to use to defrag
+  :choice_start
+  CLS
+  choice /C AD /T 20 /D D /M "Which program do you want to defrag with [A] AusDefrag or [D] Defraggler"
+  IF errorlevel 2 goto Defraggler
+  IF errorlevel 1 goto AusDefrag
+  REM Open Defraggler_function.
+  :Defraggler
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\Defraggler_function
+  goto Defrag_Done
+  REM Open AusDefrag_function.
+  :AusDefrag
+  REM Display disclaimer on checking for SSD.
+  CLS
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Auslogic Defrag does not check for an SSD!
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% does have a limited check for SSD but
+  echo    it is not bulletprof.
+  echo.
+  echo    Be sure that you are not running this on an SSD and reducing the span of the drive.
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 15 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 15
+  color 07
+  CLS
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\AusDefrag_function
+  goto Defrag_Done
+  :Defrag_Done
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set DefragSystem=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%ImageChecker:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\Image_Checker_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set ImageChecker=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\Image_Checker_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set ImageChecker=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%DriveChecker:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-    call functions\CHKDSK_function
-    echo No >!Output!\Functions\ABRUPTCLOSE.txt
-    REM Create restore point
-    set DriveChecker=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  call functions\CHKDSK_function
+  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  REM Create restore point
+  set DriveChecker=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%ReviewLogs:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    call functions\ReviewLogs_function
-    REM Create restore point
-    set ReviewLogs=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  call functions\ReviewLogs_function
+  REM Create restore point
+  set ReviewLogs=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%OpenNotes:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    call functions\OpenNotes_function
-    REM Create restore point
-    set OpenNotes=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  call functions\OpenNotes_function
+  REM Create restore point
+  set OpenNotes=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%DeleteNotes:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    call functions\DeleteNotes_function
-    REM Create restore point
-    set DeleteNotes=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  call functions\DeleteNotes_function
+  REM Create restore point
+  set DeleteNotes=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%DeleteLogs:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    call functions\DeleteLogs_function
-    REM Create restore point
-    set DeleteLogs=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  call functions\DeleteLogs_function
+  REM Create restore point
+  set DeleteLogs=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 if /i "%DeleteTools:~0,1%"=="Y" (
-    CLS
-    REM Call function
-    call functions\DeleteTools_function
-    REM Create restore point
-    set DeleteTools=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  REM Call function
+  call functions\DeleteTools_function
+  REM Create restore point
+  set DeleteTools=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 
 if /i "%SelfDestruct:~0,1%"=="Y" (
-    CLS
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 
 taskkill /f /im "caffeine.exe" >nul 2>&1
 
 if /i "%AutoClose:~0,1%"=="Y" (
-    CLS
-    REM Create restore point
-    set AutoClose=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title [Exiting] Brainiacs Cleanup Tool v%TOOL_VERSION%
-    color 0c
-    echo.
+  CLS
+  REM Create restore point
+  set AutoClose=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title [Exiting] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  color 0c
+  echo.
 	echo  ^! WARNING
 	echo ===================================================================================
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
 	echo.
 	echo ===================================================================================
-    TIMEOUT 15
-    if /i "%SelfDestruct:~0,1%"=="Y" (
-        if exist "%Output%\Functions" (
-            rmdir /s /q "%Output%\Functions" >nul 2>&1  
-        )
-    	(goto) 2>nul & del "%~f0"
-    ) else (
-    	exit
+  TIMEOUT 15
+  if /i "%SelfDestruct:~0,1%"=="Y" (
+    if exist "%Output%\Functions" (
+      rmdir /s /q "%Output%\Functions" >nul 2>&1
+    )
+    (goto) 2>nul & del "%~f0"
+  ) else (
+    exit
 	)
 )
 
 if /i "%Reboot:~0,1%"=="Y" (
-    CLS
-    REM Create restore point
-    set Reboot=No
-    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-    REM Set title
-    title [Rebooting] Brainiacs Cleanup Tool v%TOOL_VERSION%
-    color 0c
-    echo.
+  CLS
+  REM Create restore point
+  set Reboot=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title [Rebooting] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  color 0c
+  echo.
 	echo  ^! WARNING
 	echo ===================================================================================
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will reboot the PC in 10 seconds.
-    echo    Exit the tool to stop the reboot.
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will reboot the PC in 10 seconds.
+  echo    Exit the tool to stop the reboot.
 	echo.
 	echo ===================================================================================
-    TIMEOUT 10
-    echo -Rebooted PC >> %Output%\Notes\Comments.txt
-    shutdown -r -f -t 0
-    REM Self-Destruct
-    if /i "%SelfDestruct:~0,1%"=="Y" (
-        if exist "%Output%\Functions" (
-            rmdir /s /q "%Output%\Functions" >nul 2>&1  
-        )
-    	(goto) 2>nul & del "%~f0"
-    ) else (
-        exit
+  TIMEOUT 10
+  echo -Rebooted PC >> %Output%\Notes\Comments.txt
+  shutdown -r -f -t 0
+  REM Self-Destruct
+  if /i "%SelfDestruct:~0,1%"=="Y" (
+    if exist "%Output%\Functions" (
+      rmdir /s /q "%Output%\Functions" >nul 2>&1
     )
+    (goto) 2>nul & del "%~f0"
+  ) else (
+    exit
+  )
 )
 
 GOTO:EOF
@@ -1303,113 +1303,113 @@ GOTO:EOF
 :menu_GK   Run Geek Uninstaller
 CLS
 if exist "%Output%\Tools\Geek\geek.exe" (
-    CLS
-    title [Geek Uninstaller] Brainiacs Cleanup Tool v%TOOL_VERSION%
-    echo Running Geek Uninstaller...
-    start /WAIT "Geek" "%Output%\Tools\Geek\geek.exe" 
-    CLS
-    echo -Ran Geek Uninsaller >> %Output%\Notes\Comments.txt
-    set /p VarGeek=Enter any uninstalled programs separated by a comma:
-    echo Uninstalled programs-!!VarGeek!! >> %Output%\Notes\Comments.txt
-    CLS
-    REM Set title
-    title Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
+  title [Geek Uninstaller] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  echo Running Geek Uninstaller...
+  start /WAIT "Geek" "%Output%\Tools\Geek\geek.exe"
+  CLS
+  echo -Ran Geek Uninsaller >> %Output%\Notes\Comments.txt
+  set /p VarGeek=Enter any uninstalled programs separated by a comma:
+  echo Uninstalled programs-!!VarGeek!! >> %Output%\Notes\Comments.txt
+  CLS
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
 ) else (
-    CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    Geek Uninstaller not found.
-    echo.
-    echo    Returning to menu...
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
-    CLS
+  CLS
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Geek Uninstaller not found.
+  echo.
+  echo    Returning to menu...
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
+  CLS
 )
 GOTO:EOF
 
 :menu_VR   View Readme
 CLS
 if exist "%Output%\Readme.txt" (
-    title [Readme] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  title [Readme] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	type  %Output%\Readme.txt
 	echo.
-    echo.
+  echo.
 	pause
 	CLS
 ) else (
-    CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    Readme not found.
-    echo.
-    echo    Returning to menu...
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
-    CLS
+  CLS
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Readme not found.
+  echo.
+  echo    Returning to menu...
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
+  CLS
 )
 GOTO:EOF
 
 :menu_VC   View Comments
 CLS
 if exist "%Output%\Notes\Comments.txt" (
-    title [Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  title [Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	type  %Output%\Notes\Comments.txt
 	echo.
-    echo.
+  echo.
 	pause
 	CLS
 ) else (
-    CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    Comments not found.
-    echo.
-    echo    Returning to menu...
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
-    CLS
+  CLS
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Comments not found.
+  echo.
+  echo    Returning to menu...
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
+  CLS
 )
 GOTO:EOF
 
 :menu_VH   View Changelog
 CLS
 if exist "%Output%\Changelog.txt" (
-    title [Changelog] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  title [Changelog] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	type  %Output%\Changelog.txt
 	echo.
-    echo.
+  echo.
 	pause
 	CLS
 ) else (
-    CLS
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ===================================================================================
-    echo.
-    echo    Changelog not found.
-    echo.
-    echo    Returning to menu...
-    echo.
-    echo ===================================================================================
-    TIMEOUT 5
-    color 07
-    CLS
+  CLS
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Changelog not found.
+  echo.
+  echo    Returning to menu...
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
+  CLS
 )
 GOTO:EOF
 
