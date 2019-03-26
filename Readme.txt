@@ -7,7 +7,7 @@ README
 -Before running the tool-
 	-Be sure to read the onscreen instructions carefully (Atleast on the first run). 
 	-Be sure to run the tool as an administrator or it will not run. 
-	-Do not try to run this tool on anything below Windows 7. It won't work.
+	-Do not try to run this tool on anything below Windows XP. It won't work.
 
 -When running the tool-
 	-It is wise to not reboot the computer until the process is done. Although the tool 
