@@ -1,11 +1,21 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.3.5 (2019-03-26)
+*BACKEND CHANGES*
+---
+-Cleaned up formatting for easier reading.
+-Added some more notes for easier reading.
+-Tool won't exit anymore if no input is entered in the menu.
+-Removed default infection variables from program functions.
+-Fixed Readme.
+
+
 Brainiacs Cleanup Tool v1.3.4 (2019-03-08)
 *HOTFIX*
 ---
 -Fixed ability to download Geek Uninstaller + updates.
--Re-worked updating Update_function. (It now wont update everytime.) 
+-Re-worked updating Update_function. (It now wont update everytime.)
 -Removed unused code.
 -Added default comment var for Geek Uninstaller.
 -Fixed bug with Administration check not exiting.
@@ -34,7 +44,7 @@ Brainiacs Cleanup Tool v1.3 (2019-02-04)
 ---
 -Added clearing recyclebin to "DeleteTools_Function"
 -Fixed some deletions paths in the "DeleteTools_Function"
--Removed deletion of the "Cleanup" folder. This was erasing notes even when the user 
+-Removed deletion of the "Cleanup" folder. This was erasing notes even when the user
 	did not want to.
 -Added more detections to the "DeleteTools_Function"
 -Added prompt to confirm deletion of notes.
