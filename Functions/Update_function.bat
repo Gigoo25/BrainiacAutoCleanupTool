@@ -106,13 +106,13 @@ set Rogue_Url=unidentified
 set ADW_Url=https://downloads.malwarebytes.com/file/adwcleaner/adwcleaner_7.2.7.0.exe
 set HitmanPro_Url=https://dl.surfright.nl/HitmanPro.exe
 set HitmanPro_64_Url=https://dl.surfright.nl/HitmanPro_x64.exe
-set Zemana_Url=http://dl12.zemana.com/AntiMalware/2.74.2.150/Zemana.AntiMalware.Portable.exe
+set Zemana_Url=http://dl12.zemana.com/AntiMalware/2.74.2.664/Zemana.AntiMalware.Portable.exe
 set MBAR_Url=unidentified
 set Malwarebytes_Url=unidentified
 set Spybot_Url=unidentified
-set CCleaner_Url=https://download.ccleaner.com/portable/ccsetup552.zip
-set DefragSystem_A_Url=unidentified
-set DefragSystem_D_Url=unidentified
+set CCleaner_Url=https://download.ccleaner.com/portable/ccsetup555.zip
+set DefragSystem_A_Url=http://downloads.auslogics.com/en/disk-defrag/ausdiskdefragportable.exe
+set DefragSystem_D_Url=https://softpedia-secure-download.com/dl/43f41169943fef85b1fcc5f7e22ac9bf/5c9b623b/100100698/software/portable/system/dfsetup222.zip
 set Caffeine_Url=unidentified
 set Geek_Url=https://geekuninstaller.com/geek.zip
 
@@ -778,7 +778,13 @@ if "%DefragSystem_D_Update_Tool_Online%" GTR "%DefragSystem_D_Update_Tool_Local%
 	CLS
 	echo Updating DefragSystem_D_Tool...
 	echo.
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%DefragSystem_D_Url%" -O "%Output%\Tools\Defraggler\Defraggler.exe" 2>NUL
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%DefragSystem_D_Url%" -O "%Output%\dfsetup.zip" 2>NUL
+	CLS
+	echo Unzipping file.
+	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Defraggler'); $zip = $shell.NameSpace('%Output%\dfsetup.zip'); $target.CopyHere($zip.Items(), 16); }"
+	CLS
+	echo Deleting downloaded file
+	del "%Output%\dfsetup.zip"
 	CLS
 	echo Done updating DefragSystem_D_Tool.
 	TIMEOUT 2

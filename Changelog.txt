@@ -1,28 +1,28 @@
 
 CHANGELOG
 ===================================================================================
-Brainiacs Cleanup Tool v1.3.5 (2019-03-26)
-*BACKEND CHANGES*
+Brainiacs Cleanup Tool v1.4 (2019-03-27)
 ---
 -Cleaned up formatting for easier reading.
 -Added some more notes for easier reading.
 -Tool won't exit anymore if no input is entered in the menu.
--Removed default infection variables from program functions.
+-Fixed default infection variables from program functions.
 -Fixed Readme.
-
+-Updated tools to most recent versions.
+-Started transition to tool versions in the "Version" file for easier updating in the future.
 
 Brainiacs Cleanup Tool v1.3.4 (2019-03-08)
 *HOTFIX*
 ---
 -Fixed ability to download Geek Uninstaller + updates.
--Re-worked updating Update_function. (It now wont update everytime.)
+-Re-worked updating Update_function. (It now wont update every time.)
 -Removed unused code.
 -Added default comment var for Geek Uninstaller.
 -Fixed bug with Administration check not exiting.
 
 Brainiacs Cleanup Tool v1.3.3 (2019-03-07)
 ---
--Added Geek Unistaller as an executable option.
+-Added Geek Uninstaller as an executable option.
 -Added ability to download Geek Uninstaller + updates.
 
 Brainiacs Cleanup Tool v1.3.2 (2019-02-14)
@@ -37,12 +37,12 @@ Brainiacs Cleanup Tool v1.3.1 (2019-02-05)
 ---
 -Cleaned up some more coding errors
 -Removed double note taking from "CHKDSK_function"
--Created notes/logs folders if non existant to prevent path errors.
+-Created notes/logs folders if non existent to prevent path errors.
 
 Brainiacs Cleanup Tool v1.3 (2019-02-04)
 *RELEASE CANIDATE 2*
 ---
--Added clearing recyclebin to "DeleteTools_Function"
+-Added clearing recycle-bin to "DeleteTools_Function"
 -Fixed some deletions paths in the "DeleteTools_Function"
 -Removed deletion of the "Cleanup" folder. This was erasing notes even when the user
 	did not want to.
@@ -95,7 +95,7 @@ Brainiacs Cleanup Tool v1.2.5 (2019-01-18)
 -Added uninstall option for Malwarebytes that was pre-installed.
 -Updated function code URLs and allowed it to unzip new content.
 -Update CCleaner tool version.
--Fixed defraggler going to AUS defrag after execution.
+-Fixed Defraggler going to AUS defrag after execution.
 -Fixed self-destruct feature.
 -Changed default cleanup selections.
 -Added multiple checks to menu to prevent harm/options that are not intended.
@@ -122,7 +122,7 @@ Brainiacs Cleanup Tool v1.2.3 (2019-01-08)
 Brainiacs Cleanup Tool v1.2.2 (2019-01-03)
 ----
 -Updater will now check individual file version opposed to a binary yes/no to update
- individual files. This will prevent tool from downloading unecessary files down the
+ individual files. This will prevent tool from downloading unnecessary files down the
  road.
 -Added a version number to the Readme/Version/Changelog files.
 
