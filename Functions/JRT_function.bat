@@ -1,5 +1,8 @@
 @echo off
 
+::Variables
+set "VarJRT=0"
+
 ::Start JRT service.
 CLS
 SETLOCAL ENABLEDELAYEDEXPANSION

@@ -1,5 +1,8 @@
 @echo off
 
+::Variables
+set "VarADW=0"
+
 ::Start ADW service.
 CLS
 SETLOCAL ENABLEDELAYEDEXPANSION

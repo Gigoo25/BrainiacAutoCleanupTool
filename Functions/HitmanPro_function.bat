@@ -1,5 +1,8 @@
 @echo off
 
+::Variables
+set "VarHitman=0"
+
 ::Start HitmanPro service.
 CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
