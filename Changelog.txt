@@ -8,7 +8,7 @@ Brainiacs Cleanup Tool v1.4 (2019-03-27)
 -Tool won't exit anymore if no input is entered in the menu.
 -Fixed default infection variables from program functions.
 -Fixed Readme.
--Updated tools to most recent versions.
+-Updated some tools to most recent versions.
 -Started transition to tool versions in the "Version" file for easier updating in the future.
 
 Brainiacs Cleanup Tool v1.3.4 (2019-03-08)
