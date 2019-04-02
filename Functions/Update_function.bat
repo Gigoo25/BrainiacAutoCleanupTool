@@ -99,7 +99,7 @@ set Caffeine_Update_Tool_Online=unidentified
 set Geek_Update_Tool_Online=unidentified
 
 ::Tool download location variables
-set RKill_Url=https://download.bleepingcomputer.com/dl/0bd7abe3ef66cddbcd7a872fb55eb82c/5c247388/windows/security/security-utilities/r/rkill/rkill.exe
+set RKill_Url=https://files.downloadnow-3.com/s/software/16/31/77/69/rkill.exe?token=1554240497_1a8fe216d392387d272ba1afa7874e48&fileName=rkill.exe
 set JRT_Url=unidentified
 set TDSS_Url=http://media.kaspersky.com/utilities/VirusUtilities/EN/tdsskiller.zip
 set Rogue_Url=unidentified
