@@ -21,6 +21,14 @@ if exist "%Output%\Tools\JRT\JRT.exe" (
 	CLS
 	echo Done running JRT!
   TIMEOUT 2 >nul 2>&1
+	:: Run Caffeine if killed by JRT.
+	tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL
+	if "%ERRORLEVEL%"=="1" (
+	  start /SEPARATE "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
+	) else (
+		taskkill /f /im "caffeine.exe" >nul 2>&1
+	  start /SEPARATE "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
+	)
   GOTO eof
 ) else (
 	CLS

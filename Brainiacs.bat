@@ -184,9 +184,12 @@ if %WIN_VER_NUM% LSS 6.0 set ABORT=yes
 reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set OS=32BIT || set OS=64BIT
 
 :: Kill off any running Caffeine instances first + run caffeine.
-taskkill /f /im "caffeine.exe" >nul 2>&1
-if exist "%Output%\Tools\Caffeine\caffeine.exe" (
-  start "Caffeine" "%Output%\Tools\Caffeine\caffeine.exe"
+tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL
+if "%ERRORLEVEL%"=="1" (
+  start /SEPARATE "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
+) else (
+  taskkill /f /im "caffeine.exe" >nul 2>&1
+  start /SEPARATE "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
 )
 
 ::Start interface
@@ -1122,7 +1125,7 @@ if /i "%DefragSystem:~0,1%"=="Y" (
     echo  ^! ERROR
     echo ===================================================================================
     echo.
-    echo    SSD Detected.
+    echo    Disk Smart Read Error.
     echo.
     echo    Skipping defrag function...
     echo.
@@ -1146,29 +1149,10 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   goto Defrag_Done
   REM Open AusDefrag_function.
   :AusDefrag
-  REM Display disclaimer on checking for SSD.
-  CLS
-  color 0c
-  echo.
-  echo  ^! WARNING
-  echo ===================================================================================
-  echo.
-  echo    Auslogic Defrag does not check for an SSD!
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% does have a limited check for SSD but
-  echo    it is not bulletprof.
-  echo.
-  echo    Be sure that you are not running this on an SSD and reducing the span of the drive.
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 15 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 15
-  color 07
-  CLS
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\AusDefrag_function
   goto Defrag_Done
+  REM Finish defrag
   :Defrag_Done
   echo No >!Output!\Functions\ABRUPTCLOSE.txt
   REM Create restore point
@@ -1258,9 +1242,6 @@ if /i "%SelfDestruct:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
-
-taskkill /f /im "caffeine.exe" >nul 2>&1
-
 if /i "%AutoClose:~0,1%"=="Y" (
   CLS
   REM Create restore point
@@ -1277,6 +1258,12 @@ if /i "%AutoClose:~0,1%"=="Y" (
 	echo.
 	echo ===================================================================================
   TIMEOUT 15
+  REM Kill off any running Caffeine instances.
+  tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL
+  if "%ERRORLEVEL%"=="0" (
+    taskkill /f /im "caffeine.exe" >nul 2>&1
+  )
+  REM Initiate Self Destruct if selected prior.
   if /i "%SelfDestruct:~0,1%"=="Y" (
     if exist "%Output%\Functions" (
       rmdir /s /q "%Output%\Functions" >nul 2>&1
@@ -1305,6 +1292,12 @@ if /i "%Reboot:~0,1%"=="Y" (
 	echo ===================================================================================
   TIMEOUT 10
   echo -Rebooted PC >> %Output%\Notes\Comments.txt
+  REM Kill off any running Caffeine instances.
+  tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL
+  if "%ERRORLEVEL%"=="0" (
+    taskkill /f /im "caffeine.exe" >nul 2>&1
+  )
+  REM Restart PC command
   shutdown -r -f -t 0
   REM Self-Destruct
   if /i "%SelfDestruct:~0,1%"=="Y" (
