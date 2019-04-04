@@ -6,46 +6,96 @@ set TOOL_REMNANTS=no
 set CLEAR_RECYCLE=no
 
 ::Check known locations for EXE File and delete if present
-if exist "%userprofile%\Desktop\Brainiacs Cleanup Tool*" (
-	del "%userprofile%\Desktop\Brainiacs Cleanup Tool*" >NUL 2>&1
+if exist "%userprofile%\Desktop\Brainiacs Cleanup Too*.*" (
+	del "%userprofile%\Desktop\Brainiacs Cleanup Too*.*" >NUL 2>&1
 	set TOOL_REMNANTS=yes
 )
-if exist "%systemdrive%\Brainiacs Cleanup Tool*" (
-	del "%systemdrive%\Brainiacs Cleanup Tool*" >NUL 2>&1
+if exist "%systemdrive%\Brainiacs Cleanup Too*.*" (
+	del "%systemdrive%\Brainiacs Cleanup Too*.*" >NUL 2>&1
 	set TOOL_REMNANTS=yes
 )
 
 ::Check known locations & clean random past tools if found.
-if exist "%userprofile%\Desktop\Brainiac*" (
-	rd /s /q  "%userprofile%\Desktop\Brainiac*" >NUL 2>&1
+::
+::Delete Desktop\Brainiac or Desktop\Brainiacs
+if exist "%userprofile%\Desktop\Brainiac" (
+	rd /s /q  "%userprofile%\Desktop\Brainiac" >NUL 2>&1
 	set TOOL_REMNANTS=yes
 )
-if exist "%userprofile%\Brainiac*" (
-	rd /s /q  "%userprofile%\Brainiac*" >NUL 2>&1
+if exist "%userprofile%\Desktop\Brainiacs" (
+	rd /s /q  "%userprofile%\Desktop\Brainiacs" >NUL 2>&1
 	set TOOL_REMNANTS=yes
 )
-if exist "%systemdrive%\Brainiac*" (
-	rd /s /q  "%systemdrive%\Brainiac*" >NUL 2>&1
+
+::Delete %userprofile%\Brainiac or %userprofile%\Brainiacs
+if exist "%userprofile%\Brainiac" (
+	rd /s /q  "%userprofile%\Brainiac" >NUL 2>&1
 	set TOOL_REMNANTS=yes
 )
+if exist "%userprofile%\Brainiacs" (
+	rd /s /q  "%userprofile%\Brainiacs" >NUL 2>&1
+	set TOOL_REMNANTS=yes
+)
+
+::Delete %systemdrive%\Brainiac or %systemdrive%\Brainiacs
+if exist "%systemdrive%\Brainiac" (
+	rd /s /q  "%systemdrive%\Brainiac" >NUL 2>&1
+	set TOOL_REMNANTS=yes
+)
+if exist "%systemdrive%\Brainiacs" (
+	rd /s /q  "%systemdrive%\Brainiacs" >NUL 2>&1
+	set TOOL_REMNANTS=yes
+)
+
+::Delete "%systemdrive%\AdwCleaner
 if exist "%systemdrive%\AdwCleaner" (
 	rd /s /q "%systemdrive%\AdwCleaner" >nul 2>&1
 	set TOOL_REMNANTS=yes
 )
+
+::Delete %userprofile%\Desktop\mbar
 if exist "%userprofile%\Desktop\mbar" (
 	rd /s /q  "%userprofile%\Desktop\mbar" >NUL 2>&1
 	set TOOL_REMNANTS=yes
 )
-if exist "%systemdrive%\Tool*" (
-	rd /s /q  "%systemdrive%\Tool*" >NUL 2>&1
+
+::Delete %systemdrive%\Tool or %systemdrive%\Tools
+if exist "%systemdrive%\Tool" (
+	rd /s /q  "%systemdrive%\Tool" >NUL 2>&1
 	set TOOL_REMNANTS=yes
 )
-if exist "%systemdrive%\BB Tool*" (
-	rd /s /q  "%systemdrive%\BB Tool**" >NUL 2>&1
+if exist "%systemdrive%\Tools" (
+	rd /s /q  "%systemdrive%\Tools" >NUL 2>&1
 	set TOOL_REMNANTS=yes
 )
-if exist "%userprofile%\Desktop\Tool*" (
-	rd /s /q  "%userprofile%\Desktop\Tool*" >NUL 2>&1
+
+::Delete %userprofile%\Brainiac or %userprofile%\Brainiacs
+if exist "%systemdrive%\BB Tool" (
+	rd /s /q  "%systemdrive%\BB Tool" >NUL 2>&1
+	set TOOL_REMNANTS=yes
+)
+if exist "%systemdrive%\BB Tools" (
+	rd /s /q  "%systemdrive%\BB Tools" >NUL 2>&1
+	set TOOL_REMNANTS=yes
+)
+
+::Delete %userprofile%\Desktop\Cleanup or %systemdrive%\Cleanup
+if exist "%userprofile%\Desktop\Cleanup" (
+	rd /s /q  "%userprofile%\Desktop\Cleanup" >NUL 2>&1
+	set TOOL_REMNANTS=yes
+)
+if exist "%systemdrive%\Cleanup" (
+	rd /s /q  "%systemdrive%\Cleanup" >NUL 2>&1
+	set TOOL_REMNANTS=yes
+)
+
+::Delete %userprofile%\Desktop\Tool or %userprofile%\Desktop\Tools
+if exist "%userprofile%\Desktop\Tool" (
+	rd /s /q  "%userprofile%\Desktop\Tool" >NUL 2>&1
+	set TOOL_REMNANTS=yes
+)
+if exist "%userprofile%\Desktop\Tools" (
+	rd /s /q  "%userprofile%\Desktop\Tools" >NUL 2>&1
 	set TOOL_REMNANTS=yes
 )
 
@@ -57,7 +107,7 @@ if exist "%systemdrive%\$Recycle.bin" (
 
 ::Output notes that remnants were cleared.
 if %TOOL_REMNANTS%==yes (
-	echo -Deleted tool remnants >> %Output%\Notes\Comments.txt
+	echo -Deleted remnants >> %Output%\Notes\Comments.txt
 )
 
 ::Output notes that recyclebin was cleared.
@@ -70,7 +120,7 @@ if exist "%Output%\Tools" (
 	title [Deleting Tools] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	rd /s /q "%Output%\Tools" >nul 2>&1
 	echo Deleting tools folder...
-	echo -Deleted Tools folder >> %Output%\Notes\Comments.txt
+	echo -Deleted tools folder >> %Output%\Notes\Comments.txt
 	CLS
 	echo Done deleting tools.
 	TIMEOUT 3 >nul 2>&1
