@@ -99,7 +99,7 @@ set Caffeine_Update_Tool_Online=unidentified
 set Geek_Update_Tool_Online=unidentified
 
 ::Tool download location variables
-set RKill_Url=https://files.downloadnow-3.com/s/software/16/31/77/69/rkill.exe?token=1554240497_1a8fe216d392387d272ba1afa7874e48&fileName=rkill.exe
+set RKill_Url="https://files.downloadnow-3.com/s/software/16/31/77/69/rkill.exe?token=1554240497_1a8fe216d392387d272ba1afa7874e48&fileName=rkill.exe"
 set JRT_Url=unidentified
 set TDSS_Url=http://media.kaspersky.com/utilities/VirusUtilities/EN/tdsskiller.zip
 set Rogue_Url=unidentified
@@ -115,6 +115,11 @@ set DefragSystem_A_Url=http://downloads.auslogics.com/en/disk-defrag/ausdiskdefr
 set DefragSystem_D_Url=https://softpedia-secure-download.com/dl/43f41169943fef85b1fcc5f7e22ac9bf/5c9b623b/100100698/software/portable/system/dfsetup222.zip
 set Caffeine_Url=unidentified
 set Geek_Url=https://geekuninstaller.com/geek.zip
+
+::Update all functions if ran in test mode
+if %Test_Update_All%==yes (
+	goto Test_Upgrade_All
+)
 
 ::Set the window title
 title [Update] Brainiacs Cleanup Tool v%TOOL_VERSION%
@@ -355,7 +360,11 @@ color 07
 
 ::Update functions based on variables
 
-::DISABLED FOR NOW
+::Update if ran in test mode
+:Test_Upgrade_All
+CLS
+echo Upgrading all functions from source...
+
 ::Update_Update_Function
 if not DEFINED Skip_Update (
 	if "%Update_Update_Function_Online%" GTR "%Update_Update_Function_Local%" (
@@ -371,6 +380,8 @@ if not DEFINED Skip_Update (
 		if not DEFINED Skip_Update set Skip_Update=yes
 		if not DEFINED IS_MAXIMIZED set IS_MAXIMIZED=1 && start "" /max "%~dpnx0" %* && exit
 	)
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
 )
 
 ::Rkill_Function
@@ -383,6 +394,8 @@ if "%RKill_Update_Function_Online%" GTR "%RKill_Update_Function_Local%" (
 	echo Done updating Rkill_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Rkill_function.bat" -O "%Output%\Functions\Rkill_function.bat" 2>NUL
 )
 
 ::JRT_Function
@@ -395,6 +408,8 @@ if "%JRT_Update_Function_Online%" GTR "%JRT_Update_Function_Local%" (
 	echo Done updating JRT_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/JRT_function.bat" -O "%Output%\Functions\JRT_function.bat" 2>NUL
 )
 
 ::TDSS_Function
@@ -402,11 +417,13 @@ if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 	CLS
 	echo Updating TDSS_Function...
 	echo.
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL	CLS
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL
 	CLS
 	echo Done updating TDSS_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL
 )
 
 ::Rogue_Function
@@ -419,6 +436,8 @@ if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 	echo Done updating Rogue_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/RogueKiller_function.bat" -O "%Output%\Functions\RogueKiller_function.bat" 2>NUL
 )
 
 ::ADW_Function
@@ -431,6 +450,8 @@ if "%ADW_Update_Function_Online%" GTR "%ADW_Update_Function_Local%" (
 	echo Done updating ADW_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/ADW_function.bat" -O "%Output%\Functions\ADW_function.bat" 2>NUL
 )
 
 ::HitmanPro_Function
@@ -443,6 +464,8 @@ if "%HitmanPro_Update_Function_Online%" GTR "%HitmanPro_Update_Function_Local%" 
 	echo Done updating HitmanPro_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/HitmanPro_function.bat" -O "%Output%\Functions\HitmanPro_function.bat" 2>NUL
 )
 
 ::Zemana_Function
@@ -455,6 +478,8 @@ if "%Zemana_Update_Function_Online%" GTR "%Zemana_Update_Function_Local%" (
 	echo Done updating Zemana_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Zemana_function.bat" -O "%Output%\Functions\Zemana_function.bat" 2>NUL
 )
 
 ::MBAR_Function
@@ -467,6 +492,8 @@ if "%MBAR_Update_Function_Online%" GTR "%MBAR_Update_Function_Local%" (
 	echo Done updating MBAR_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/MBAR_function.bat" -O "%Output%\Functions\MBAR_function.bat" 2>NUL
 )
 
 ::Malwarebytes_Function
@@ -479,6 +506,8 @@ if "%Malwarebytes_Update_Function_Online%" GTR "%Malwarebytes_Update_Function_Lo
 	echo Done updating Malwarebytes_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Malwarebytes_function.bat" -O "%Output%\Functions\Malwarebytes_function.bat" 2>NUL
 )
 
 ::Spybot_Function
@@ -491,6 +520,8 @@ if "%Spybot_Update_Function_Online%" GTR "%Spybot_Update_Function_Local%" (
 	echo Done updating Spybot_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
 )
 
 ::CCleaner_Function
@@ -503,6 +534,8 @@ if "%CCleaner_Update_Function_Online%" GTR "%CCleaner_Update_Function_Local%" (
 	echo Done updating CCleaner_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CCleaner_function.bat" -O "%Output%\Functions\CCleaner_function.bat" 2>NUL
 )
 
 ::DefragSystem_A_Update_Function
@@ -515,6 +548,8 @@ if "%DefragSystem_A_Update_Function_Online%" GTR "%DefragSystem_A_Update_Functio
 	echo Done updating DefragSystem_A_Update_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/AusDefrag_function.bat" -O "%Output%\Functions\AusDefrag_function.bat" 2>NUL
 )
 
 ::DefragSystem_D_Update_Function
@@ -527,6 +562,8 @@ if "%DefragSystem_D_Update_Function_Online%" GTR "%DefragSystem_D_Update_Functio
 	echo Done updating DefragSystem_D_Update_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_function.bat" -O "%Output%\Functions\Defraggler_function.bat" 2>NUL
 )
 
 ::ImageChecker_Function
@@ -539,6 +576,8 @@ if "%ImageChecker_Update_Function_Online%" GTR "%ImageChecker_Update_Function_Lo
 	echo Done updating ImageChecker_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Image_Checker_function.bat" -O "%Output%\Functions\Image_Checker_function.bat" 2>NUL
 )
 
 ::CHKDSK_Function
@@ -551,6 +590,8 @@ if "%CHKDSK_Update_Function_Online%" GTR "%CHKDSK_Update_Function_Local%" (
 	echo Done updating CHKDSK_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CHKDSK_function.bat" -O "%Output%\Functions\CHKDSK_function.bat" 2>NUL
 )
 
 ::SystemRestore_Function
@@ -563,6 +604,8 @@ if "%SystemRestore_Update_Function_Online%" GTR "%SystemRestore_Update_Function_
 	echo Done updating SystemRestore_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Restore_function.bat" -O "%Output%\Functions\Restore_function.bat" 2>NUL
 )
 
 ::DeleteNotes_Function
@@ -575,6 +618,8 @@ if "%DeleteNotes_Update_Function_Online%" GTR "%DeleteNotes_Update_Function_Loca
 	echo Done updating DeleteNotes_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteNotes_function.bat" -O "%Output%\Functions\DeleteNotes_function.bat" 2>NUL
 )
 
 ::DeleteLogs_Function
@@ -587,6 +632,8 @@ if "%DeleteLogs_Update_Function_Online%" GTR "%DeleteLogs_Update_Function_Local%
 	echo Done updating DeleteLogs_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteLogs_function.bat" -O "%Output%\Functions\DeleteLogs_function.bat" 2>NUL
 )
 
 ::DeleteTools_Function
@@ -599,6 +646,8 @@ if "%DeleteTools_Update_Function_Online%" GTR "%DeleteTools_Update_Function_Loca
 	echo Done updating DeleteTools_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteTools_function.bat" -O "%Output%\Functions\DeleteTools_function.bat" 2>NUL
 )
 
 ::Brainiacs_Function
@@ -611,6 +660,13 @@ if "%Brainiacs_Update_Function_Online%" GTR "%Brainiacs_Update_Function_Local%" 
 	echo Done updating Brainiacs_Function.
 	TIMEOUT 2
 	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Brainiacs.bat" -O "%Output%\Brainiacs.bat" 2>NUL
+)
+
+::End file if updated due to testing
+if %Test_Update_All%==yes (
+	  goto:Backtotool
 )
 
 ::Updated tools based on variables
@@ -906,5 +962,5 @@ exit
 color 07
 
 ::Re-Open main file
-:end
+:Backtotool
 CLS

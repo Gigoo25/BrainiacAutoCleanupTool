@@ -1,6 +1,14 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v1.4.1 (2019-04-)
+---
+-Moved SSD warning for Auslogic defrag to "Aus_Defrag_function".
+-Fixed Caffeine stopping prematurely.
+-Set specific folders for "DeleteTools_function" while I figure out wildcards/best folder locations.
+-Tool will now force update from source when testing.
+-Began adding framework for external Defrag option.
+
 Brainiacs Cleanup Tool v1.4 (2019-03-27)
 ---
 -Cleaned up formatting for easier reading.

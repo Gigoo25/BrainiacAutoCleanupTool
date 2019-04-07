@@ -33,6 +33,7 @@ set VarAddtlNote=None
 set SKIP_DEFRAG=no
 set Skip_Comments=unidentified
 set VarGeek=None
+set Test_Update_All=undetected
 set RKill_choice=,Yes,No,
 call:setPersist RKill=Yes
 set JRT_choice=,Yes,No,
@@ -132,8 +133,9 @@ if "%password%"=="RedRuby" (
   echo.
   echo Bypassing checks
   TIMEOUT 5
-  goto menuLOOP
+  goto Test_Upgrade_All
 )
+
 if /I NOT "%password%"=="Bluemoon" (
   color 0c
   cls
@@ -149,7 +151,18 @@ if /I NOT "%password%"=="Bluemoon" (
   TIMEOUT 30
   exit /b
 )
-CLS
+
+::Skip upgrade all functions if in testing mode
+goto Skip_Test_Upgrade_All
+
+::Upgrade all functions if in testing mode
+:Test_Upgrade_All
+set Test_Update_All=yes
+call functions\Update_function
+goto menuLOOP
+
+::Skip upgrade all functions if in testing mode
+:Skip_Test_Upgrade_All
 
 ::Check for updates
 call functions\Update_function
@@ -1136,6 +1149,11 @@ if /i "%DefragSystem:~0,1%"=="Y" (
     color 07
     goto Defrag_Done
   )
+
+  ::choice /C YN /T 20 /D D /M "Do you want to run defrag externally?"
+  ::IF errorlevel 2 goto choice_start
+  ::IF errorlevel 1 goto
+
   REM Ask which program to use to defrag
   :choice_start
   CLS
