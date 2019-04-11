@@ -143,7 +143,7 @@ if not exist "%Output%\Tools\WGET\wget.exe" (
 	TIMEOUT 10
 	REM Set default Color
 	color 07
-	goto end
+	goto :EOF
 )
 
 ::Check for version file
@@ -169,7 +169,7 @@ if exist "%Output%\Version.txt" (
 	TIMEOUT 10
 	REM Set default Color
 	color 07
-	goto end
+	goto :EOF
 )
 
 ::Delete version check file if found
@@ -199,7 +199,7 @@ if /i %ERRORLEVEL%==0 (
 	TIMEOUT 10
 	REM Set default Color
 	color 07
-	goto end
+	goto :EOF
 )
 
 ::Check if downloaded version is greater
@@ -220,7 +220,7 @@ if not DEFINED Skip_Update (
 		IF errorlevel 2 goto :update_no
 		IF errorlevel 1 goto :update_yes
 	) else (
-		goto end
+		goto :EOF
 	)
 ) else (
 	goto update_yes
@@ -244,7 +244,7 @@ echo ===========================================================================
 TIMEOUT 10
 ::Set default Color
 color 07
-goto end
+goto :EOF
 
 :update_yes
 ::Set default Color
