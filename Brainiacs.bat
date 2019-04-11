@@ -21,7 +21,6 @@ set TOOL_DATE=undetected
 set OS=unidentified
 set WIN_VER=undetected
 set WIN_VER_NUM=undetected
-set SAFE_MODE=no
 set DELETEFUNCTIONS=yes
 set DELETERESTORE=undetected
 set ABRUPTCLOSE=undetected
@@ -157,9 +156,31 @@ goto Skip_Test_Upgrade_All
 
 ::Upgrade all functions if in testing mode
 :Test_Upgrade_All
+CLS
+::Ask to upgrade from latest commits
+echo ====================================
+echo WARNING! This may break some things.
+echo ====================================
+choice /M "Do you want to update from the latest commits?" /c YN
+IF errorlevel 2 goto :Test_Upgrade_All_Decline
+IF errorlevel 1 goto :Test_Upgrade_All_Accept
+:Test_Upgrade_All_Accept
 set Test_Update_All=yes
 call functions\Update_function
-goto menuLOOP
+::Ask to enable debugging
+:Test_Upgrade_All_Decline
+CLS
+echo ==================================
+echo WARNING! This will be really long.
+echo ==================================
+choice /M "Do you want to enable debugging?" /c YN
+IF errorlevel 2 goto :Skip_Test_Upgrade_All
+IF errorlevel 1 goto :Enable_Debugging
+:Enable_Debugging
+findstr /V "@ECHO OFF" Brainiacs.bat > Brainiacs_Debug.bat
+start Brainiacs_Debug.bat
+del "%Output%\Brainiacs.bat" >NUL 2>&1
+exit /b
 
 ::Skip upgrade all functions if in testing mode
 :Skip_Test_Upgrade_All
@@ -1150,10 +1171,25 @@ if /i "%DefragSystem:~0,1%"=="Y" (
     goto Defrag_Done
   )
 
-  ::choice /C YN /T 20 /D D /M "Do you want to run defrag externally?"
-  ::IF errorlevel 2 goto choice_start
-  ::IF errorlevel 1 goto
-
+  REM Ask if want to run externally
+  choice /C YN /T 20 /D D /M "Do you want to run defrag externally?"
+  IF errorlevel 2 goto Next_Boot_Defrag_Windows_Choice
+  IF errorlevel 1 goto Run_External_Defrag_Windows
+  REM Initiate external run
+  :Run_External_Defrag_Windows
+  call functions\Windows_Scheduled_Defrag
+  goto Defrag_Done
+  :Next_Boot_Defrag_Windows_Choice
+  REM Ask if want to schedule boot
+  choice /C YN /T 20 /D D /M "Do you want to run defrag on the next boot?"
+  IF errorlevel 2 goto choice_start
+  IF errorlevel 1 goto Next_Boot_Defrag_Windows
+  REM Schedule for next reboot/delete task after
+  :Next_Boot_Defrag_Windows
+  REM !!IMPLEMENT CODE TO MOVE TO DIFFERENT DIR HERE!!
+  REM !!IMPLEMENT CODE TO MOVE TO DIFFERENT DIR HERE!!
+  REM SCHTASKS /Create /SC ONLOGON /TN Defrag_Reboot /DELAY 0000:30 /TR "" /V1 /Z
+  goto Defrag_Done
   REM Ask which program to use to defrag
   :choice_start
   CLS
