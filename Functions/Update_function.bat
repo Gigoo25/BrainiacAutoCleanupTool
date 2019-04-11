@@ -40,6 +40,7 @@ set DeleteLogs_Update_Function_Local=unidentified
 set DeleteTools_Update_Function_Local=unidentified
 set Brainiacs_Update_Function_Local=unidentified
 set Update_Update_Function_Local=unidentified
+set Windows_Defrag_Local=unidentified
 
 ::Function online variables
 set RKill_Update_Function_Online=unidentified
@@ -63,6 +64,7 @@ set DeleteLogs_Update_Function_Online=unidentified
 set DeleteTools_Update_Function_Online=unidentified
 set Brainiacs_Update_Function_Online=unidentified
 set Update_Update_Function_Online=unidentified
+set Windows_Defrag_Online=unidentified
 
 ::Tool local variables
 set RKill_Update_Tool_Local=unidentified
@@ -268,7 +270,7 @@ color 07
 
 ::Set variables for Functions_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,37) do set /p =
+	for /l %%i in (1,1,39) do set /p =
 	set /p RKill_Update_Function_Local=
 	set /p JRT_Update_Function_Local=
 	set /p TDSS_Update_Function_Local=
@@ -290,11 +292,12 @@ color 07
 	set /p DeleteTools_Update_Function_Local=
 	set /p Brainiacs_Update_Function_Local=
 	set /p Update_Update_Function_Local=
+	set /p Windows_Defrag_Local=
 )
 
 ::Set variables for Tools_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,77) do set /p =
+	for /l %%i in (1,1,80) do set /p =
 	set /p RKill_Update_Tool_Local=
 	set /p JRT_Update_Tool_Local=
 	set /p TDSS_Update_Tool_Local=
@@ -314,7 +317,7 @@ color 07
 
 ::Set variables for Functions_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,37) do set /p =
+	for /l %%i in (1,1,39) do set /p =
 	set /p RKill_Update_Function_Online=
 	set /p JRT_Update_Function_Online=
 	set /p TDSS_Update_Function_Online=
@@ -336,11 +339,12 @@ color 07
 	set /p DeleteTools_Update_Function_Online=
 	set /p Brainiacs_Update_Function_Online=
 	set /p Update_Update_Function_Online=
+	set /p Windows_Defrag_Online=
 )
 
 ::Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,77) do set /p =
+	for /l %%i in (1,1,80) do set /p =
 	set /p RKill_Update_Tool_Online=
 	set /p JRT_Update_Tool_Online=
 	set /p TDSS_Update_Tool_Online=
@@ -662,6 +666,34 @@ if "%Brainiacs_Update_Function_Online%" GTR "%Brainiacs_Update_Function_Local%" 
 	CLS
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Brainiacs.bat" -O "%Output%\Brainiacs.bat" 2>NUL
+)
+
+::Windows_Defrag
+::Download Windows_Defragr if not present
+if not exist "%Output%/Functions/Windows_Defrag.bat" (
+	CLS
+	echo Windows_Defrag not present.
+	echo.
+	echo Downloading Windows_Defrag.
+	echo.
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Windows_Defrag.bat" -O "%Output%/Functions/Windows_Defrag.bat" 2>NUL
+	CLS
+	echo Done downloading Windows_Defrag.
+	echo.
+	TIMEOUT 2
+	CLS
+) else if "%Windows_Defrag_Function_Online%" GTR "%Windows_Defrag_Function_Local%" (
+	CLS
+	echo Updating Windows_Defrag...
+	echo.
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Windows_Defrag.bat" -O "%Output%/Functions/Windows_Defrag.bat" 2>NUL
+	CLS
+	echo Done updating Windows_Defrag.
+	echo.
+	TIMEOUT 2
+	CLS
+) else if %Test_Update_All%==yes (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Windows_Defrag.bat" -O "%Output%/Functions/Windows_Defrag.bat" 2>NUL
 )
 
 ::End file if updated due to testing

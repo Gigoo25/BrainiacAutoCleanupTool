@@ -34,6 +34,7 @@ Functions Legend
 19 - DeleteTools_Function
 20 - Brainiacs_Function
 21 - Update_Update_Function
+22 - Windows_Defrag
 
 1.4
 1.4
@@ -56,6 +57,7 @@ Functions Legend
 1.4
 1.4
 1.4
+1.0
 
 Tools Legend
 --------------

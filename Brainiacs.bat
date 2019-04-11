@@ -167,6 +167,7 @@ IF errorlevel 1 goto :Test_Upgrade_All_Accept
 :Test_Upgrade_All_Accept
 set Test_Update_All=yes
 call functions\Update_function
+set Test_Update_All=no
 ::Ask to enable debugging
 :Test_Upgrade_All_Decline
 CLS
@@ -182,11 +183,11 @@ start Brainiacs_Debug.bat
 del "%Output%\Brainiacs.bat" >NUL 2>&1
 exit /b
 
-::Skip upgrade all functions if in testing mode
-:Skip_Test_Upgrade_All
-
 ::Check for updates
 call functions\Update_function
+
+::Skip upgrade all functions if in testing mode
+:Skip_Test_Upgrade_All
 
 ::Hide files/folders
 attrib "%Output%\Functions" +h -r
