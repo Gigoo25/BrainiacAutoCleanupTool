@@ -7,7 +7,10 @@ Brainiacs Cleanup Tool v1.4.1 (2019-04-)
 -Fixed Caffeine stopping prematurely.
 -Set specific folders for "DeleteTools_function" while I figure out wildcards/best folder locations.
 -Tool will now force update from source when testing.
--Began adding framework for external Defrag option.
+-Changed "end" tag in "Update_function" to functioning flag to prevent warning/errors
+-Removed some duplicate variables
+-Implemented option to run the batch verbose for debugging/fixed updating from source while testing.
+-Implemented "Windows defrag" into the menu to allow for external run & defrag on next boot.
 
 Brainiacs Cleanup Tool v1.4 (2019-03-27)
 ---

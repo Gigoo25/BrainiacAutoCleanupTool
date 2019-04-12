@@ -1,4 +1,5 @@
 @ECHO OFF
+
 ::Maximize Window
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 
@@ -106,6 +107,22 @@ if exist "%Output%\Version.txt" (
   )
 )
 
+::Skip to menu if verbose is enabled
+if exist "%Output%\Debug" (
+  color 0c
+  echo ====================================
+  echo WARNING! Debug file detected.
+  echo ====================================
+  TIMEOUT 2
+  CLS
+  echo ====================================
+  echo WARNING! Entering Debugging mode.
+  echo ====================================
+  TIMEOUT 3
+  @echo on
+  goto :menuLOOP
+)
+
 ::Pull ABRUPTCLOSE var if present
 if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
     set /p ABRUPTCLOSE=<!Output!\Functions\ABRUPTCLOSE.txt
@@ -132,6 +149,7 @@ if "%password%"=="RedRuby" (
   echo.
   echo Bypassing checks
   TIMEOUT 5
+  CLS
   goto Test_Upgrade_All
 )
 
@@ -175,19 +193,15 @@ echo ==================================
 echo WARNING! This will be really long.
 echo ==================================
 choice /M "Do you want to enable debugging?" /c YN
-IF errorlevel 2 goto :Skip_Test_Upgrade_All
+IF errorlevel 2 goto :menuLOOP
 IF errorlevel 1 goto :Enable_Debugging
 :Enable_Debugging
-findstr /V "@ECHO OFF" Brainiacs.bat > Brainiacs_Debug.bat
-start Brainiacs_Debug.bat
-del "%Output%\Brainiacs.bat" >NUL 2>&1
+echo. >> "%Output%\Debug"
+start Brainiacs.bat
 exit /b
 
 ::Check for updates
 call functions\Update_function
-
-::Skip upgrade all functions if in testing mode
-:Skip_Test_Upgrade_All
 
 ::Hide files/folders
 attrib "%Output%\Functions" +h -r
@@ -228,6 +242,7 @@ if "%ERRORLEVEL%"=="1" (
 )
 
 ::Start interface
+CLS
 echo.
 echo  ^! DISCLAIMER
 echo ===================================================================================
@@ -1171,32 +1186,55 @@ if /i "%DefragSystem:~0,1%"=="Y" (
     color 07
     goto Defrag_Done
   )
-
   REM Ask if want to run externally
-  choice /C YN /T 20 /D D /M "Do you want to run defrag externally?"
+  choice /C YN /T 20 /D N /M "Do you want to run defrag externally?"
   IF errorlevel 2 goto Next_Boot_Defrag_Windows_Choice
   IF errorlevel 1 goto Run_External_Defrag_Windows
   REM Initiate external run
   :Run_External_Defrag_Windows
-  call functions\Windows_Scheduled_Defrag
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  set Defrag_External=Yes
+  start functions\Windows_Defrag
+  set Defrag_External=No
   goto Defrag_Done
   :Next_Boot_Defrag_Windows_Choice
   REM Ask if want to schedule boot
-  choice /C YN /T 20 /D D /M "Do you want to run defrag on the next boot?"
+  CLS
+  choice /C YN /T 20 /D N /M "Do you want to run defrag on the next boot?"
   IF errorlevel 2 goto choice_start
   IF errorlevel 1 goto Next_Boot_Defrag_Windows
   REM Schedule for next reboot/delete task after
   :Next_Boot_Defrag_Windows
-  REM !!IMPLEMENT CODE TO MOVE TO DIFFERENT DIR HERE!!
-  REM !!IMPLEMENT CODE TO MOVE TO DIFFERENT DIR HERE!!
-  REM SCHTASKS /Create /SC ONLOGON /TN Defrag_Reboot /DELAY 0000:30 /TR "" /V1 /Z
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo Scheduling defrag for next run.
+  echo.
+  xcopy /v "%Output%\Functions\Windows_Defrag.bat" "%SystemDrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
+  cls
+  echo.
+  echo  ^! ALERT
+  echo ===================================================================================
+  echo.
+  echo    Defrag scheduled for next boot.
+  echo.
+  echo    Reboot PC to start the defrag process.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
   goto Defrag_Done
   REM Ask which program to use to defrag
   :choice_start
   CLS
-  choice /C AD /T 20 /D D /M "Which program do you want to defrag with [A] AusDefrag or [D] Defraggler"
+  choice /C ADW /T 20 /D D /M "Which program do you want to defrag with [A] AusDefrag, [D] Defraggler or [W] Windows Defrag"
+  IF errorlevel 3 goto Windows_Defrag_Function
   IF errorlevel 2 goto Defraggler
   IF errorlevel 1 goto AusDefrag
+  REM Open Windows_Defrag function.
+  :Windows_Defrag_Function
+  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  set Defrag_Internal=Yes
+  call functions\Windows_Defrag
+  set Defrag_Internal=No
+  goto Defrag_Done
   REM Open Defraggler_function.
   :Defraggler
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
