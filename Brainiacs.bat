@@ -39,7 +39,7 @@ cd %~dp0
 ::Define the filename where persistent variables get stored
 set FilePersist=%cd%\Functions\Persist.cmd&
 
-::Set variables
+::Other variables
 set Output=%cd%
 set SAFE_MODE=no
 set TOOL_VERSION=undetected
@@ -59,6 +59,9 @@ set SKIP_DEFRAG=no
 set Skip_Comments=unidentified
 set VarGeek=None
 set Test_Update_All=undetected
+set password=undetected
+
+::Menu variables
 set RKill_choice=,Yes,No,
 call:setPersist RKill=Yes
 set JRT_choice=,Yes,No,
@@ -132,29 +135,40 @@ if exist "%Output%\Version.txt" (
   )
 )
 
-::Skip to menu if verbose is enabled
-if exist "%Output%\Debug" (
-  color 0c
-  echo ===================================
-  echo    WARNING! Debug file detected.
-  echo ===================================
-  TIMEOUT 2
-  CLS
-  echo =======================================
-  echo    WARNING! Entering Debugging mode.
-  echo =======================================
-  TIMEOUT 3
-  @echo on
-  goto :menuLOOP
-)
-
 ::Pull ABRUPTCLOSE var if present
 if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
     set /p ABRUPTCLOSE=<!Output!\Functions\ABRUPTCLOSE.txt
 )
 
+::Check if 32/64bit windows
+reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set OS=32BIT || set OS=64BIT
+
 ::Set Color
 color 07
+
+::Skip to menu if verbose is enabled
+if exist "%Output%\Debug" (
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo =========================
+  echo.
+  echo    Debug file detected.
+  echo.
+  echo =========================
+  TIMEOUT 2
+  CLS
+  echo.
+  echo  ^! WARNING
+  echo ==============================
+  echo.
+  echo    Entering Debugging mode.
+  echo.
+  echo ==============================
+  TIMEOUT 3
+  @echo on
+  goto :menuLOOP
+)
 
 ::Ask for password for beta testing purposes.
 echo.
@@ -170,10 +184,14 @@ set /p password="Enter password: "
 if "%password%"=="RedRuby" (
   color 0c
   cls
-  echo Entering hidden testing mode.
   echo.
-  echo Bypassing checks
-  TIMEOUT 5
+  echo  ^! WARNING
+  echo ==================================
+  echo.
+  echo    Entering hidden testing mode.
+  echo.
+  echo ==================================
+  TIMEOUT 2
   CLS
   goto Test_Upgrade_All
 ) else if /I "%password%"=="Bluemoon" (
@@ -198,9 +216,13 @@ if "%password%"=="RedRuby" (
 :Test_Upgrade_All
 CLS
 ::Ask to upgrade from latest commits
-echo ====================================
-echo WARNING! This may break some things.
-echo ====================================
+echo.
+echo  ^! WARNING
+echo =================================
+echo.
+echo    This may break some things.
+echo.
+echo =================================
 choice /M "Do you want to update from the latest commits?" /c YN
 IF errorlevel 2 goto :Test_Upgrade_All_Decline
 IF errorlevel 1 goto :Test_Upgrade_All_Accept
@@ -211,9 +233,13 @@ set Test_Update_All=no
 ::Ask to enable debugging
 :Test_Upgrade_All_Decline
 CLS
-echo ==================================
-echo WARNING! This will be really long.
-echo ==================================
+echo.
+echo  ^! WARNING
+echo ====================================
+echo.
+echo    The output will be really long.
+echo.
+echo ====================================
 choice /M "Do you want to enable debugging?" /c YN
 IF errorlevel 2 goto :menuLOOP
 IF errorlevel 1 goto :Enable_Debugging
@@ -253,9 +279,6 @@ for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Curren
 
 ::If unsupported os then set variable to abort.
 if %WIN_VER_NUM% LSS 6.0 set ABORT=yes
-
-::Check if 32/64bit windows
-reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set OS=32BIT || set OS=64BIT
 
 :: Kill off any running Caffeine instances first + run caffeine.
 tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL
@@ -405,18 +428,17 @@ if "%ABRUPTCLOSE%"=="yes" (
   echo ===================================================================================
   echo.
   echo    Abrupt stop detected!
-  echo    Do you want to restore the session?
   echo.
   echo ===================================================================================
-	choice /M "[Y]es or [N]o" /c YN
+	choice /M "Do you want to restore the session?" /c YN
 	IF errorlevel 2 goto :restore_no
 	IF errorlevel 1 goto :restore_yes
 	:restore_yes
 	call:restorePersistentVars "%FilePersist%"
 	CLS
   color 07
-	REM Skip to menu
-	goto :menuLOOP
+	REM Start cleanup
+	goto :menu_SC
   :restore_no
   set DELETERESTORE=Yes
 ) else (
@@ -439,6 +461,10 @@ if not exist "%Output%\Logs\" (
 echo ----------------------------------------- >> %Output%\Notes\Comments.txt
 
 ::Ask if the session was picked up
+echo.
+echo  ^! USER INPUT
+echo =================================
+echo.
 choice /T 20 /D N /M "Did you pickup this session" /c YN
 IF errorlevel 2 goto :Session_New
 IF errorlevel 1 goto :Session_Pickup
@@ -451,6 +477,10 @@ if exist "%FilePersist%" (
 CLS
 
 ::Ask & enter CSG user ID into notes
+echo.
+echo  ^! USER INPUT
+echo =================================
+echo.
 set /p VarID=Enter your CSG user ID:
 echo "%VarID%" >> "%Output%\Notes\Comments.txt"
 CLS
@@ -461,6 +491,10 @@ echo General Cleanup. >> "%Output%\Notes\Comments.txt"
 echo. >> "%Output%\Notes\Comments.txt"
 
 ::Ask & enter any additional notes
+echo.
+echo  ^! USER INPUT
+echo =================================
+echo.
 set /p VarAddtlNote=Enter any additional notes:
 echo Additional notes: "%VarAddtlNote%" >> "%Output%\Notes\Comments.txt"
 echo --- >> "%Output%\Notes\Comments.txt"
@@ -490,16 +524,28 @@ if not exist "%Output%\Logs\" (
 
 ::Ask & enter CSG user ID into notes
 CLS
+echo.
+echo  ^! USER INPUT
+echo =================================
+echo.
 set /p VarID=Enter your CSG user ID:
 echo "%VarID%" >> "%Output%\Notes\Comments.txt"
 CLS
 
 ::Ask & enter Account number notes
+echo.
+echo  ^! USER INPUT
+echo =================================
+echo.
 set /p VarACC=Enter the subscribers Account number:
 echo ACC#"%VarACC%" >> "%Output%\Notes\Comments.txt"
 CLS
 
 ::Ask & enter Phone number into notes
+echo.
+echo  ^! USER INPUT
+echo =================================
+echo.
 set /p VarPHN=Enter the subscribers Phone number:
 echo PHN#"%VarPHN%" >> "%Output%\Notes\Comments.txt"
 CLS
@@ -509,6 +555,10 @@ echo. >> "%Output%\Notes\Comments.txt"
 echo General Cleanup. >> "%Output%\Notes\Comments.txt"
 
 ::Ask & enter any additional notes
+echo.
+echo  ^! USER INPUT
+echo =================================
+echo.
 set /p VarAddtlNote=Enter any additional notes:
 echo Additional Notes: "%VarAddtlNote%" >> "%Output%\Notes\Comments.txt"
 echo --- >> "%Output%\Notes\Comments.txt"
@@ -601,16 +651,39 @@ cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 ::Start MBAR service
-:menu_8   Run MBAR?                                 : '!MBAR!' [!MBAR_choice:~1,-1!]
+:menu_8   Run MBAR? (Takes a long time to run)      : '!MBAR!' [!MBAR_choice:~1,-1!]
 call:getNextInList MBAR "!MBAR_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 ::Start Malwarebytes service
-:menu_9   Run Malwarebytes? (Experimental Tool)     : '!Malwarebytes!' [!Malwarebytes_choice:~1,-1!]
+:menu_9   Run Malwarebytes? (Experimental)          : '!Malwarebytes!' [!Malwarebytes_choice:~1,-1!]
 call:getNextInList Malwarebytes "!Malwarebytes_choice!"
 cls
+
+::Check for testing mode
+if not "%password%"=="RedRuby" (
+    set Malwarebytes=No
+    color 0c
+    cls
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo    You are not in testing mode and are not able to try Experimental tools.
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 30
+    color 07
+    goto :eof
+)
+
+::Check if system restore is enabled
+if /I "%password%"=="Bluemoon" (
 if /i "!SystemRestore!"=="No" (
+  set Malwarebytes=No
   color 0c
   echo.
   echo  ^! ERROR
@@ -624,8 +697,9 @@ if /i "!SystemRestore!"=="No" (
   echo ===================================================================================
   TIMEOUT 30
   color 07
-  set Malwarebytes=No
 )
+)
+
 ::Check for windows 8 or above
 if %WIN_VER_NUM% geq 6.2 (
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -648,11 +722,35 @@ if %WIN_VER_NUM% geq 6.2 (
   color 07
   goto :eof
 )
+
 ::Start Spybot service
-:menu_10   Run Spybot? (Experimental Tool)          : '!Spybot!' [!Spybot_choice:~1,-1!]
+:menu_10   Run Spybot? (Experimental)               : '!Spybot!' [!Spybot_choice:~1,-1!]
 call:getNextInList Spybot "!Spybot_choice!"
 cls
+
+::Check for testing mode
+if not "%password%"=="RedRuby" (
+    set Spybot=No
+    color 0c
+    cls
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo    You are not in testing mode and are not able to try Experimental tools.
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 30
+    color 07
+    goto :eof
+)
+
+::Check if system restore is enabled
+if /I "%password%"=="Bluemoon" (
 if /i "!SystemRestore!"=="No" (
+  set Spybot=No
   color 0c
   echo.
   echo  ^! ERROR
@@ -666,8 +764,9 @@ if /i "!SystemRestore!"=="No" (
   echo ===================================================================================
   TIMEOUT 30
   color 07
-  set Spybot=No
 )
+)
+
 ::Check for windows 8 or above
 if %WIN_VER_NUM% geq 6.2 (
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -690,6 +789,7 @@ if %WIN_VER_NUM% geq 6.2 (
   color 07
   goto :eof
 )
+
 ::Start CCleaner service
 :menu_11   Run CCleaner?                            : '!CCleaner!' [!CCleaner_choice:~1,-1!]
 call:getNextInList CCleaner "!CCleaner_choice!"
@@ -713,6 +813,41 @@ GOTO:EOF
 call:getNextInList ImageChecker "!ImageChecker_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+GOTO:EOF
+
+:menu_
+:menu_Other_Tools:
+::Start Geek Uninstaller
+:menu_GK   Run Geek Uninstaller
+CLS
+if exist "%Output%\Tools\Geek\geek.exe" (
+  CLS
+  title [Geek Uninstaller] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  echo Running Geek Uninstaller...
+  start /WAIT "Geek" "%Output%\Tools\Geek\geek.exe"
+  CLS
+  echo -Ran Geek Uninsaller >> %Output%\Notes\Comments.txt
+  set /p VarGeek=Enter any uninstalled programs separated by a comma:
+  echo Uninstalled programs-!!VarGeek!! >> %Output%\Notes\Comments.txt
+  CLS
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
+) else (
+  CLS
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Geek Uninstaller not found.
+  echo.
+  echo    Returning to menu...
+  echo.
+  echo ===================================================================================
+  TIMEOUT 5
+  color 07
+  CLS
+)
 GOTO:EOF
 
 :menu_
@@ -794,13 +929,13 @@ if /i "!DeleteNotes!"=="Yes" (
   echo  ^! WARNING
   echo ===================================================================================
   echo.
-  echo    You have selected to delete the comments when done. The comments will still open
-  echo    before deletion for you to copy but once you close the prompt it will all be gone.
+  echo    You have selected to delete the comments when done.
   echo.
-  echo    Are you really sure you want to delete the notes after run?
+  echo    The comments will still open before deletion for you to copy, but once you close
+  echo    the prompt it will all be gone.
   echo.
   echo ===================================================================================
-  choice /C YN /T 20 /D N /M "[Y]es or [N]o"
+  choice /C YN /T 20 /D N /M "Are you really sure you want to delete the notes after run?"
   IF errorlevel 2 goto DontDeleteNotes_Prompt_choice
   IF errorlevel 1 goto DeleteNotes_Prompt_Continue
   :DontDeleteNotes_Prompt_choice
@@ -908,7 +1043,7 @@ call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables t
 GOTO:EOF
 
 :menu_
-:menu_Presets:
+:menu_Tool_Presets:
 ::Display present options.
 ::Display default cleanup preset.
 :menu_DP    Default cleanup preset.
@@ -998,8 +1133,7 @@ call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables t
 GOTO:EOF
 
 :menu_
-:menu_Execute:
-S
+:menu_Execute_Actions:
 :menu_SC   Start Cleanup
 
 if /i "%SystemRestore:~0,1%"=="Y" (
@@ -1366,39 +1500,6 @@ if /i "%Reboot:~0,1%"=="Y" (
   )
 )
 
-GOTO:EOF
-
-::Start Geek Uninstaller
-:menu_GK   Run Geek Uninstaller
-CLS
-if exist "%Output%\Tools\Geek\geek.exe" (
-  CLS
-  title [Geek Uninstaller] Brainiacs Cleanup Tool v%TOOL_VERSION%
-  echo Running Geek Uninstaller...
-  start /WAIT "Geek" "%Output%\Tools\Geek\geek.exe"
-  CLS
-  echo -Ran Geek Uninsaller >> %Output%\Notes\Comments.txt
-  set /p VarGeek=Enter any uninstalled programs separated by a comma:
-  echo Uninstalled programs-!!VarGeek!! >> %Output%\Notes\Comments.txt
-  CLS
-  REM Set title
-  title Brainiacs Cleanup Tool v%TOOL_VERSION%
-) else (
-  CLS
-  color 0c
-  echo.
-  echo  ^! WARNING
-  echo ===================================================================================
-  echo.
-  echo    Geek Uninstaller not found.
-  echo.
-  echo    Returning to menu...
-  echo.
-  echo ===================================================================================
-  TIMEOUT 5
-  color 07
-  CLS
-)
 GOTO:EOF
 
 :menu_VR   View Readme
