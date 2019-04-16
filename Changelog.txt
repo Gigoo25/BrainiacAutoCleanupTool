@@ -1,16 +1,18 @@
 
 CHANGELOG
 ===================================================================================
-Brainiacs Cleanup Tool v1.4.1 (2019-04-)
+Brainiacs Cleanup Tool v1.5 (2019-04-)
 ---
 -Moved SSD warning for Auslogic defrag to "Aus_Defrag_function".
 -Fixed Caffeine stopping prematurely.
 -Set specific folders for "DeleteTools_function" while I figure out wildcards/best folder locations.
--Tool will now force update from source when testing.
 -Changed "end" tag in "Update_function" to functioning flag to prevent warning/errors
 -Removed some duplicate variables
--Implemented option to run the batch verbose for debugging/fixed updating from source while testing.
+-Implemented option to run the batch verbose & to force update from source while testing.
 -Implemented "Windows defrag" into the menu to allow for external run & defrag on next boot.
+-Move SSD check to Auslogic defrag only as it does not have the ability to automatically detect SSD.
+-Changed default defrag program to Windows defrag.
+-Tool will now try to auto start with elevated privileges.
 
 Brainiacs Cleanup Tool v1.4 (2019-03-27)
 ---

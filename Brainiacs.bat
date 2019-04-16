@@ -1284,6 +1284,10 @@ if /i "%CCleaner:~0,1%"=="Y" (
 if /i "%DefragSystem:~0,1%"=="Y" (
   CLS
   REM Ask if want to run externally
+  echo.
+  echo  ^! USER INPUT
+  echo =================================
+  echo.
   choice /C YN /T 20 /D N /M "Do you want to run defrag externally?"
   IF errorlevel 2 goto Next_Boot_Defrag_Windows_Choice
   IF errorlevel 1 goto Run_External_Defrag_Windows
@@ -1297,6 +1301,10 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   :Next_Boot_Defrag_Windows_Choice
   REM Ask if want to schedule boot
   CLS
+  echo.
+  echo  ^! USER INPUT
+  echo =================================
+  echo.
   choice /C YN /T 20 /D N /M "Do you want to run defrag on the next boot?"
   IF errorlevel 2 goto choice_start
   IF errorlevel 1 goto Next_Boot_Defrag_Windows
@@ -1321,6 +1329,10 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   REM Ask which program to use to defrag
   :choice_start
   CLS
+  echo.
+  echo  ^! USER INPUT
+  echo =================================
+  echo.
   choice /C ADW /T 20 /D W /M "Which program do you want to defrag with [A] AusDefrag, [D] Defraggler or [W] Windows Defrag"
   IF errorlevel 3 goto Windows_Defrag_Function
   IF errorlevel 2 goto Defraggler
