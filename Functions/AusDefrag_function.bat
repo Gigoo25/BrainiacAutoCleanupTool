@@ -1,5 +1,70 @@
 @echo off
 
+REM Check for SSD and skip if detected.
+for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FINDSTR% /i "Solid SSD RAID SandForce" >NUL && set SKIP_DEFRAG=yes_ssd
+for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FINDSTR% /i "VMware VBOX XENSRC PVDISK" >NUL && set SKIP_DEFRAG=yes_vm
+for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\SMARTCTL\smartctl.exe %%i -a | %FIND% /i "Read Device Identity Failed" >NUL && set SKIP_DEFRAG=yes_disk_smart_read_error
+
+REM Skip defrag due to SSD detected
+if /i "%SKIP_DEFRAG%"=="yes_ssd" (
+	CLS
+	color 0c
+	echo.
+	echo  ^! ERROR
+	echo ===================================================================================
+	echo.
+	echo    SSD Detected.
+	echo.
+	echo    Skipping defrag function...
+	echo.
+	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+	echo.
+	echo ===================================================================================
+	TIMEOUT 10
+	color 07
+	goto Defrag_Done
+)
+
+REM Skip defrag due to Virtual machine detected
+if /i "%SKIP_DEFRAG%"=="yes_vm" (
+	CLS
+	color 0c
+	echo.
+	echo  ^! ERROR
+	echo ===================================================================================
+	echo.
+	echo    Virtual Machine Detected.
+	echo.
+	echo    Skipping defrag function...
+	echo.
+	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+	echo.
+	echo ===================================================================================
+	TIMEOUT 10
+	color 07
+	goto Defrag_Done
+)
+
+REM Skip defrag due to error reading disk stats detected
+if /i "%SKIP_DEFRAG%"=="yes_disk_smart_read_error" (
+	CLS
+	color 0c
+	echo.
+	echo  ^! ERROR
+	echo ===================================================================================
+	echo.
+	echo    Disk Smart Read Error.
+	echo.
+	echo    Skipping defrag function...
+	echo.
+	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+	echo.
+	echo ===================================================================================
+	TIMEOUT 10
+	color 07
+	goto Defrag_Done
+)
+
 REM Display disclaimer on checking for SSD.
 CLS
 color 0c
