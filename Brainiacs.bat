@@ -176,9 +176,9 @@ if "%password%"=="RedRuby" (
   TIMEOUT 5
   CLS
   goto Test_Upgrade_All
-)
-
-if /I NOT "%password%"=="Bluemoon" (
+) else if /I "%password%"=="Bluemoon" (
+  goto No_Test_Continue
+) else (
   color 0c
   cls
   echo.
@@ -193,9 +193,6 @@ if /I NOT "%password%"=="Bluemoon" (
   TIMEOUT 30
   exit /b
 )
-
-::Skip upgrade all functions if in testing mode
-goto Skip_Test_Upgrade_All
 
 ::Upgrade all functions if in testing mode
 :Test_Upgrade_All
@@ -224,6 +221,9 @@ IF errorlevel 1 goto :Enable_Debugging
 echo. >> "%Output%\Debug"
 start Brainiacs.bat
 exit /b
+
+::Skip testing mode stuff
+:No_Test_Continue
 
 ::Check for updates
 call functions\Update_function
