@@ -34,7 +34,7 @@ setlocal & pushd .
 cd /d %~dp0
 if '%1'=='ELEV' (del "%vbsGetPrivileges%" 1>nul 2>nul  &  shift /1)
 
-::START
+::Start Defrag
 :Start_Internal_Defrag
 CLS
 title [External Defrag] Brainiacs Cleanup Tool
@@ -48,6 +48,7 @@ echo    Press any key to begin defrag/optimization on all drives.
 echo.
 echo ===================================================================================
 pause
+CLS
 defrag C: /O /V /H
 pause
 if "%Defrag_External%"=="Yes" (
