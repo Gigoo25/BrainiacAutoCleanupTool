@@ -8,23 +8,72 @@ CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\TDSS\TDSSKiller.exe" (
   title [TDSS Killer] Brainiacs Cleanup Tool v%TOOL_VERSION%
-  echo Running TDSS Killer...
-  start /WAIT "TDS" "%Output%\Tools\TDSS\TDSSKiller.exe" -l "%Output%\Logs\tdsskiller.log" -accepteula -accepteulaksn
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Running TDSS Killer
+	echo.
+	echo =================================
+  start "TDS" "%Output%\Tools\TDSS\TDSSKiller.exe" -l "%Output%\Logs\tdsskiller.log" -accepteula
   CLS
   :TDSSKILLER_RUN_LOOP
-  CLS
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Running TDSS Killer
+	echo.
+	echo =================================
   tasklist | find /i "TDSSKiller.exe" >nul 2>&1
   IF ERRORLEVEL 1 (
+    CLS
     echo -Ran TDSS Killer >> %Output%\Notes\Comments.txt
+		echo.
+		echo  ^! USER INPUT
+		echo =================================
+		echo.
     set /p VarTDSSKiller=Enter the amount of infections found:
 		echo Infections-!!VarTDSSKiller!! >> %Output%\Notes\Comments.txt
 		CLS
-		echo Done running TDSS Killer!
+		echo.
+		echo  ^! ALERT
+		echo =================================
+		echo.
+		echo   Done running TDSS Killer!
+		echo.
+		echo =================================
   	TIMEOUT 2 >nul 2>&1
-  	GOTO eof
+    goto :eof
 	) ELSE (
-    echo Running TDSS Killer...
-    TIMEOUT 1 >nul 2>&1
+    CLS
+		echo.
+		echo  ^! ALERT
+		echo =================================
+		echo.
+		echo   Running TDSS Killer.
+		echo.
+		echo =================================
+  	TIMEOUT 1 >nul 2>&1
+		CLS
+		echo.
+		echo  ^! ALERT
+		echo =================================
+		echo.
+		echo   Running TDSS Killer..
+		echo.
+		echo =================================
+	  TIMEOUT 1 >nul 2>&1
+		CLS
+		echo.
+		echo  ^! ALERT
+		echo =================================
+		echo.
+		echo   Running TDSS Killer...
+		echo.
+		echo =================================
+		TIMEOUT 1 >nul 2>&1
+		CLS
   	GOTO TDSSKILLER_RUN_LOOP
 	)
 ) else (
@@ -45,6 +94,5 @@ if exist "%Output%\Tools\TDSS\TDSSKiller.exe" (
   color 07
   goto :eof
 )
-:eof
 ENDLOCAL DISABLEDELAYEDEXPANSION
 CLS

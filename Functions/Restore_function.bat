@@ -84,14 +84,26 @@ if /i !WIN_VER_NUM! geq 6.1 (
 			:manual_restore_point_creation_user_choice_cooldown
 			CLS
 			start /WAIT "RESTORE" "!SystemRoot!\System32\SystemPropertiesProtection.exe"
-			echo Manual restore point created!
+		  echo.
+		  echo  ^! ALERT
+		  echo =================================
+		  echo.
+		  echo   Manual restore point created!
+		  echo.
+		  echo =================================
 			echo -Created a manual restore point >> !Output!\Notes\Comments.txt
 			REM Set Color
 			color 07
 			goto :skip_restore_point_creation
 		) else (
 			CLS
-			echo Removing system restore cooldown timer...
+		  echo.
+		  echo  ^! ALERT
+		  echo =============================================
+		  echo.
+		  echo   Removing system restore cooldown timer...
+		  echo.
+		  echo =============================================
 			REM Set variable to skip windows timer if previously ran.
 			set DELETE_COOLDOWN=no
 			TIMEOUT 2 >NUL 2>&1
@@ -102,7 +114,13 @@ if /i !WIN_VER_NUM! geq 6.1 (
 
 ::Create restore point
 echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
-	echo Creating restore point...
+	echo.
+	echo  ^! ALERT
+	echo =============================
+	echo.
+	echo   Creating restore point...
+	echo.
+	echo =============================
 	TIMEOUT 1 >NUL 2>&1
 	CLS
 	powershell "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
@@ -146,14 +164,26 @@ echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
 		:manual_restore_point_creation_user_choice_cooldown
 		CLS
 		start /WAIT "RESTORE" "!SystemRoot!\System32\SystemPropertiesProtection.exe"
-		echo Manual restore point created!
+		echo.
+		echo  ^! ALERT
+		echo =================================
+		echo.
+		echo   Manual restore point created!
+		echo.
+		echo =================================
 		echo -Created a manual restore point >> !Output!\Notes\Comments.txt
 		REM Set Color
 		color 07
 		goto :skip_restore_point_creation
 	) else (
 		CLS
-		echo Restore point 'Brainiacs - !DATE!: Pre-run checkpoint' created!
+		echo.
+		echo  ^! ALERT
+		echo ===================================================================
+		echo.
+		echo   Restore point 'Brainiacs - !DATE!: Pre-run checkpoint' created!
+		echo.
+		echo ===================================================================
 		echo -Created a system restore point 'Brainiacs - !DATE!: Pre-run checkpoint' >> !Output!\Notes\Comments.txt
 		TIMEOUT 3 >nul 2>&1
 	)

@@ -8,7 +8,13 @@ CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\HitmanPro\HitmanPro*" (
 	title [HitmanPro] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Running HitmanPro...
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Running HitmanPro...
+	echo.
+	echo =================================
 	if exist "%systemdrive%\ProgramData\HitmanPro" (
 		rmdir /s /q "%systemdrive%\ProgramData\HitmanPro" >nul 2>&1
 	)
@@ -19,10 +25,20 @@ if exist "%Output%\Tools\HitmanPro\HitmanPro*" (
 	)
 	CLS
 	echo -Ran HitmanPro >> %Output%\Notes\Comments.txt
+	echo.
+	echo  ^! USER INPUT
+	echo =================================
+	echo.
 	set /p VarHitman=Enter the amount of infections found:
 	echo Infections-!!VarHitman!! >> %Output%\Notes\Comments.txt
 	CLS
-	echo Done running HitmanPro!
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Done running HitmanPro!
+	echo.
+	echo =================================
   TIMEOUT 2 >nul 2>&1
   GOTO eof
 ) else (

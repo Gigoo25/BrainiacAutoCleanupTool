@@ -9,7 +9,13 @@ if /i "!SAFE_MODE!"=="yes" (
 CLS
 if exist "%Output%\Notes\Comments.txt" (
 	title [Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Opening Comments...
+  echo.
+  echo  ^! ALERT
+  echo =======================
+  echo.
+  echo   Opening Comments...
+  echo.
+  echo =======================
 	start "notepad" /wait notepad "%Output%\Notes\Comments.txt"
 	CLS
   GOTO eof

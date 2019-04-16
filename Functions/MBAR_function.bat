@@ -8,15 +8,32 @@ CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\MBAR\mbar.exe" (
 	title [MBAR] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Running MBAR...
-	echo This may take a while.
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Running MBAR...
+	echo.
+	echo   This may take a while.
+	echo.
+	echo =================================
 	start /WAIT "MBAR" "%Output%\Tools\MBAR\mbar.exe"
 	CLS
 	echo -Ran MBAR >> %Output%\Notes\Comments.txt
+	echo.
+	echo  ^! USER INPUT
+	echo =================================
+	echo.
 	set /p VarMBAR=Enter the amount of infections found:
 	echo Infections-!!VarMBAR!! >> %Output%\Notes\Comments.txt
 	CLS
-	echo Done running MBAR!
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Done running MBAR!
+	echo.
+	echo =================================
   TIMEOUT 2 >nul 2>&1
 	goto :eof
 ) else (

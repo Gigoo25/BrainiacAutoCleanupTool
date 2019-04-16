@@ -89,11 +89,23 @@ CLS
 ::Start AusDefrag service.
 if exist "%Output%\Tools\AUS\ausdiskdefrag.exe" (
 	title [AusDefrag] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Running AusDefrag...
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Running AusDefrag...
+	echo.
+	echo =================================
 	start /WAIT "AUS" "%Output%\Tools\AUS\ausdiskdefrag.exe"
 	echo -Ran AusDefrag >> %Output%\Notes\Comments.txt
 	CLS
-	echo Done running AusDefrag!
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Done running AusDefrag!
+	echo.
+	echo =================================
   TIMEOUT 2 >nul 2>&1
   GOTO eof
 ) else (

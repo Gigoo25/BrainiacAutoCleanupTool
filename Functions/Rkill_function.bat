@@ -4,14 +4,27 @@
 CLS
 if exist "%Output%\Tools\RKill\rkill.exe" (
 	title [RKill] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Running RKill...
-	echo This may take a while.
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Running RKill...
+	echo.
+	echo   This may take a while.
+	echo.
+	echo =================================
 	"%Output%\Tools\RKill\rkill.exe" -s -l "%Output%\Logs\rkill.log" -w "%Output%\Tools\RKill\rkill_process_whitelist.txt"
 	echo -Ran RKill >> %Output%\Notes\Comments.txt
 	CLS
-	echo Done running RKill!
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Done running RKill!
+	echo.
+	echo =================================
   TIMEOUT 2 >nul 2>&1
-	goto eof
+  goto :eof
 ) else (
 	CLS
   color 0c
@@ -30,5 +43,4 @@ if exist "%Output%\Tools\RKill\rkill.exe" (
   color 07
   goto :eof
 )
-:eof
 CLS

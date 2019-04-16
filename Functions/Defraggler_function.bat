@@ -4,12 +4,24 @@
 CLS
 if exist "%Output%\Tools\Defraggle*" (
 	title [Defraggler] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Running Defraggler...
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Running Defraggler...
+	echo.
+	echo =================================
 	if %OS%==32BIT start /WAIT "DFR" "%Output%\Tools\Defraggler\Defraggler.exe"
 	if %OS%==64BIT start /WAIT "DFR" "%Output%\Tools\Defraggler\Defraggler64.exe"
 	echo -Ran Defraggler >> %Output%\Notes\Comments.txt
 	CLS
-	echo Done running Defraggler!
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Done running Defraggler!
+	echo.
+	echo =================================
   TIMEOUT 2 >nul 2>&1
   GOTO eof
 ) else (

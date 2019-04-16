@@ -8,14 +8,30 @@ CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" (
 	title [Zemana] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Running Zemana...
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Running Zemana...
+	echo.
+	echo =================================
 	start /WAIT "ZMN" "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" /scan SmartScan /clean
 	CLS
 	echo -Ran Zemana >> %Output%\Notes\Comments.txt
+	echo.
+	echo  ^! USER INPUT
+	echo =================================
+	echo.
 	set /p VarZemana=Enter the amount of infections found:
 	echo Infections-!!VarZemana!! >> %Output%\Notes\Comments.txt
 	CLS
-	echo Done running Zemana!
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Done running Zemana!
+	echo.
+	echo =================================
   TIMEOUT 2 >nul 2>&1
   GOTO eof
 ) else (

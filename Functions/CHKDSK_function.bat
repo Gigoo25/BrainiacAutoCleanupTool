@@ -2,12 +2,23 @@
 
 ::Start CHKDSK service.
 CLS
-echo Starting Check Disk...
+echo.
+echo  ^! ALERT
+echo ==========================
+echo.
+echo   Starting Check Disk...
+echo.
+echo ==========================
 TIMEOUT 3 >nul 2>&1
 CLS
 title [CHKDSK] Brainiacs Cleanup Tool v%TOOL_VERSION%
-echo Checking Windows System Files for corruptions...
 echo.
+echo  ^! ALERT
+echo ====================================================
+echo.
+echo   Checking Windows System Files for corruptions...
+echo.
+echo ====================================================
 
 ::Start function
 %SystemRoot%\System32\chkdsk.exe %SystemDrive%
@@ -52,5 +63,4 @@ if /i not %ERRORLEVEL%==0 (
   color 07
 	goto eof
 )
-:eof
 CLS

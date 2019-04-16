@@ -119,10 +119,22 @@ if %CLEAR_RECYCLE%==yes (
 if exist "%Output%\Tools" (
 	title [Deleting Tools] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	rd /s /q "%Output%\Tools" >nul 2>&1
-	echo Deleting tools folder...
+	echo.
+	echo  ^! ALERT
+	echo ============================
+	echo.
+	echo   Deleting tools folder...
+	echo.
+	echo ============================
 	echo -Deleted tools folder >> %Output%\Notes\Comments.txt
 	CLS
-	echo Done deleting tools.
+	echo.
+	echo  ^! ALERT
+	echo ========================
+	echo.
+	echo   Done deleting tools!
+	echo.
+	echo ========================
 	TIMEOUT 3 >nul 2>&1
 	goto eof
 ) else (

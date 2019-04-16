@@ -8,10 +8,20 @@ CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\JRT\JRT.exe" (
 	title [JRT] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Running JRT...
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Running JRT...
+	echo.
+	echo =================================
 	start /WAIT "JRT" "%Output%\Tools\JRT\JRT.exe"
 	CLS
 	echo -Ran JRT >> %Output%\Notes\Comments.txt
+	echo.
+	echo  ^! USER INPUT
+	echo =================================
+	echo.
 	set /p VarJRT=Enter the amount of infections found:
 	echo Infections-!!VarJRT!! >> %Output%\Notes\Comments.txt
 	::Move log file
@@ -19,7 +29,13 @@ if exist "%Output%\Tools\JRT\JRT.exe" (
 		move %userprofile%\desktop\JRT.txt %Output%\Logs\JRT.txt >nul 2>&1
 	)
 	CLS
-	echo Done running JRT!
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Done running JRT!
+	echo.
+	echo =================================
   TIMEOUT 2 >nul 2>&1
 	:: Run Caffeine if killed by JRT.
 	tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL

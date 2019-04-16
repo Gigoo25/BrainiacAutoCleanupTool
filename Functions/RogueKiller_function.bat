@@ -8,13 +8,32 @@ CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
 	title [RogueKiller] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Starting RougueKiller...
+	echo.
+	echo =================================
+  TIMEOUT 2 >nul 2>&1
+	CLS
 	"%Output%\Tools\RogueKiller\RogueKillerCMD.exe" -scan -debuglog "%Output%\Logs\rogue.log"
 	CLS
 	echo -Ran RougueKiller >> %Output%\Notes\Comments.txt
+	echo.
+	echo  ^! USER INPUT
+	echo =================================
+	echo.
 	set /p VarRougueKiller=Enter the amount of infections found:
 	echo Infections-!!VarRougueKiller!! >> %Output%\Notes\Comments.txt
 	CLS
-	echo Done running RougueKiller!
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Done running RougueKiller!
+	echo.
+	echo =================================
   TIMEOUT 2 >nul 2>&1
 	goto :eof
 ) else (

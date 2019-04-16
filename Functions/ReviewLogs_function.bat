@@ -5,7 +5,13 @@ CLS
 title [Reviewing Logs] Brainiacs Cleanup Tool v%TOOL_VERSION%
 if exist "%Output%\Logs\rkill.log" (
 	title [Rkill Log] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Opening Rkill log...
+	echo.
+	echo  ^! ALERT
+	echo ========================
+	echo.
+	echo   Opening Rkill log...
+	echo.
+	echo ========================
 	TIMEOUT 2 >nul 2>&1
 	CLS
 	type %Output%\Logs\rkill.log
@@ -31,7 +37,13 @@ if exist "%Output%\Logs\rkill.log" (
 )
 if exist "%Output%\Logs\rogue.log" (
 	title [RogueKiller Log] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Opening RogueKiller log...
+	echo.
+	echo  ^! ALERT
+	echo ==============================
+	echo.
+	echo   Opening RogueKiller log...
+	echo.
+	echo ==============================
 	TIMEOUT 2 >nul 2>&1
 	CLS
 	type %Output%\Logs\rogue.log
@@ -57,7 +69,13 @@ if exist "%Output%\Logs\rogue.log" (
 )
 if exist "%HOMEDRIVE%\AdwCleaner\Logs" (
 	title [AdwCleaner Folder] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Opening AdwCleaner folder...
+	echo.
+	echo  ^! ALERT
+	echo ================================
+	echo.
+	echo   Opening AdwCleaner folder...
+	echo.
+	echo ================================
 	TIMEOUT 2 >nul 2>&1
 	CLS
 	START "AdwCleanerLog" "%SystemRoot%\explorer.exe" "%HOMEDRIVE%\AdwCleaner\Logs"
@@ -83,7 +101,13 @@ if exist "%HOMEDRIVE%\AdwCleaner\Logs" (
 )
 if exist "%Output%\Logs\tdsskiller.log" (
 	title [TDSKiller Log] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Opening TDSKiller log...
+	echo.
+	echo  ^! ALERT
+	echo ============================
+	echo.
+	echo   Opening TDSKiller log...
+	echo.
+	echo ============================
 	TIMEOUT 2 >nul 2>&1
 	CLS
 	type %Output%\Logs\tdsskiller.log
@@ -109,7 +133,13 @@ if exist "%Output%\Logs\tdsskiller.log" (
 )
 if exist "%Output%\Logs\JRT.txt" (
 	title [JRT Log] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Opening JRT log...
+	echo.
+	echo  ^! ALERT
+	echo ======================
+	echo.
+	echo   Opening JRT log...
+	echo.
+	echo ======================
 	TIMEOUT 2 >nul 2>&1
 	CLS
 	type %Output%\Logs\JRT.txt
@@ -135,7 +165,13 @@ if exist "%Output%\Logs\JRT.txt" (
 )
 if exist "%SystemRoot%\Windows_Image_Check.txt" (
 	title [Windows Image Check Log] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Opening Windows Image Check log...
+	echo.
+	echo  ^! ALERT
+	echo ======================================
+	echo.
+	echo   Opening Windows Image Check log...
+	echo.
+	echo ======================================
 	TIMEOUT 2 >nul 2>&1
 	CLS
 	type %SystemRoot%\Windows_Image_Check.txt
@@ -161,7 +197,13 @@ if exist "%SystemRoot%\Windows_Image_Check.txt" (
 )
 if exist "%SystemRoot%\logs\cbs\cbs.log" (
 	title [SFC Log] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Opening System File Checker log...
+	echo.
+	echo  ^! ALERT
+	echo ======================================
+	echo.
+	echo   Opening System File Checker log...
+	echo.
+	echo ======================================
 	TIMEOUT 2 >nul 2>&1
 	CLS
 	type %SystemRoot%\logs\cbs\cbs.log

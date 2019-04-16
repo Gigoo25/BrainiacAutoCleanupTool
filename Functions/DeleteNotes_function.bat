@@ -9,7 +9,13 @@ if /i "!SAFE_MODE!"=="yes" (
 CLS
 if exist "%Output%\Notes\Comments.txt" (
 	title [Deleting Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
-	echo Deleting Notes...
+	echo.
+	echo  ^! ALERT
+	echo =====================
+	echo.
+	echo   Deleting Notes...
+	echo.
+	echo =====================
 	rmdir /s /q "%Output%\Notes" >NUL 2>&1
 	TIMEOUT 1 >nul 2>&1
 	CLS

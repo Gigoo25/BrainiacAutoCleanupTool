@@ -1,10 +1,12 @@
 @echo off
+
 ::Skip if internally ran
 if "%Defrag_Internal%"=="Yes" (
     goto Start_Internal_Defrag
 ) else if "%Defrag_External%"=="Yes" (
     goto Start_Internal_Defrag
 )
+
 ::Run as admin
 :init
 setlocal DisableDelayedExpansion
@@ -52,9 +54,12 @@ CLS
 defrag C: /O /V /H
 pause
 if "%Defrag_External%"=="Yes" (
+  REM Exit if ran internally
   exit
 ) else if "%Defrag_Internal%"=="Yes" (
+  REM Continue if ran internally
   goto :EOF
 ) else (
+  REM Self delete if ran after boot/any other circumstance
   (goto) 2>nul & del "%~f0"
 )
