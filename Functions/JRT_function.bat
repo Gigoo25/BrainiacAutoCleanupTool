@@ -1,13 +1,15 @@
 @echo off
 
-::Variables
+REM Variables
 set "VarJRT=0"
 
-::Start JRT service.
-CLS
+REM Set title
+title [JRT] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start JRT service.
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\JRT\JRT.exe" (
-	title [JRT] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =================================
@@ -24,9 +26,9 @@ if exist "%Output%\Tools\JRT\JRT.exe" (
 	echo.
 	set /p VarJRT=Enter the amount of infections found:
 	echo Infections-!!VarJRT!! >> %Output%\Notes\Comments.txt
-	::Move log file
+	REM Move log file
 	if exist "%userprofile%\desktop\JRT.txt" (
-		move %userprofile%\desktop\JRT.txt %Output%\Logs\JRT.txt >nul 2>&1
+		move %userprofile%\desktop\JRT.txt %Output%\Logs\JRT.txt >nul
 	)
 	CLS
 	echo.
@@ -36,16 +38,13 @@ if exist "%Output%\Tools\JRT\JRT.exe" (
 	echo   Done running JRT!
 	echo.
 	echo =================================
-  TIMEOUT 2 >nul 2>&1
-	:: Run Caffeine if killed by JRT.
-	tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL
+  TIMEOUT 2 >nul
+	REM  Run Caffeine if killed by JRT.
+	tasklist | find /i "caffeine.exe" >nul
 	if "%ERRORLEVEL%"=="1" (
-	  start /SEPARATE "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
-	) else (
-		taskkill /f /im "caffeine.exe" >nul 2>&1
-	  start /SEPARATE "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
+	  start "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
 	)
-  GOTO eof
+  GOTO :EOF
 ) else (
 	CLS
   color 0c
@@ -62,8 +61,6 @@ if exist "%Output%\Tools\JRT\JRT.exe" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
 )
-:eof
 ENDLOCAL DISABLEDELAYEDEXPANSION
-CLS

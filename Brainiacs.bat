@@ -1,9 +1,9 @@
 @ECHO OFF
 
-::Maximize Window
+REM Maximize Window
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 
-::Run as admin
+REM Run as admin
 :init
 setlocal DisableDelayedExpansion
 set "batchPath=%~0"
@@ -28,18 +28,18 @@ setlocal & pushd .
 cd /d %~dp0
 if '%1'=='ELEV' (del "%vbsGetPrivileges%" 1>nul 2>nul  &  shift /1)
 
-::Prepare the Command Processor
+REM Prepare the Command Processor
 SETLOCAL ENABLEEXTENSIONS
 SETLOCAL ENABLEDELAYEDEXPANSION
 
-::Set default directory
+REM Set default directory
 %~d0
 cd %~dp0
 
-::Define the filename where persistent variables get stored
+REM Define the filename where persistent variables get stored
 set FilePersist=%cd%\Functions\Persist.cmd&
 
-::Other variables
+REM Other variables
 set Output=%cd%
 set SAFE_MODE=no
 set TOOL_VERSION=undetected
@@ -48,7 +48,7 @@ set OS=unidentified
 set WIN_VER=undetected
 set WIN_VER_NUM=undetected
 set DELETEFUNCTIONS=yes
-set DELETERESTORE=undetected
+set DELETE_RESTORE=undetected
 set ABRUPTCLOSE=undetected
 set ABORT=no
 set VarID=unidentified
@@ -61,7 +61,7 @@ set VarGeek=None
 set Test_Update_All=undetected
 set password=undetected
 
-::Menu variables
+REM Menu variables
 set RKill_choice=,Yes,No,
 call:setPersist RKill=Yes
 set JRT_choice=,Yes,No,
@@ -109,25 +109,25 @@ call:setPersist SelfDestruct=Yes
 set Reboot_choice=,Yes,No,
 call:setPersist Reboot=No
 
-:: Force path to some system utilities in case the system PATH is messed up
+REM  Force path to some system utilities in case the system PATH is messed up
 set WMIC=%SystemRoot%\System32\wbem\wmic.exe
 set FIND=%SystemRoot%\System32\find.exe
 set FINDSTR=%SystemRoot%\System32\findstr.exe
 set REG=%SystemRoot%\System32\reg.exe
 
-::Un-Hide files/folders
+REM Un-Hide files/folders
 attrib "%Output%\Functions" -h -r
 attrib "%Output%\Tools" -h -r
 attrib "%Output%\Readme.txt" -h -r
 attrib "%Output%\Changelog.txt" -h -r
 attrib "%Output%\Version.txt" -h -r
 
-::Unblock files
+REM Unblock files
 echo.>"%Output%\Readme.txt":Zone.Identifier
 echo.>"%Output%\Changelog.txt":Zone.Identifier
 echo.>"%Output%\Version.txt":Zone.Identifier
 
-::Set tool version/date
+REM Set tool version/date
 if exist "%Output%\Version.txt" (
   < "%Output%\Version.txt" (
       set /p TOOL_VERSION=
@@ -135,19 +135,20 @@ if exist "%Output%\Version.txt" (
   )
 )
 
-::Pull ABRUPTCLOSE var if present
+REM Pull ABRUPTCLOSE var if present
 if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
     set /p ABRUPTCLOSE=<!Output!\Functions\ABRUPTCLOSE.txt
 )
 
-::Check if 32/64bit windows
+REM Check if 32/64bit windows
 reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set OS=32BIT || set OS=64BIT
 
-::Set Color
+REM Set Initial Color
 color 07
 
-::Skip to menu if verbose is enabled
+REM Skip to menu if verbose is enabled
 if exist "%Output%\Debug" (
+  CLS
   color 0c
   echo.
   echo  ^! WARNING
@@ -170,7 +171,8 @@ if exist "%Output%\Debug" (
   goto :menuLOOP
 )
 
-::Ask for password for beta testing purposes.
+REM Ask for password for beta testing purposes
+CLS
 echo.
 echo  ^! PASSWORD
 echo ===================================================================================
@@ -182,8 +184,8 @@ echo.
 echo ===================================================================================
 set /p password="Enter password: "
 if "%password%"=="RedRuby" (
-  color 0c
   cls
+  color 0c
   echo.
   echo  ^! WARNING
   echo ==================================
@@ -192,13 +194,12 @@ if "%password%"=="RedRuby" (
   echo.
   echo ==================================
   TIMEOUT 2
-  CLS
-  goto Test_Upgrade_All
+  goto Choice_Test_Upgrade_All
 ) else if /I "%password%"=="Bluemoon" (
   goto No_Test_Continue
 ) else (
-  color 0c
   cls
+  color 0c
   echo.
   echo  ^! ERROR
   echo ===================================================================================
@@ -212,10 +213,11 @@ if "%password%"=="RedRuby" (
   exit /b
 )
 
-::Upgrade all functions if in testing mode
-:Test_Upgrade_All
+REM Ask to upgrade all functions if in testing mode
+:Choice_Test_Upgrade_All
+
+REM Ask to upgrade from latest commits
 CLS
-::Ask to upgrade from latest commits
 echo.
 echo  ^! WARNING
 echo =================================
@@ -230,7 +232,8 @@ IF errorlevel 1 goto :Test_Upgrade_All_Accept
 set Test_Update_All=yes
 call functions\Update_function
 set Test_Update_All=no
-::Ask to enable debugging
+
+REM Ask to enable debugging
 :Test_Upgrade_All_Decline
 CLS
 echo.
@@ -248,48 +251,47 @@ echo. >> "%Output%\Debug"
 start Brainiacs.bat
 exit /b
 
-::Skip testing mode stuff
+REM Skip testing mode stuff if denied previously
 :No_Test_Continue
 
-::Check for updates
+REM Begin "Checks"
+REM -----------------
+REM Check for updates
 call functions\Update_function
 
-::Hide files/folders
+REM Hide files/folders
 attrib "%Output%\Functions" +h -r
 attrib "%Output%\Tools" +h -r
 attrib "%Output%\Readme.txt" +h -r
 attrib "%Output%\Changelog.txt" +h -r
 attrib "%Output%\Version.txt" +h -r
 
-::Unblock files
+REM Unblock files
 echo.>"%Output%\Readme.txt":Zone.Identifier
 echo.>"%Output%\Changelog.txt":Zone.Identifier
 echo.>"%Output%\Version.txt":Zone.Identifier
 
-:: Set the window title
+REM  Set the window title
 title Brainiacs Cleanup Tool v%TOOL_VERSION%
 
-:: Detect if in safemode.
+REM  Detect if in safemode
 if /i "%SAFEBOOT_OPTION%"=="MINIMAL" set SAFE_MODE=yes
 if /i "%SAFEBOOT_OPTION%"=="NETWORK" set SAFE_MODE=yes
 
-:: Detect the version of Windows
+REM  Detect the version of Windows
 for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName ^| %FIND% "ProductName"') DO set WIN_VER=%%i %%j
 for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentVersion ^| %FIND% "CurrentVersion"') DO set WIN_VER_NUM=%%i
 
-::If unsupported os then set variable to abort.
+REM If unsupported os then set variable to abort
 if %WIN_VER_NUM% LSS 6.0 set ABORT=yes
 
-:: Kill off any running Caffeine instances first + run caffeine.
-tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL
+REM  Run caffeine
+tasklist | find /i "caffeine.exe" >nul
 if "%ERRORLEVEL%"=="1" (
-  start /SEPARATE "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
-) else (
-  taskkill /f /im "caffeine.exe" >nul 2>&1
-  start /SEPARATE "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
+  start "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
 )
 
-::Start interface
+REM Start interface
 CLS
 echo.
 echo  ^! DISCLAIMER
@@ -311,10 +313,10 @@ choice /M "Do you accept responsibility for running this tool" /c YN
 IF errorlevel 2 goto :accept_no
 IF errorlevel 1 goto :accept_yes
 
-::Display message if they do not accept the disclaimer
+REM Display message if they do not accept the disclaimer
 :accept_no
-color 0c
 cls
+color 0c
 echo.
 echo  ^! ERROR
 echo ===================================================================================
@@ -330,13 +332,13 @@ echo ===========================================================================
 TIMEOUT 60
 exit 1
 
-::If disclaimer was accepted check for administrator privilage
+REM If disclaimer was accepted check for administrator privilage
 :accept_yes
 if /i not "%SAFE_MODE%"=="yes" (
-  fsutil dirty query %systemdrive% >NUL 2>&1
+  fsutil dirty query %systemdrive% >nul
   if /i not !ERRORLEVEL!==0 (
-    color 0c
     cls
+    color 0c
     echo.
     echo  ^! ERROR
     echo ===================================================================================
@@ -352,10 +354,10 @@ if /i not "%SAFE_MODE%"=="yes" (
     exit
   )
 )
-CLS
 
-::Quit if windows version is unsupported
+REM Quit if windows version is unsupported
 if %ABORT%==yes (
+  CLS
 	color 0c
 	echo.
 	echo  ^! ERROR
@@ -373,14 +375,13 @@ if %ABORT%==yes (
   TIMEOUT 15
 	exit 1
 )
-CLS
 
-::Check if tools folder exists
+REM Check if tools folder exists
 if exist "%Output%\Tools" (
   goto ToolsContinue
 ) else (
-  color 0c
   cls
+  color 0c
   echo.
 	echo  ^! ERROR
 	echo ===================================================================================
@@ -394,15 +395,16 @@ if exist "%Output%\Tools" (
   TIMEOUT 15
 	exit 1
 )
-:ToolsContinue
-CLS
 
-::Check for functions folder
+REM Continue if tools folder was found
+:ToolsContinue
+
+REM Check for functions folder
 if exist "%Output%\Functions" (
   goto FunctionsContinue
 ) else (
-  color 0c
   cls
+  color 0c
   echo.
 	echo  ^! ERROR
 	echo ===================================================================================
@@ -416,51 +418,52 @@ if exist "%Output%\Functions" (
   TIMEOUT 15
 	exit 1
 )
-:FunctionsContinue
-CLS
 
-::Setup resume state if not found, if found ask if you want to resume the last state
+REM Continue if functions folder was found
+:FunctionsContinue
+
+REM Setup resume state if not found, if found ask if you want to resume the last state
 if "%ABRUPTCLOSE%"=="yes" (
-  color 0c
-  cls
-  echo.
-  echo  ^! WARNING
-  echo ===================================================================================
-  echo.
-  echo    Abrupt stop detected!
-  echo.
-  echo ===================================================================================
-	choice /M "Do you want to restore the session?" /c YN
-	IF errorlevel 2 goto :restore_no
-	IF errorlevel 1 goto :restore_yes
-	:restore_yes
-	call:restorePersistentVars "%FilePersist%"
-	CLS
-  color 07
-	REM Start cleanup
-	goto :menu_SC
-  :restore_no
-  set DELETERESTORE=Yes
-) else (
   if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
+    cls
+    color 0c
+    echo.
+    echo  ^! WARNING
+    echo ===================================================================================
+    echo.
+    echo    Abrupt stop detected!
+    echo.
+    echo ===================================================================================
+	  choice /M "Do you want to restore the session?" /c YN
+	  IF errorlevel 2 goto :restore_no
+	  IF errorlevel 1 goto :restore_yes
+	  :restore_yes
+	  call:restorePersistentVars "%FilePersist%"
+    color 07
+	  REM Start cleanup
+	  goto :menu_SC
+    :restore_no
+    REM Set var to delete restore point on start
+    set DELETE_RESTORE=Yes
     del "%Output%\Functions\ABRUPTCLOSE.txt"
   )
 )
 
-::Create notes folder if non-existant
+REM Create notes folder if not found
 if not exist "%Output%\Notes\" (
-  mkdir "%Output%\Notes" >NUL 2>&1
+  mkdir "%Output%\Notes" >nul
 )
 
-::Create logs folder if non-existant
+REM Create logs folder if not found
 if not exist "%Output%\Logs\" (
-  mkdir "%Output%\Logs" >NUL 2>&1
+  mkdir "%Output%\Logs" >nul
 )
 
-::Ask for user input & write to notes
+REM Start notes template
 echo ----------------------------------------- >> %Output%\Notes\Comments.txt
 
-::Ask if the session was picked up
+REM Ask if the session was picked up
+CLS
 echo.
 echo  ^! USER INPUT
 echo =================================
@@ -468,29 +471,29 @@ echo.
 choice /T 20 /D N /M "Did you pickup this session" /c YN
 IF errorlevel 2 goto :Session_New
 IF errorlevel 1 goto :Session_Pickup
-
 :Session_Pickup
-::Restore variables from last session if present.
+
+REM Restore variables from last session if present
 if exist "%FilePersist%" (
   call:restorePersistentVars "%FilePersist%"
 )
-CLS
 
-::Ask & enter CSG user ID into notes
+REM Ask & enter CSG user ID into notes
+CLS
 echo.
 echo  ^! USER INPUT
 echo =================================
 echo.
 set /p VarID=Enter your CSG user ID:
 echo "%VarID%" >> "%Output%\Notes\Comments.txt"
-CLS
 echo. >> "%Output%\Notes\Comments.txt"
 
-::Enter general cleanup reason
+REM Enter general cleanup as the reason
 echo General Cleanup. >> "%Output%\Notes\Comments.txt"
 echo. >> "%Output%\Notes\Comments.txt"
 
-::Ask & enter any additional notes
+REM Ask & enter any additional notes
+CLS
 echo.
 echo  ^! USER INPUT
 echo =================================
@@ -499,30 +502,34 @@ set /p VarAddtlNote=Enter any additional notes:
 echo Additional notes: "%VarAddtlNote%" >> "%Output%\Notes\Comments.txt"
 echo --- >> "%Output%\Notes\Comments.txt"
 echo -Picked up session >> "%Output%\Notes\Comments.txt"
-CLS
 
-::Goto menu
+REM Goto menu
 goto menuLOOP
 
-
+REM Start new session if user did not pick up session
 :Session_New
-::Delete notes if exist
+
+REM Delete notes if exist
 if exist "%Output%\Notes" (
-  del /Q "%Output%\Notes\*.*" >NUL 2>&1
+  del /Q "%Output%\Notes\*.*" >nul
 )
+
+REM Create new notes folder if not present
 if not exist "%Output%\Notes\" (
-  mkdir "%Output%\Notes" >NUL 2>&1
+  mkdir "%Output%\Notes" >nul
 )
 
-::Delete logs if exist
+REM Delete logs if exist
 if exist "%Output%\Logs" (
-  del /Q "%Output%\Logs\*.*" >NUL 2>&1
-)
-if not exist "%Output%\Logs\" (
-  mkdir "%Output%\Logs" >NUL 2>&1
+  del /Q "%Output%\Logs\*.*" >nul
 )
 
-::Ask & enter CSG user ID into notes
+REM Create new logs folder if not present
+if not exist "%Output%\Logs\" (
+  mkdir "%Output%\Logs" >nul
+)
+
+REM Ask & enter CSG user ID into notes
 CLS
 echo.
 echo  ^! USER INPUT
@@ -530,31 +537,31 @@ echo =================================
 echo.
 set /p VarID=Enter your CSG user ID:
 echo "%VarID%" >> "%Output%\Notes\Comments.txt"
-CLS
 
-::Ask & enter Account number notes
-echo.
-echo  ^! USER INPUT
-echo =================================
-echo.
-set /p VarACC=Enter the subscribers Account number:
-echo ACC#"%VarACC%" >> "%Output%\Notes\Comments.txt"
-CLS
+REM Ask & enter Account number notes
+REM CLS
+REM echo.
+REM echo  ^! USER INPUT
+REM echo =================================
+REM echo.
+REM set /p VarACC=Enter the subscribers Account number:
+REM echo ACC#"%VarACC%" >> "%Output%\Notes\Comments.txt"
 
-::Ask & enter Phone number into notes
+REM Ask & enter Phone number into notes
+CLS
 echo.
 echo  ^! USER INPUT
 echo =================================
 echo.
 set /p VarPHN=Enter the subscribers Phone number:
 echo PHN#"%VarPHN%" >> "%Output%\Notes\Comments.txt"
-CLS
 echo. >> "%Output%\Notes\Comments.txt"
 
-::Enter general cleanup reason
+REM Enter general cleanup reason
 echo General Cleanup. >> "%Output%\Notes\Comments.txt"
 
-::Ask & enter any additional notes
+REM Ask & enter any additional notes
+CLS
 echo.
 echo  ^! USER INPUT
 echo =================================
@@ -562,19 +569,20 @@ echo.
 set /p VarAddtlNote=Enter any additional notes:
 echo Additional Notes: "%VarAddtlNote%" >> "%Output%\Notes\Comments.txt"
 echo --- >> "%Output%\Notes\Comments.txt"
-CLS
 
-::Add check for restore deletion
-if /i "!DELETERESTORE!"=="Yes" (
-  del /Q "%FilePersist%"  >NUL 2>&1
+REM Add check for restore deletion
+if /i "!DELETE_RESTORE!"=="Yes" (
+  del /Q "%FilePersist%"  >nul
+  del "%Output%\Functions\ABRUPTCLOSE.txt"
 )
 
-::Goto menu
+REM Goto menu
 goto menuLOOP
 
-::Start Menu
+REM Start Menu
 :menuLOOP
 CLS
+REM Set title
 title [Menu] Brainiacs Cleanup Tool v%TOOL_VERSION%
 echo.
 echo  ^! MENU
@@ -596,76 +604,86 @@ echo.&set /p choice=Make a choice: ||(
 echo.&call:menu_%choice%
 GOTO:menuLOOP
 
-::Display notes
+REM Display notes
 :menu_CSG ID: !VarID!
 :menu_Account#: !VarACC!
 :menu_Phone#: !VarPHN!
 
+REM Display additional notes
 :menu_
 :menu_Additional Notes:
 :menu_!VarAddtlNote!
 
-::Display menu functions
+REM Display menu tools
 :menu_
 :menu_Tools:
-::Start RKill service
+
+REM Start RKill service
 :menu_1   Run RKill?                                : '!RKill!' [!RKill_choice:~1,-1!]
 call:getNextInList RKill "!RKill_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start JRT service
+
+REM Start JRT service
 :menu_2   Run JRT?                                  : '!JRT!' [!JRT_choice:~1,-1!]
 call:getNextInList JRT "!JRT_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start TDSS Killer service
+
+REM Start TDSS Killer service
 :menu_3   Run TDSS Killer?                          : '!TDSS!' [!TDSS_choice:~1,-1!]
 call:getNextInList TDSS "!TDSS_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Rogue Killer service
+
+REM Start Rogue Killer service
 :menu_4   Run Rogue Killer?                         : '!Rogue!' [!Rogue_choice:~1,-1!]
 call:getNextInList Rogue "!Rogue_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start ADW service
+
+REM Start ADW service
 :menu_5   Run ADW?                                  : '!ADW!' [!ADW_choice:~1,-1!]
 call:getNextInList ADW "!ADW_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Hitman Pro service
+
+REM Start Hitman Pro service
 :menu_6   Run Hitman Pro?                           : '!HitmanPro!' [!HitmanPro_choice:~1,-1!]
 call:getNextInList HitmanPro "!HitmanPro_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Zemana service
+
+REM Start Zemana service
 :menu_7   Run Zemana?                               : '!Zemana!' [!Zemana_choice:~1,-1!]
 call:getNextInList Zemana "!Zemana_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start MBAR service
+
+REM Start MBAR service
 :menu_8   Run MBAR? (Takes a long time to run)      : '!MBAR!' [!MBAR_choice:~1,-1!]
 call:getNextInList MBAR "!MBAR_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Malwarebytes service
+
+REM Start Malwarebytes service
 :menu_9   Run Malwarebytes? (Experimental)          : '!Malwarebytes!' [!Malwarebytes_choice:~1,-1!]
 call:getNextInList Malwarebytes "!Malwarebytes_choice!"
 cls
 
-::Check for testing mode
+REM Check for testing mode
 if not "%password%"=="RedRuby" (
     set Malwarebytes=No
-    color 0c
     cls
+    color 0c
     echo.
     echo  ^! ERROR
     echo ===================================================================================
@@ -677,13 +695,14 @@ if not "%password%"=="RedRuby" (
     echo ===================================================================================
     TIMEOUT 30
     color 07
-    goto :eof
+    GOTO :EOF
 )
 
-::Check if system restore is enabled
+REM Check if system restore is enabled
 if /I "%password%"=="Bluemoon" (
 if /i "!SystemRestore!"=="No" (
   set Malwarebytes=No
+  cls
   color 0c
   echo.
   echo  ^! ERROR
@@ -700,7 +719,7 @@ if /i "!SystemRestore!"=="No" (
 )
 )
 
-::Check for windows 8 or above
+REM Check for windows 8 or above
 if %WIN_VER_NUM% geq 6.2 (
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   GOTO:EOF
@@ -720,19 +739,19 @@ if %WIN_VER_NUM% geq 6.2 (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
 )
 
-::Start Spybot service
+REM Start Spybot service
 :menu_10   Run Spybot? (Experimental)               : '!Spybot!' [!Spybot_choice:~1,-1!]
 call:getNextInList Spybot "!Spybot_choice!"
 cls
 
-::Check for testing mode
+REM Check for testing mode
 if not "%password%"=="RedRuby" (
+    cls
     set Spybot=No
     color 0c
-    cls
     echo.
     echo  ^! ERROR
     echo ===================================================================================
@@ -744,12 +763,13 @@ if not "%password%"=="RedRuby" (
     echo ===================================================================================
     TIMEOUT 30
     color 07
-    goto :eof
+    GOTO :EOF
 )
 
-::Check if system restore is enabled
+REM Check if system restore is enabled
 if /I "%password%"=="Bluemoon" (
 if /i "!SystemRestore!"=="No" (
+  CLS
   set Spybot=No
   color 0c
   echo.
@@ -767,7 +787,7 @@ if /i "!SystemRestore!"=="No" (
 )
 )
 
-::Check for windows 8 or above
+REM Check for windows 8 or above
 if %WIN_VER_NUM% geq 6.2 (
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   GOTO:EOF
@@ -787,41 +807,46 @@ if %WIN_VER_NUM% geq 6.2 (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
 )
 
-::Start CCleaner service
+REM Start CCleaner service
 :menu_11   Run CCleaner?                            : '!CCleaner!' [!CCleaner_choice:~1,-1!]
 call:getNextInList CCleaner "!CCleaner_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Defrag System service
+
+REM Start Defrag System service
 :menu_12   Defrag System?                           : '!DefragSystem!' [!DefragSystem_choice:~1,-1!]
 call:getNextInList DefragSystem "!DefragSystem_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Windows Drive check service
+
+REM Start Windows Drive check service
 :menu_13   Check Windows Drive for errors?          : '!DriveChecker!' [!DriveChecker_choice:~1,-1!]
 call:getNextInList DriveChecker "!DriveChecker_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Windows Image check service
+
+REM Start Windows Image check service
 :menu_14   Check Windows Image for errors?          : '!ImageChecker!' [!ImageChecker_choice:~1,-1!]
 call:getNextInList ImageChecker "!ImageChecker_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
+REM Display other tools
 :menu_
 :menu_Other_Tools:
-::Start Geek Uninstaller
+
+REM Start Geek Uninstaller
 :menu_GK   Run Geek Uninstaller
-CLS
 if exist "%Output%\Tools\Geek\geek.exe" (
   CLS
+  REM Set title
   title [Geek Uninstaller] Brainiacs Cleanup Tool v%TOOL_VERSION%
   echo Running Geek Uninstaller...
   start /WAIT "Geek" "%Output%\Tools\Geek\geek.exe"
@@ -829,7 +854,6 @@ if exist "%Output%\Tools\Geek\geek.exe" (
   echo -Ran Geek Uninsaller >> %Output%\Notes\Comments.txt
   set /p VarGeek=Enter any uninstalled programs separated by a comma:
   echo Uninstalled programs-!!VarGeek!! >> %Output%\Notes\Comments.txt
-  CLS
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 ) else (
@@ -846,13 +870,14 @@ if exist "%Output%\Tools\Geek\geek.exe" (
   echo ===================================================================================
   TIMEOUT 5
   color 07
-  CLS
 )
 GOTO:EOF
 
+REM Display menu options
 :menu_
 :menu_Options:
-::Start system restore service
+
+REM Start system restore service
 :menu_R    Create system restore point?              : '!SystemRestore!' [!SystemRestore_choice:~1,-1!]
 call:getNextInList SystemRestore "!SystemRestore_choice!"
 cls
@@ -866,7 +891,8 @@ if /i "!SystemRestore!"=="No" (
 )
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Auto close service
+
+REM Start Auto close service
 :menu_A   Auto close when done?                     : '!AutoClose!' [!AutoClose_choice:~1,-1!]
 call:getNextInList AutoClose "!AutoClose_choice!"
 cls
@@ -886,13 +912,15 @@ if /i "!DeleteTools!"=="Yes" (
 )
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Review Logs service
+
+REM Start Review Logs service
 :menu_L   Review Logs when done?                    : '!ReviewLogs!' [!ReviewLogs_choice:~1,-1!]
 call:getNextInList ReviewLogs "!ReviewLogs_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Open comments service
+
+REM Start Open comments service
 :menu_C   Open comments when done?                  : '!OpenNotes!' [!OpenNotes_choice:~1,-1!]
 call:getNextInList OpenNotes "!OpenNotes_choice!"
 cls
@@ -903,27 +931,55 @@ if /i "!OpenNotes!"=="No" (
 )
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Delete comments service
+
+REM Start Delete comments service
 :menu_DC   Delete comments when done?               : '!DeleteNotes!' [!DeleteNotes_choice:~1,-1!]
 call:getNextInList DeleteNotes "!DeleteNotes_choice!"
-cls
-if /i "!OpenNotes!"=="No" (
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    Delete comments requires you to have the option "Open comments when done" to be
-  echo    enabled. Please enable this option and try again.
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 30
-  color 07
-  set DeleteNotes=No
-)
 if /i "!DeleteNotes!"=="Yes" (
+  if /i "!AutoClose!"=="No" (
+    if /i "!Reboot!"=="No" (
+      CLS
+      color 0c
+      echo.
+      echo  ^! ERROR
+      echo ===================================================================================
+      echo.
+      echo    Delete notes requires you to have the options "Auto close when done" or
+      echo    "Reboot when done" to be enabled.
+      echo.
+      echo ===================================================================================
+      choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
+      IF errorlevel 2 goto Reboot_deletenotes_choice
+      IF errorlevel 1 goto AutoClose_deletenotes_choice
+      :AutoClose_deletenotes_choice
+      set AutoClose=Yes
+      set Reboot=No
+      GOTO Delete_notes_Continue
+      :Reboot_deletenotes_choice
+      set AutoClose=No
+      set Reboot=Yes
+    )
+  )
+  :Delete_notes_Continue
+  if /i "!OpenNotes!"=="No" (
+    CLS
+    color 0c
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo    Delete comments requires you to have the option "Open comments when done" to be
+    echo    enabled. Please enable this option and try again.
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+    echo.
+    echo ===================================================================================
+    set DeleteNotes=No
+    TIMEOUT 30
+    color 07
+    GOTO:EOF
+  )
+  CLS
   color 0c
   echo.
   echo  ^! WARNING
@@ -948,13 +1004,15 @@ if /i "!DeleteNotes!"=="Yes" (
 color 07
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Delete logs service
+
+REM Start Delete logs service
 :menu_DL    Delete logs when done?                   : '!DeleteLogs!' [!DeleteLogs_choice:~1,-1!]
 call:getNextInList DeleteLogs "!DeleteLogs_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Delete tools service
+
+REM Start Delete tools service
 :menu_DT    Delete tools when done?                  : '!DeleteTools!' [!DeleteTools_choice:~1,-1!]
 call:getNextInList DeleteTools "!DeleteTools_choice!"
 cls
@@ -971,8 +1029,8 @@ if /i "!DeleteTools!"=="Yes" (
       echo.
       echo ===================================================================================
       choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
-      IF errorlevel 2 goto Reboot_selfdestruct_choice
-      IF errorlevel 1 goto AutoClose_selfdestruct_choice
+      IF errorlevel 2 goto Reboot_deletetools_choice
+      IF errorlevel 1 goto AutoClose_deletetools_choice
       :AutoClose_deletetools_choice
       set AutoClose=Yes
       set Reboot=No
@@ -987,7 +1045,8 @@ if /i "!DeleteTools!"=="Yes" (
 color 07
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-::Start Self-Destruct service
+
+REM Start Self-Destruct service
 :menu_SD    Self-Destruct Cleanup Tool when done?    : '!SelfDestruct!' [!SelfDestruct_choice:~1,-1!]
 call:getNextInList SelfDestruct "!SelfDestruct_choice!"
 cls
@@ -1021,7 +1080,7 @@ color 07
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
-::Start Reboot service
+REM Start Reboot service
 :menu_B   Reboot when done?                         : '!Reboot!' [!Reboot_choice:~1,-1!]
 call:getNextInList Reboot "!Reboot_choice!"
 cls
@@ -1042,10 +1101,10 @@ if /i "!DeleteTools!"=="Yes" (
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
+REM Display preset options.
 :menu_
 :menu_Tool_Presets:
-::Display present options.
-::Display default cleanup preset.
+
 :menu_DP    Default cleanup preset.
 cls
 set RKill=Yes
@@ -1074,7 +1133,6 @@ set Reboot=No
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
-::Display enable all preset.
 :menu_EA    Enable all preset.
 cls
 set RKill=Yes
@@ -1103,7 +1161,6 @@ set Reboot=Yes
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
-::Display disable all preset.
 :menu_DA    Disable all preset.
 cls
 set RKill=No
@@ -1132,12 +1189,12 @@ set Reboot=No
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
+REM Display execute options.
 :menu_
 :menu_Execute_Actions:
 :menu_SC   Start Cleanup
 
 if /i "%SystemRestore:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\Restore_function
@@ -1150,7 +1207,6 @@ if /i "%SystemRestore:~0,1%"=="Y" (
 )
 
 if /i "%RKill:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\Rkill_function
@@ -1161,8 +1217,8 @@ if /i "%RKill:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%JRT:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\JRT_function
@@ -1173,8 +1229,8 @@ if /i "%JRT:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%TDSS:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\TDSS_Killer_function
@@ -1185,8 +1241,8 @@ if /i "%TDSS:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%Rogue:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\RogueKiller_function
@@ -1197,8 +1253,8 @@ if /i "%Rogue:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%ADW:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\ADW_function
@@ -1209,8 +1265,8 @@ if /i "%ADW:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%HitmanPro:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\HitmanPro_function
@@ -1221,8 +1277,8 @@ if /i "%HitmanPro:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%Zemana:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\Zemana_function
@@ -1233,8 +1289,8 @@ if /i "%Zemana:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%MBAR:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\MBAR_function
@@ -1245,8 +1301,8 @@ if /i "%MBAR:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%Malwarebytes:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\Malwarebytes_function
@@ -1257,8 +1313,8 @@ if /i "%Malwarebytes:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%Spybot:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\Spybot_function
@@ -1269,8 +1325,8 @@ if /i "%Spybot:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%CCleaner:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\CCleaner_function
@@ -1281,9 +1337,10 @@ if /i "%CCleaner:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%DefragSystem:~0,1%"=="Y" (
-  CLS
   REM Ask if want to run externally
+  CLS
   echo.
   echo  ^! USER INPUT
   echo =================================
@@ -1311,8 +1368,6 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   REM Schedule for next reboot/delete task after
   :Next_Boot_Defrag_Windows
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-  echo Scheduling defrag for next run.
-  echo.
   xcopy /v "%Output%\Functions\Windows_Defrag.bat" "%SystemDrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
   cls
   echo.
@@ -1363,8 +1418,8 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%ImageChecker:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\Image_Checker_function
@@ -1375,8 +1430,8 @@ if /i "%ImageChecker:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%DriveChecker:~0,1%"=="Y" (
-  CLS
   REM Call function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   call functions\CHKDSK_function
@@ -1387,8 +1442,8 @@ if /i "%DriveChecker:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%ReviewLogs:~0,1%"=="Y" (
-  CLS
   REM Call function
   call functions\ReviewLogs_function
   REM Create restore point
@@ -1397,28 +1452,8 @@ if /i "%ReviewLogs:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
-if /i "%OpenNotes:~0,1%"=="Y" (
-  CLS
-  REM Call function
-  call functions\OpenNotes_function
-  REM Create restore point
-  set OpenNotes=No
-  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-  REM Set title
-  title Brainiacs Cleanup Tool v%TOOL_VERSION%
-)
-if /i "%DeleteNotes:~0,1%"=="Y" (
-  CLS
-  REM Call function
-  call functions\DeleteNotes_function
-  REM Create restore point
-  set DeleteNotes=No
-  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-  REM Set title
-  title Brainiacs Cleanup Tool v%TOOL_VERSION%
-)
+
 if /i "%DeleteLogs:~0,1%"=="Y" (
-  CLS
   REM Call function
   call functions\DeleteLogs_function
   REM Create restore point
@@ -1427,8 +1462,8 @@ if /i "%DeleteLogs:~0,1%"=="Y" (
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
 if /i "%DeleteTools:~0,1%"=="Y" (
-  CLS
   REM Call function
   call functions\DeleteTools_function
   REM Create restore point
@@ -1438,19 +1473,35 @@ if /i "%DeleteTools:~0,1%"=="Y" (
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
 
-if /i "%SelfDestruct:~0,1%"=="Y" (
-  CLS
+if /i "%OpenNotes:~0,1%"=="Y" (
+  REM Call function
+  call functions\OpenNotes_function
+  REM Create restore point
+  set OpenNotes=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
+
+if /i "%DeleteNotes:~0,1%"=="Y" (
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
+)
+
+if /i "%SelfDestruct:~0,1%"=="Y" (
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
+)
+
 if /i "%AutoClose:~0,1%"=="Y" (
-  CLS
   REM Create restore point
   set AutoClose=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Set title
   title [Exiting] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
   color 0c
   echo.
 	echo  ^! WARNING
@@ -1461,14 +1512,21 @@ if /i "%AutoClose:~0,1%"=="Y" (
 	echo ===================================================================================
   TIMEOUT 15
   REM Kill off any running Caffeine instances.
-  tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL
+	tasklist | find /i "caffeine.exe" >nul
   if "%ERRORLEVEL%"=="0" (
-    taskkill /f /im "caffeine.exe" >nul 2>&1
+    taskkill /IM caffeine.exe /f /t >nul
+  )
+  REM Delete notes
+  if /i "%DeleteNotes:~0,1%"=="Y" (
+    CLS
+    REM Call function
+    call functions\DeleteNotes_function
   )
   REM Initiate Self Destruct if selected prior.
   if /i "%SelfDestruct:~0,1%"=="Y" (
+    echo -Deleted Brainiacs Script >> %Output%\Notes\Comments.txt
     if exist "%Output%\Functions" (
-      rmdir /s /q "%Output%\Functions" >nul 2>&1
+      rmdir /s /q "%Output%\Functions" >nul
     )
     (goto) 2>nul & del "%~f0"
   ) else (
@@ -1477,12 +1535,12 @@ if /i "%AutoClose:~0,1%"=="Y" (
 )
 
 if /i "%Reboot:~0,1%"=="Y" (
-  CLS
   REM Create restore point
   set Reboot=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Set title
   title [Rebooting] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
   color 0c
   echo.
 	echo  ^! WARNING
@@ -1495,16 +1553,22 @@ if /i "%Reboot:~0,1%"=="Y" (
   TIMEOUT 10
   echo -Rebooted PC >> %Output%\Notes\Comments.txt
   REM Kill off any running Caffeine instances.
-  tasklist /FI "IMAGENAME eq caffeine.exe" 2>NUL | find /I /N "caffeine.exe">NUL
+	tasklist | find /i "caffeine.exe" >nul
   if "%ERRORLEVEL%"=="0" (
-    taskkill /f /im "caffeine.exe" >nul 2>&1
+    taskkill /IM caffeine.exe /f /t >nul
+  )
+  REM Delete notes
+  if /i "%DeleteNotes:~0,1%"=="Y" (
+    REM Call function
+    call functions\DeleteNotes_function
   )
   REM Restart PC command
   shutdown -r -f -t 0
   REM Self-Destruct
   if /i "%SelfDestruct:~0,1%"=="Y" (
+    echo -Deleted Brainiacs Script >> %Output%\Notes\Comments.txt
     if exist "%Output%\Functions" (
-      rmdir /s /q "%Output%\Functions" >nul 2>&1
+      rmdir /s /q "%Output%\Functions" >nul
     )
     (goto) 2>nul & del "%~f0"
   ) else (
@@ -1515,14 +1579,14 @@ if /i "%Reboot:~0,1%"=="Y" (
 GOTO:EOF
 
 :menu_VR   View Readme
-CLS
 if exist "%Output%\Readme.txt" (
+  CLS
+  REM Set title
   title [Readme] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	type  %Output%\Readme.txt
 	echo.
   echo.
 	pause
-	CLS
 ) else (
   CLS
   color 0c
@@ -1537,19 +1601,18 @@ if exist "%Output%\Readme.txt" (
   echo ===================================================================================
   TIMEOUT 5
   color 07
-  CLS
 )
 GOTO:EOF
 
 :menu_VC   View Comments
-CLS
 if exist "%Output%\Notes\Comments.txt" (
+  CLS
+  REM Set title
   title [Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	type  %Output%\Notes\Comments.txt
 	echo.
   echo.
 	pause
-	CLS
 ) else (
   CLS
   color 0c
@@ -1564,19 +1627,18 @@ if exist "%Output%\Notes\Comments.txt" (
   echo ===================================================================================
   TIMEOUT 5
   color 07
-  CLS
 )
 GOTO:EOF
 
 :menu_VH   View Changelog
-CLS
 if exist "%Output%\Changelog.txt" (
+  CLS
+  REM Set title
   title [Changelog] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	type  %Output%\Changelog.txt
 	echo.
   echo.
 	pause
-	CLS
 ) else (
   CLS
   color 0c
@@ -1591,23 +1653,22 @@ if exist "%Output%\Changelog.txt" (
   echo ===================================================================================
   TIMEOUT 5
   color 07
-  CLS
 )
 GOTO:EOF
 
-::-----------------------------------------------------------
-:: helper functions follow below here
-::-----------------------------------------------------------
+REM -----------------------------------------------------------
+REM  helper functions follow below here
+REM -----------------------------------------------------------
 
 
 :setPersist -- to be called to initialize persistent variables
-::          -- %*: set command arguments
+REM           -- %*: set command arguments
 set %*
 GOTO:EOF
 
 
 :getPersistentVars -- returns a comma separated list of persistent variables
-::                 -- %~1: reference to return variable
+REM                  -- %~1: reference to return variable
 SETLOCAL
 set retlist=
 set parse=findstr /i /c:"call:setPersist" "%~f0%"^|find /v "ButNotThisLine"
@@ -1619,7 +1680,7 @@ GOTO:EOF
 
 
 :savePersistentVars -- Save values of persistent variables into a file
-::                  -- %~1: file name
+REM                   -- %~1: file name
 SETLOCAL
 echo.>"%~1"
 call :getPersistentVars persvars
@@ -1628,14 +1689,14 @@ GOTO:EOF
 
 
 :restorePersistentVars -- Restore the values of the persistent variables
-::                     -- %~1: batch file name to restore from
+REM                      -- %~1: batch file name to restore from
 if exist "%FilePersist%" call "%FilePersist%"
 GOTO:EOF
 
 
 :getNextInList -- return next value in list
-::             -- %~1 - in/out ref to current value, returns new value
-::             -- %~2 - in     choice list, must start with delimiter which must not be '@'
+REM              -- %~1 - in/out ref to current value, returns new value
+REM              -- %~2 - in     choice list, must start with delimiter which must not be '@'
 SETLOCAL
 set lst=%~2&             rem.-- get the choice list
 if "%lst:~0,1%" NEQ "%lst:~-1%" echo.ERROR Choice list must start and end with the delimiter&GOTO:EOF

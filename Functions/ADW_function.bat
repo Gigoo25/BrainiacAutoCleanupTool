@@ -1,13 +1,15 @@
 @echo off
 
-::Variables
+REM Variables
 set "VarADW=0"
 
-::Start ADW service.
-CLS
+REM Set title
+title [AdwCleaner] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start ADW service.
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\ADW\adwcleaner.exe" (
-	title [AdwCleaner] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =================================
@@ -16,8 +18,8 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
 	echo.
 	echo =================================
 	start "ADW" "%Output%\Tools\ADW\adwcleaner.exe"
-	CLS
 	:ADW_RUN_LOOP
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =================================
@@ -25,7 +27,7 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
 	echo   Running ADW Cleaner
 	echo.
 	echo =================================
-	tasklist | find /i "Adwcleaner.exe" >nul 2>&1
+	tasklist | find /i "Adwcleaner.exe" >nul
 	IF ERRORLEVEL 1 (
 		CLS
 		echo -Ran ADWCleaner >> %Output%\Notes\Comments.txt
@@ -43,8 +45,8 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
 		echo   Done running ADWCleaner!
 		echo.
 		echo =================================
-  	TIMEOUT 2 >nul 2>&1
-  	goto :eof
+  	TIMEOUT 2 >nul
+  	GOTO :EOF
 	) ELSE (
 		CLS
 		echo.
@@ -54,7 +56,7 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
 		echo   Running ADW Cleaner.
 		echo.
 		echo =================================
-  	TIMEOUT 1 >nul 2>&1
+  	TIMEOUT 1 >nul
 		CLS
 		echo.
 		echo  ^! ALERT
@@ -63,7 +65,7 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
 		echo   Running ADW Cleaner..
 		echo.
 		echo =================================
-	  TIMEOUT 1 >nul 2>&1
+	  TIMEOUT 1 >nul
 		CLS
 		echo.
 		echo  ^! ALERT
@@ -72,8 +74,7 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
 		echo   Running ADW Cleaner...
 		echo.
 		echo =================================
-		TIMEOUT 1 >nul 2>&1
-		CLS
+		TIMEOUT 1 >nul
   	GOTO ADW_RUN_LOOP
 	)
 ) else (
@@ -92,7 +93,6 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
 )
 ENDLOCAL DISABLEDELAYEDEXPANSION
-CLS

@@ -1,6 +1,9 @@
 @echo off
 
-::Start CHKDSK service.
+REM Set title
+title [CHKDSK] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start CHKDSK service.
 CLS
 echo.
 echo  ^! ALERT
@@ -9,9 +12,8 @@ echo.
 echo   Starting Check Disk...
 echo.
 echo ==========================
-TIMEOUT 3 >nul 2>&1
+TIMEOUT 3 >nul
 CLS
-title [CHKDSK] Brainiacs Cleanup Tool v%TOOL_VERSION%
 echo.
 echo  ^! ALERT
 echo ====================================================
@@ -20,10 +22,10 @@ echo   Checking Windows System Files for corruptions...
 echo.
 echo ====================================================
 
-::Start function
+REM Start function
 %SystemRoot%\System32\chkdsk.exe %SystemDrive%
 
-::If errors found then schedule a fix on reboot
+REM If errors found then schedule a fix on reboot
 if /i not %ERRORLEVEL%==0 (
 	CLS
   color 0c
@@ -43,7 +45,7 @@ if /i not %ERRORLEVEL%==0 (
 	echo -Scheduled a fix for next reboot >> %Output%\Notes\Comments.txt
 	fsutil dirty set %SystemDrive%
   color 07
-	goto eof
+	GOTO :EOF
 ) else (
 	CLS
   color 0c
@@ -61,6 +63,5 @@ if /i not %ERRORLEVEL%==0 (
   TIMEOUT 10
 	echo -Ran CHKDSK and no error were found >> %Output%\Notes\Comments.txt
   color 07
-	goto eof
+	GOTO :EOF
 )
-CLS

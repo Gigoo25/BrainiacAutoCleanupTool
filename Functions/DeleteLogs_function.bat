@@ -1,47 +1,49 @@
 @echo off
-CLS
 
-::Variables
+REM Variables
 set LOG_REMNANTS=no
 
-::Scan for random past logs and delete them if found.
+REM Scan for random past logs and delete them if found.
 if exist "%userprofile%\desktop\Rkill.txt" (
-	del "%userprofile%\desktop\Rkill.txt" >NUL 2>&1
+	del "%userprofile%\desktop\Rkill.txt" >nul
 	set LOG_REMNANTS=yes
 )
 if exist "%userprofile%\desktop\JRT.txt" (
-	del "%userprofile%\desktop\JRT.txt" >NUL 2>&1
+	del "%userprofile%\desktop\JRT.txt" >nul
 	set LOG_REMNANTS=yes
 )
 if exist "%systemdrive%\Rkill.txt" (
-	del "%systemdrive%\Rkill.txt" >NUL 2>&1
+	del "%systemdrive%\Rkill.txt" >nul
 	set LOG_REMNANTS=yes
 )
 if exist "%systemdrive%\JRT.txt" (
-	del "%systemdrive%\JRT.txt" >NUL 2>&1
+	del "%systemdrive%\JRT.txt" >nul
 	set LOG_REMNANTS=yes
 )
 if exist "%SystemRoot%\logs\cbs\cbs.log" (
-	del "%SystemRoot%\logs\cbs\cbs.log" >NUL 2>&1
+	del "%SystemRoot%\logs\cbs\cbs.log" >nul
 	set LOG_REMNANTS=yes
 )
 if exist "%systemdrive%\TDSSKiller*" (
-	del "%systemdrive%\TDSSKiller*" >NUL 2>&1
+	del "%systemdrive%\TDSSKiller*" >nul
 	set LOG_REMNANTS=yes
 )
 if exist "%userprofile%\desktop\TDSSKiller*" (
-	del "%userprofile%\desktop\TDSSKiller*" >NUL 2>&1
+	del "%userprofile%\desktop\TDSSKiller*" >nul
 	set LOG_REMNANTS=yes
 )
 
-::Output notes that logs were cleared.
+REM Output notes that logs were cleared.
 if %LOG_REMNANTS%==yes (
 	echo -Deleted tool remnants >> %Output%\Notes\Comments.txt
 )
 
-::Start DeleteLogs service.
+REM Set title
+title [Deleting Logs] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start DeleteLogs service.
 if exist "%Output%\Logs" (
-	title [Deleting Logs] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo ===============================
@@ -49,7 +51,7 @@ if exist "%Output%\Logs" (
 	echo   Deleting logs/temp files...
 	echo.
 	echo ===============================
-	rmdir /s /q "%Output%\Logs" >nul 2>&1
+	rmdir /s /q "%Output%\Logs" >nul
 	echo -Deleted logs >> %Output%\Notes\Comments.txt
 	CLS
 	echo.
@@ -59,8 +61,8 @@ if exist "%Output%\Logs" (
 	echo   Done deleting logs!
 	echo.
 	echo =======================
-	TIMEOUT 3 >nul 2>&1
-	goto eof
+	TIMEOUT 3 >nul
+	GOTO :EOF
 ) else (
 	CLS
   color 0c
@@ -77,7 +79,5 @@ if exist "%Output%\Logs" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-	goto eof
+	GOTO :EOF
 )
-:eof
-CLS

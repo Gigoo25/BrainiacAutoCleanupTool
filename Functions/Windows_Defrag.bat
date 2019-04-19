@@ -1,13 +1,13 @@
 @echo off
 
-::Skip if internally ran
+REM Skip if internally ran
 if "%Defrag_Internal%"=="Yes" (
     goto Start_Internal_Defrag
 ) else if "%Defrag_External%"=="Yes" (
     goto Start_Internal_Defrag
 )
 
-::Run as admin
+REM Run as admin
 :init
 setlocal DisableDelayedExpansion
 set "batchPath=%~0"
@@ -36,7 +36,7 @@ setlocal & pushd .
 cd /d %~dp0
 if '%1'=='ELEV' (del "%vbsGetPrivileges%" 1>nul 2>nul  &  shift /1)
 
-::Start Defrag
+REM Start Defrag
 :Start_Internal_Defrag
 CLS
 title [External Defrag] Brainiacs Cleanup Tool
@@ -58,7 +58,7 @@ if "%Defrag_External%"=="Yes" (
   exit
 ) else if "%Defrag_Internal%"=="Yes" (
   REM Continue if ran internally
-  goto :EOF
+  GOTO :EOF
 ) else (
   REM Self delete if ran after boot/any other circumstance
   (goto) 2>nul & del "%~f0"

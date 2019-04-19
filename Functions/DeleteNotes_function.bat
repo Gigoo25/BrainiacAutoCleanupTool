@@ -1,14 +1,16 @@
 @echo off
 
-::Check for missing comments
+REM Check for missing comments
 if /i "!SAFE_MODE!"=="yes" (
-  goto eof
+  GOTO :EOF
 )
 
-::Delete Comments service.
-CLS
+REM Set title
+title [Deleting Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Delete Comments service.
 if exist "%Output%\Notes\Comments.txt" (
-	title [Deleting Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
 	echo.
 	echo  ^! ALERT
 	echo =====================
@@ -16,10 +18,9 @@ if exist "%Output%\Notes\Comments.txt" (
 	echo   Deleting Notes...
 	echo.
 	echo =====================
-	rmdir /s /q "%Output%\Notes" >NUL 2>&1
-	TIMEOUT 1 >nul 2>&1
-	CLS
-  GOTO eof
+	rmdir /s /q "%Output%\Notes" >nul
+	TIMEOUT 1 >nul
+  GOTO :EOF
 ) else (
 	CLS
   color 0c
@@ -36,8 +37,6 @@ if exist "%Output%\Notes\Comments.txt" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-	goto eof
+	GOTO :EOF
   set Skip_Comments=yes
 )
-:eof
-CLS

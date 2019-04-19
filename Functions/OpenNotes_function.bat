@@ -1,14 +1,16 @@
 @echo off
 
-::Check for missing comments
+REM Set title
+title [Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Check for missing comments
 if /i "!SAFE_MODE!"=="yes" (
-    goto eof
+    GOTO :EOF
 )
 
-::Open Comments service.
-CLS
+REM Open Comments service.
 if exist "%Output%\Notes\Comments.txt" (
-	title [Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
+  CLS
   echo.
   echo  ^! ALERT
   echo =======================
@@ -17,8 +19,7 @@ if exist "%Output%\Notes\Comments.txt" (
   echo.
   echo =======================
 	start "notepad" /wait notepad "%Output%\Notes\Comments.txt"
-	CLS
-  GOTO eof
+  GOTO :EOF
 ) else (
 	CLS
   color 0c
@@ -35,8 +36,6 @@ if exist "%Output%\Notes\Comments.txt" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
   set Skip_Comments=yes
 )
-:eof
-CLS

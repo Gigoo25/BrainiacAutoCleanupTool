@@ -1,13 +1,15 @@
 @echo off
 
-::Variables
+REM Variables
 set "VarZemana=0"
 
-::Start Zemana service.
-CLS
+REM Set title
+title [Zemana] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start Zemana service.
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" (
-	title [Zemana] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =================================
@@ -16,8 +18,8 @@ if exist "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" (
 	echo.
 	echo =================================
 	start /WAIT "ZMN" "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" /scan SmartScan /clean
-	CLS
 	echo -Ran Zemana >> %Output%\Notes\Comments.txt
+	CLS
 	echo.
 	echo  ^! USER INPUT
 	echo =================================
@@ -32,11 +34,11 @@ if exist "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" (
 	echo   Done running Zemana!
 	echo.
 	echo =================================
-  TIMEOUT 2 >nul 2>&1
-  GOTO eof
+  TIMEOUT 2 >nul
+  GOTO :EOF
 ) else (
-	CLS
   color 0c
+	CLS
   echo.
   echo  ^! ERROR
   echo ===================================================================================
@@ -50,8 +52,6 @@ if exist "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
 )
-:eof
 ENDLOCAL DISABLEDELAYEDEXPANSION
-CLS

@@ -1,11 +1,12 @@
 @echo off
 
-::Start CCleaner service.
-CLS
+REM Set title
 title [CCleaner] Brainiacs Cleanup Tool v%TOOL_VERSION%
 
-::Check if already installed and run if it is, if not run portable version.
+REM Start CCleaner service.
+REM Check if already installed and run if it is, if not run portable version.
 if exist "%systemdrive%\Program Files\CCleaner\CCleaner.exe" (
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo ===============================
@@ -40,6 +41,7 @@ if exist "%systemdrive%\Program Files\CCleaner\CCleaner.exe" (
 )
 
 if exist "%systemdrive%\Program Files (x86)\CCleaner\CCleaner.exe" (
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo ===============================
@@ -72,6 +74,7 @@ if exist "%systemdrive%\Program Files (x86)\CCleaner\CCleaner.exe" (
 	echo -Ran CCleaner registry cleanup >> %Output%\Notes\Comments.txt
 	goto :CCleaner_Done
 ) else (
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo ======================================================
@@ -113,5 +116,4 @@ echo.
 echo   Done running CCleaner.
 echo.
 echo ==========================
-TIMEOUT 2 >nul 2>&1
-CLS
+TIMEOUT 2 >nul

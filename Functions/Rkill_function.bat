@@ -1,9 +1,11 @@
 @echo off
 
-::Start RKill service.
-CLS
+REM Set title
+title [RKill] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start RKill service.
 if exist "%Output%\Tools\RKill\rkill.exe" (
-	title [RKill] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =================================
@@ -23,11 +25,11 @@ if exist "%Output%\Tools\RKill\rkill.exe" (
 	echo   Done running RKill!
 	echo.
 	echo =================================
-  TIMEOUT 2 >nul 2>&1
-  goto :eof
+  TIMEOUT 2 >nul
+  GOTO :EOF
 ) else (
-	CLS
   color 0c
+	CLS
   echo.
   echo  ^! ERROR
   echo ===================================================================================
@@ -41,6 +43,5 @@ if exist "%Output%\Tools\RKill\rkill.exe" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
 )
-CLS

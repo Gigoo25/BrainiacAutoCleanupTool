@@ -1,13 +1,16 @@
 @echo off
 
-::Variables
+REM Variables
 set "VarMBAR=0"
 
-::Start MBAR service.
+REM Set title
+title [MBAR] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start MBAR service.
 CLS
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\MBAR\mbar.exe" (
-	title [MBAR] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =================================
@@ -34,8 +37,8 @@ if exist "%Output%\Tools\MBAR\mbar.exe" (
 	echo   Done running MBAR!
 	echo.
 	echo =================================
-  TIMEOUT 2 >nul 2>&1
-	goto :eof
+  TIMEOUT 2 >nul
+	GOTO :EOF
 ) else (
 	CLS
   color 0c
@@ -52,8 +55,6 @@ if exist "%Output%\Tools\MBAR\mbar.exe" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
 )
-:eof
 ENDLOCAL DISABLEDELAYEDEXPANSION
-CLS

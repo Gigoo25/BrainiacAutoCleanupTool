@@ -1,13 +1,15 @@
 @echo off
 
-::Variables
+REM Variables
 set "VarHitman=0"
 
-::Start HitmanPro service.
-CLS
+REM Set title
+title [HitmanPro] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start HitmanPro service.
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\HitmanPro\HitmanPro*" (
-	title [HitmanPro] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =================================
@@ -16,15 +18,15 @@ if exist "%Output%\Tools\HitmanPro\HitmanPro*" (
 	echo.
 	echo =================================
 	if exist "%systemdrive%\ProgramData\HitmanPro" (
-		rmdir /s /q "%systemdrive%\ProgramData\HitmanPro" >nul 2>&1
+		rmdir /s /q "%systemdrive%\ProgramData\HitmanPro" >nul
 	)
 	if %OS%==32BIT start /WAIT "HMP" "%Output%\Tools\HitmanPro\HitmanPro.exe" /noupload /noinstall /scan
 	if %OS%==64BIT start /WAIT "HMP" "%Output%\Tools\HitmanPro\HitmanPro_x64.exe" /noupload /noinstall /scan
 	if exist "%systemdrive%\ProgramData\HitmanPro" (
-		rmdir /s /q "%systemdrive%\ProgramData\HitmanPro" >nul 2>&1
+		rmdir /s /q "%systemdrive%\ProgramData\HitmanPro" >nul
 	)
-	CLS
 	echo -Ran HitmanPro >> %Output%\Notes\Comments.txt
+	CLS
 	echo.
 	echo  ^! USER INPUT
 	echo =================================
@@ -39,8 +41,8 @@ if exist "%Output%\Tools\HitmanPro\HitmanPro*" (
 	echo   Done running HitmanPro!
 	echo.
 	echo =================================
-  TIMEOUT 2 >nul 2>&1
-  GOTO eof
+  TIMEOUT 2 >nul
+  GOTO :EOF
 ) else (
 	CLS
   color 0c
@@ -57,8 +59,6 @@ if exist "%Output%\Tools\HitmanPro\HitmanPro*" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
 )
-:eof
 ENDLOCAL DISABLEDELAYEDEXPANSION
-CLS

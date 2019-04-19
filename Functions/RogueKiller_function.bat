@@ -1,13 +1,15 @@
 @echo off
 
-::Variables
+REM Variables
 set "VarRougueKiller=0"
 
-::Start RogueKiller service.
-CLS
+REM Set title
+title [RogueKiller] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start RogueKiller service.
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
-	title [RogueKiller] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =================================
@@ -15,11 +17,11 @@ if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
 	echo   Starting RougueKiller...
 	echo.
 	echo =================================
-  TIMEOUT 2 >nul 2>&1
+  TIMEOUT 2 >nul
 	CLS
 	"%Output%\Tools\RogueKiller\RogueKillerCMD.exe" -scan -debuglog "%Output%\Logs\rogue.log"
-	CLS
 	echo -Ran RougueKiller >> %Output%\Notes\Comments.txt
+	CLS
 	echo.
 	echo  ^! USER INPUT
 	echo =================================
@@ -34,11 +36,11 @@ if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
 	echo   Done running RougueKiller!
 	echo.
 	echo =================================
-  TIMEOUT 2 >nul 2>&1
-	goto :eof
+  TIMEOUT 2 >nul
+	GOTO :EOF
 ) else (
-	CLS
   color 0c
+	CLS
   echo.
   echo  ^! ERROR
   echo ===================================================================================
@@ -52,8 +54,6 @@ if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto :eof
+  GOTO :EOF
 )
-:eof
 ENDLOCAL DISABLEDELAYEDEXPANSION
-CLS

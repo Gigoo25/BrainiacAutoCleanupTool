@@ -1,9 +1,12 @@
 @echo off
-CLS
 
-::If Windows version equals 10, 8.1 or 8 run dism
+REM Set title
+title [Windows Image Check] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start Windows Image Check service.
+REM If Windows version equals 10, 8.1 or 8 run dism
 if %WIN_VER_NUM% geq 6.2 (
-  REM Start Windows Image Check service.
+  CLS
   echo.
   echo  ^! ALERT
   echo ===================================
@@ -11,9 +14,8 @@ if %WIN_VER_NUM% geq 6.2 (
   echo   Starting Windows Image Check...
   echo.
   echo ===================================
-  TIMEOUT 3 >nul 2>&1
+  TIMEOUT 3 >nul
   CLS
-  title [Windows Image Check] Brainiacs Cleanup Tool v%TOOL_VERSION%
   echo.
   echo  ^! ALERT
   echo =============================================
@@ -37,11 +39,10 @@ if %WIN_VER_NUM% geq 6.2 (
   IF errorlevel 2 goto dont_review_log_dism
   IF errorlevel 1 goto review_log_dism
   :review_log_dism
-  CLS
   if exist "%SystemRoot%\Windows_Image_Check.txt" (
     type %SystemRoot%\Windows_Image_Check.txt
     pause
-    goto :eof
+    GOTO :EOF
   ) else (
     CLS
     color 0c
@@ -58,19 +59,23 @@ if %WIN_VER_NUM% geq 6.2 (
     echo ===================================================================================
     TIMEOUT 10
     color 07
-    goto :eof
+    GOTO :EOF
   )
   :dont_review_log_dism
   CLS
 	echo Placed log file at %SystemRoot%\Windows_Image_Check.txt
-	TIMEOUT 7 >NUL 2>&1
-  goto :eof
+	TIMEOUT 7 >nul
+  GOTO :EOF
 )
 
-::If Windows version is less than Windows 7 run sfc
+REM Set title
+title [SFC] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Check System Files for corruptions
+REM If Windows version is less than Windows 7 run sfc
 if %WIN_VER_NUM% leq 6.0 (
     if exist "%SystemRoot%\System32\sfc.exe" (
-      title [SFC] Brainiacs Cleanup Tool v%TOOL_VERSION%
+      CLS
       echo.
       echo  ^! ALERT
       echo ============================================
@@ -78,7 +83,7 @@ if %WIN_VER_NUM% leq 6.0 (
       echo   Checking System Files for corruptions...
       echo.
       echo ============================================
-      TIMEOUT 1 >nul 2>&1
+      TIMEOUT 1 >nul
       echo.
       %SystemRoot%\System32\sfc.exe /scannow
       %SystemRoot%\System32\findstr.exe /c:"[SR]" %SystemRoot%\logs\cbs\cbs.log
@@ -96,11 +101,11 @@ if %WIN_VER_NUM% leq 6.0 (
       IF errorlevel 2 goto dont_review_log_sfc
       IF errorlevel 1 goto review_log_sfc
       :review_log_sfc
-      CLS
       if exist "%SystemRoot%\logs\cbs\cbs.log" (
+        CLS
         type %SystemRoot%\logs\cbs\cbs.log
         pause
-        goto :eof
+        GOTO :EOF
       ) else (
         CLS
         color 0c
@@ -117,13 +122,13 @@ if %WIN_VER_NUM% leq 6.0 (
         echo ===================================================================================
         TIMEOUT 10
         color 07
-        goto :eof
+        GOTO :EOF
       )
       :dont_review_log_sfc
       CLS
       echo Placed log file at %SystemRoot%\logs\cbs\cbs.log
-      TIMEOUT 7 >NUL 2>&1
-      goto :eof
+      TIMEOUT 7 >nul
+      GOTO :EOF
     ) else (
 	    CLS
       color 0c
@@ -140,7 +145,7 @@ if %WIN_VER_NUM% leq 6.0 (
       echo ===================================================================================
       TIMEOUT 10
       color 07
-      goto :eof
+      GOTO :EOF
     )
 ) else (
   CLS
@@ -158,6 +163,5 @@ if %WIN_VER_NUM% leq 6.0 (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-  goto eof
+  GOTO :EOF
 )
-CLS

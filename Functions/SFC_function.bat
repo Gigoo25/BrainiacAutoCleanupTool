@@ -1,15 +1,23 @@
 @echo off
 
-::Start System File Checker (SFC) service.
+REM Set title
+title [SFC] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start System File Checker (SFC) service.
 CLS
-echo Starting System File Checker (SFC)...
-TIMEOUT 3 >nul 2>&1
+echo.
+echo  ^! ALERT
+echo =================================
+echo.
+echo   Starting System File Checker (SFC)...
+echo.
+echo =================================
+TIMEOUT 3 >nul
 CLS
-::Start function
+REM Start function
 if exist "%SystemRoot%\System32\sfc.exe" (
-	title [SFC] Brainiacs Cleanup Tool v%TOOL_VERSION%
 	echo Checking System Files for corruptions...
-	TIMEOUT 1 >nul 2>&1
+	TIMEOUT 1 >nul
 	echo.
 	if %WIN_VER_NUM% geq 6.0 (
 		%SystemRoot%\System32\sfc.exe /scannow
@@ -21,8 +29,8 @@ if exist "%SystemRoot%\System32\sfc.exe" (
 		echo Skipping...
 		echo.
     	echo Continuing in 10 seconds.
-		TIMEOUT 10 >NUL 2>&1
-		goto eof
+		TIMEOUT 10 >nul
+		GOTO :EOF
 	)
 ) else (
 	echo SFC not found.
@@ -30,8 +38,8 @@ if exist "%SystemRoot%\System32\sfc.exe" (
 	echo Skipping...
 	echo.
     echo Continuing in 10 seconds.
-	TIMEOUT 10 >NUL 2>&1
-	goto eof
+	TIMEOUT 10 >nul
+	GOTO :EOF
 )
 :eof
 CLS

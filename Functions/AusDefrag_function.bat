@@ -84,11 +84,13 @@ echo.
 echo ===================================================================================
 TIMEOUT 15
 color 07
-CLS
 
-::Start AusDefrag service.
+REM Set title
+title [AusDefrag] Brainiacs Cleanup Tool v%TOOL_VERSION%
+
+REM Start AusDefrag service.
 if exist "%Output%\Tools\AUS\ausdiskdefrag.exe" (
-	title [AusDefrag] Brainiacs Cleanup Tool v%TOOL_VERSION%
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =================================
@@ -106,8 +108,8 @@ if exist "%Output%\Tools\AUS\ausdiskdefrag.exe" (
 	echo   Done running AusDefrag!
 	echo.
 	echo =================================
-  TIMEOUT 2 >nul 2>&1
-  GOTO eof
+  TIMEOUT 2 >nul
+  GOTO :EOF
 ) else (
 	CLS
   color 0c
@@ -124,7 +126,5 @@ if exist "%Output%\Tools\AUS\ausdiskdefrag.exe" (
   echo ===================================================================================
   TIMEOUT 10
   color 07
-	goto eof
+	GOTO :EOF
 )
-:eof
-CLS

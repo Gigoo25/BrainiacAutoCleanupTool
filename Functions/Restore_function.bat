@@ -1,14 +1,15 @@
 @echo off
 
-::Enable delayed expansion
+REM Enable delayed expansion
 setlocal enableDelayedExpansion
 
-::Set variables
+REM Set variables
 set DELETE_COOLDOWN=unidentified
 
-::Start System restore service.
-CLS
+REM Set title
 title [System Restore Point] Brainiacs Cleanup Tool v!TOOL_VERSION!
+
+REM Start System restore service.
 if !SAFE_MODE!==yes (
 	REM Set Color
 	color 0c
@@ -31,18 +32,18 @@ if !SAFE_MODE!==yes (
 	goto :skip_restore_point_creation
 )
 
-::Detect if reg key has been added already to prevent false positive
-reg query "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v SystemRestorePointCreationFrequency >nul 2>&1
+REM Detect if reg key has been added already to prevent false positive
+reg query "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v SystemRestorePointCreationFrequency >nul
 if /i not !ERRORLEVEL!==0 (
 	set DELETE_COOLDOWN=yes
 ) else (
 	set DELETE_COOLDOWN=no
 )
 
-::Win7 and up only: Remove the cooldown timer (via reg command) and enable System Restore
+REM Win7 and up only: Remove the cooldown timer (via reg command) and enable System Restore
 if /i !WIN_VER_NUM! geq 6.1 (
 	if /i "!DELETE_COOLDOWN!"=="yes" (
-		reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /t reg_dword /v SystemRestorePointCreationFrequency /d 0 /f >nul 2>&1
+		reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /t reg_dword /v SystemRestorePointCreationFrequency /d 0 /f >nul
 		powershell "Enable-ComputerRestore -Drive "!SystemDrive!" | Out-Null" 2>&1
 		if /i not !ERRORLEVEL!==0 (
 			REM Set Color
@@ -76,14 +77,14 @@ if /i !WIN_VER_NUM! geq 6.1 (
 			echo    I hope you are aware of the consequences!!
 			echo.
 			echo ===================================================================================
-			TIMEOUT 5 >NUL 2>&1
+			TIMEOUT 5 >nul
 			echo -Skipped creation restore point creation per user input >> !Output!\Notes\Comments.txt
 			REM Set Color
 			color 07
 			goto :skip_restore_point_creation
 			:manual_restore_point_creation_user_choice_cooldown
-			CLS
 			start /WAIT "RESTORE" "!SystemRoot!\System32\SystemPropertiesProtection.exe"
+			CLS
 		  echo.
 		  echo  ^! ALERT
 		  echo =================================
@@ -106,14 +107,14 @@ if /i !WIN_VER_NUM! geq 6.1 (
 		  echo =============================================
 			REM Set variable to skip windows timer if previously ran.
 			set DELETE_COOLDOWN=no
-			TIMEOUT 2 >NUL 2>&1
-			CLS
+			TIMEOUT 2 >nul
 		)
 	)
 )
 
-::Create restore point
+REM Create restore point
 echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
+	CLS
 	echo.
 	echo  ^! ALERT
 	echo =============================
@@ -121,8 +122,9 @@ echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
 	echo   Creating restore point...
 	echo.
 	echo =============================
-	TIMEOUT 1 >NUL 2>&1
+	TIMEOUT 1 >nul
 	CLS
+	echo.
 	powershell "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
 	if /i not !ERRORLEVEL!==0 (
 		REM Set Color
@@ -156,14 +158,14 @@ echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
 		echo    I hope you are aware of the consequences!!
 		echo.
 		echo ===================================================================================
-		TIMEOUT 5 >NUL 2>&1
+		TIMEOUT 5 >nul
 		echo -Skipped creation restore point creation per user input >> !Output!\Notes\Comments.txt
 		REM Set Color
 		color 07
 		goto :skip_restore_point_creation
 		:manual_restore_point_creation_user_choice_cooldown
-		CLS
 		start /WAIT "RESTORE" "!SystemRoot!\System32\SystemPropertiesProtection.exe"
+		CLS
 		echo.
 		echo  ^! ALERT
 		echo =================================
@@ -185,10 +187,9 @@ echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
 		echo.
 		echo ===================================================================
 		echo -Created a system restore point 'Brainiacs - !DATE!: Pre-run checkpoint' >> !Output!\Notes\Comments.txt
-		TIMEOUT 3 >nul 2>&1
+		TIMEOUT 3 >nul
 	)
 )
 :skip_restore_point_creation
-CLS
-::Disable delayed expansion
+REM Disable delayed expansion
 ENDLOCAL
