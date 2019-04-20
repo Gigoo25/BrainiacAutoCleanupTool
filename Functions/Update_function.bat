@@ -101,7 +101,7 @@ set Caffeine_Update_Tool_Online=unidentified
 set Geek_Update_Tool_Online=unidentified
 
 REM Tool download location variables
-set RKill_Url="https://files.downloadnow-3.com/s/software/16/31/77/69/rkill.exe?token=1554240497_1a8fe216d392387d272ba1afa7874e48&fileName=rkill.exe"
+set RKill_Url=unidentified
 set JRT_Url=unidentified
 set TDSS_Url=http://media.kaspersky.com/utilities/VirusUtilities/EN/tdsskiller.zip
 set Rogue_Url=unidentified
@@ -112,7 +112,7 @@ set Zemana_Url=http://dl12.zemana.com/AntiMalware/2.74.2.664/Zemana.AntiMalware.
 set MBAR_Url=unidentified
 set Malwarebytes_Url=unidentified
 set Spybot_Url=unidentified
-set CCleaner_Url=https://download.ccleaner.com/portable/ccsetup555.zip
+set CCleaner_Url=https://download.ccleaner.com/portable/ccsetup556.zip
 set DefragSystem_A_Url=http://downloads.auslogics.com/en/disk-defrag/ausdiskdefragportable.exe
 set DefragSystem_D_Url=https://softpedia-secure-download.com/dl/43f41169943fef85b1fcc5f7e22ac9bf/5c9b623b/100100698/software/portable/system/dfsetup222.zip
 set Caffeine_Url=unidentified
@@ -388,17 +388,11 @@ if not DEFINED Skip_Update (
 		echo ======================================
 		echo.
 		"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
-		CLS
-		echo.
-		echo  ^! ALERT
-		echo =========================================
-		echo.
-		echo   Done updating Update_Update_Function!
-		echo.
-		echo =========================================
-		TIMEOUT 2
+		TIMEOUT 1 >nul
 		set Skip_Update=yes
+		REM Set variables to not repeat update & get stuck in a loop
 		if not DEFINED Skip_Update set Skip_Update=yes
+		REM Set variable to open window maximized
 		if not DEFINED IS_MAXIMIZED set IS_MAXIMIZED=1 && start "" /max "%~dpnx0" %* && exit
 	)
 ) else if %Test_Update_All%==yes (
@@ -416,15 +410,7 @@ if "%RKill_Update_Function_Online%" GTR "%RKill_Update_Function_Local%" (
 	echo.
 	echo ==============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Rkill_function.bat" -O "%Output%\Functions\Rkill_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Done updating Rkill_Function!
-	echo.
-	echo =================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Rkill_function.bat" -O "%Output%\Functions\Rkill_function.bat" 2>NUL
 )
@@ -440,15 +426,7 @@ if "%JRT_Update_Function_Online%" GTR "%JRT_Update_Function_Local%" (
 	echo.
 	echo ============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/JRT_function.bat" -O "%Output%\Functions\JRT_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===============================
-	echo.
-	echo   Done updating JRT_Function!
-	echo.
-	echo ===============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/JRT_function.bat" -O "%Output%\Functions\JRT_function.bat" 2>NUL
 )
@@ -464,15 +442,7 @@ if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 	echo.
 	echo =============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ================================
-	echo.
-	echo   Done updating TDSS_Function!
-	echo.
-	echo ================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL
 )
@@ -488,15 +458,7 @@ if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 	echo.
 	echo ==============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/RogueKiller_function.bat" -O "%Output%\Functions\RogueKiller_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Done updating Rogue_Function!
-	echo.
-	echo =================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/RogueKiller_function.bat" -O "%Output%\Functions\RogueKiller_function.bat" 2>NUL
 )
@@ -512,15 +474,7 @@ if "%ADW_Update_Function_Online%" GTR "%ADW_Update_Function_Local%" (
 	echo.
 	echo ============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/ADW_function.bat" -O "%Output%\Functions\ADW_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===============================
-	echo.
-	echo   Done updating ADW_Function!
-	echo.
-	echo ===============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/ADW_function.bat" -O "%Output%\Functions\ADW_function.bat" 2>NUL
 )
@@ -536,15 +490,7 @@ if "%HitmanPro_Update_Function_Online%" GTR "%HitmanPro_Update_Function_Local%" 
 	echo.
 	echo ==================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/HitmanPro_function.bat" -O "%Output%\Functions\HitmanPro_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =====================================
-	echo.
-	echo   Done updating HitmanPro_Function!
-	echo.
-	echo =====================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/HitmanPro_function.bat" -O "%Output%\Functions\HitmanPro_function.bat" 2>NUL
 )
@@ -560,15 +506,7 @@ if "%Zemana_Update_Function_Online%" GTR "%Zemana_Update_Function_Local%" (
 	echo.
 	echo ===============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Zemana_function.bat" -O "%Output%\Functions\Zemana_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ==================================
-	echo.
-	echo   Done updating Zemana_Function!
-	echo.
-	echo ==================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Zemana_function.bat" -O "%Output%\Functions\Zemana_function.bat" 2>NUL
 )
@@ -584,15 +522,7 @@ if "%MBAR_Update_Function_Online%" GTR "%MBAR_Update_Function_Local%" (
 	echo.
 	echo =============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/MBAR_function.bat" -O "%Output%\Functions\MBAR_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ================================
-	echo.
-	echo   Done updating MBAR_Function!
-	echo.
-	echo ================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/MBAR_function.bat" -O "%Output%\Functions\MBAR_function.bat" 2>NUL
 )
@@ -608,15 +538,7 @@ if "%Malwarebytes_Update_Function_Online%" GTR "%Malwarebytes_Update_Function_Lo
 	echo.
 	echo =====================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Malwarebytes_function.bat" -O "%Output%\Functions\Malwarebytes_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ========================================
-	echo.
-	echo   Done updating Malwarebytes_Function!
-	echo.
-	echo ========================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Malwarebytes_function.bat" -O "%Output%\Functions\Malwarebytes_function.bat" 2>NUL
 )
@@ -632,15 +554,7 @@ if "%Spybot_Update_Function_Online%" GTR "%Spybot_Update_Function_Local%" (
 	echo.
 	echo ===============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ==================================
-	echo.
-	echo   Done updating Spybot_Function!
-	echo.
-	echo ==================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
 )
@@ -656,15 +570,7 @@ if "%CCleaner_Update_Function_Online%" GTR "%CCleaner_Update_Function_Local%" (
 	echo.
 	echo =================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CCleaner_function.bat" -O "%Output%\Functions\CCleaner_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ====================================
-	echo.
-	echo   Done updating CCleaner_Function!
-	echo.
-	echo ====================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CCleaner_function.bat" -O "%Output%\Functions\CCleaner_function.bat" 2>NUL
 )
@@ -680,15 +586,7 @@ if "%DefragSystem_A_Update_Function_Online%" GTR "%DefragSystem_A_Update_Functio
 	echo.
 	echo ==============================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/AusDefrag_function.bat" -O "%Output%\Functions\AusDefrag_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================================
-	echo.
-	echo   Done updating DefragSystem_A_Update_Function!
-	echo.
-	echo =================================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/AusDefrag_function.bat" -O "%Output%\Functions\AusDefrag_function.bat" 2>NUL
 )
@@ -704,15 +602,7 @@ if "%DefragSystem_D_Update_Function_Online%" GTR "%DefragSystem_D_Update_Functio
 	echo.
 	echo ==============================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_function.bat" -O "%Output%\Functions\Defraggler_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================================
-	echo.
-	echo   Done updating DefragSystem_D_Update_Function!
-	echo.
-	echo =================================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_function.bat" -O "%Output%\Functions\Defraggler_function.bat" 2>NUL
 )
@@ -728,15 +618,7 @@ if "%ImageChecker_Update_Function_Online%" GTR "%ImageChecker_Update_Function_Lo
 	echo.
 	echo =====================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Image_Checker_function.bat" -O "%Output%\Functions\Image_Checker_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ========================================
-	echo.
-	echo   Done updating ImageChecker_Function!
-	echo.
-	echo ========================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Image_Checker_function.bat" -O "%Output%\Functions\Image_Checker_function.bat" 2>NUL
 )
@@ -752,15 +634,7 @@ if "%CHKDSK_Update_Function_Online%" GTR "%CHKDSK_Update_Function_Local%" (
 	echo.
 	echo ===============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CHKDSK_function.bat" -O "%Output%\Functions\CHKDSK_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ==================================
-	echo.
-	echo   Done updating CHKDSK_Function!
-	echo.
-	echo ==================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CHKDSK_function.bat" -O "%Output%\Functions\CHKDSK_function.bat" 2>NUL
 )
@@ -776,15 +650,7 @@ if "%SystemRestore_Update_Function_Online%" GTR "%SystemRestore_Update_Function_
 	echo.
 	echo ======================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Restore_function.bat" -O "%Output%\Functions\Restore_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =========================================
-	echo.
-	echo   Done updating SystemRestore_Function!
-	echo.
-	echo =========================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Restore_function.bat" -O "%Output%\Functions\Restore_function.bat" 2>NUL
 )
@@ -800,15 +666,7 @@ if "%DeleteNotes_Update_Function_Online%" GTR "%DeleteNotes_Update_Function_Loca
 	echo.
 	echo ====================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteNotes_function.bat" -O "%Output%\Functions\DeleteNotes_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =======================================
-	echo.
-	echo   Done updating DeleteNotes_Function!
-	echo.
-	echo =======================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteNotes_function.bat" -O "%Output%\Functions\DeleteNotes_function.bat" 2>NUL
 )
@@ -824,15 +682,7 @@ if "%DeleteLogs_Update_Function_Online%" GTR "%DeleteLogs_Update_Function_Local%
 	echo.
 	echo ===================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteLogs_function.bat" -O "%Output%\Functions\DeleteLogs_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ======================================
-	echo.
-	echo   Done updating DeleteLogs_Function!
-	echo.
-	echo ======================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteLogs_function.bat" -O "%Output%\Functions\DeleteLogs_function.bat" 2>NUL
 )
@@ -848,15 +698,7 @@ if "%DeleteTools_Update_Function_Online%" GTR "%DeleteTools_Update_Function_Loca
 	echo.
 	echo ====================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteTools_function.bat" -O "%Output%\Functions\DeleteTools_function.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =======================================
-	echo.
-	echo   Done updating DeleteTools_Function!
-	echo.
-	echo =======================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteTools_function.bat" -O "%Output%\Functions\DeleteTools_function.bat" 2>NUL
 )
@@ -872,15 +714,7 @@ if "%Brainiacs_Update_Function_Online%" GTR "%Brainiacs_Update_Function_Local%" 
 	echo.
 	echo ==================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Brainiacs.bat" -O "%Output%\Brainiacs.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =====================================
-	echo.
-	echo   Done updating Brainiacs_Function!
-	echo.
-	echo =====================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Brainiacs.bat" -O "%Output%\Brainiacs.bat" 2>NUL
 )
@@ -899,15 +733,7 @@ if not exist "%Output%/Functions/Windows_Defrag.bat" (
 	echo.
 	echo =================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Windows_Defrag.bat" -O "%Output%/Functions/Windows_Defrag.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ====================================
-	echo.
-	echo   Done downloading Windows_Defrag!
-	echo.
-	echo ====================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if "%Windows_Defrag_Function_Online%" GTR "%Windows_Defrag_Function_Local%" (
 	CLS
 	echo.
@@ -918,15 +744,7 @@ if not exist "%Output%/Functions/Windows_Defrag.bat" (
 	echo.
 	echo ==============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Windows_Defrag.bat" -O "%Output%/Functions/Windows_Defrag.bat" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Done updating Windows_Defrag!
-	echo.
-	echo =================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Windows_Defrag.bat" -O "%Output%/Functions/Windows_Defrag.bat" 2>NUL
 )
@@ -937,7 +755,6 @@ if %Test_Update_All%==yes (
 )
 
 REM Updated tools based on variables
-
 REM Rkill_Tool
 if "%RKill_Update_Tool_Online%" GTR "%RKill_Update_Tool_Local%" (
 	CLS
@@ -949,15 +766,7 @@ if "%RKill_Update_Tool_Online%" GTR "%RKill_Update_Tool_Local%" (
 	echo.
 	echo ==========================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%RKill_Url%" -O "%Output%\Tools\RKill\rkill.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =============================
-	echo.
-	echo   Done updating Rkill_Tool!
-	echo.
-	echo =============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM JRT_Tool
@@ -971,15 +780,7 @@ if "%JRT_Update_Tool_Online%" GTR "%JRT_Update_Tool_Local%" (
 	echo.
 	echo ========================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%JRT_Url%" -O "%Output%\Tools\JRT\JRT.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===========================
-	echo.
-	echo   Done updating JRT_Tool!
-	echo.
-	echo ===========================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM TDSS_Tool
@@ -993,33 +794,11 @@ if "%TDSS_Update_Tool_Online%" GTR "%TDSS_Update_Tool_Local%" (
 	echo.
 	echo ===========================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%TDSS_Url%" -O "%Output%/TDSSKiller.zip" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =====================
-	echo.
-	echo   Unzipping file...
-	echo.
-	echo =====================
+	REM Unzip zip file
 	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\TDSS'); $zip = $shell.NameSpace('%Output%\TDSSKiller.zip'); $target.CopyHere($zip.Items(), 16); }"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ============================
-	echo.
-	echo   Deleting downloaded file
-	echo.
-	echo ============================
+	REM Deleting zip file
 	del "%Output%\TDSSKiller.zip"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ============================
-	echo.
-	echo   Done updating TDSS_Tool!
-	echo.
-	echo ============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM Rogue_Tool
@@ -1033,15 +812,7 @@ if "%Rogue_Update_Tool_Online%" GTR "%Rogue_Update_Tool_Local%" (
 	echo.
 	echo ==========================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Rogue_Url%" -O "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =============================
-	echo.
-	echo   Done updating Rogue_Tool!
-	echo.
-	echo =============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM ADW_Tool
@@ -1055,15 +826,7 @@ if "%ADW_Update_Tool_Online%" GTR "%ADW_Update_Tool_Local%" (
 	echo.
 	echo ========================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%ADW_Url%" -O "%Output%\Tools\ADW\adwcleaner.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===========================
-	echo.
-	echo   Done updating ADW_Tool!
-	echo.
-	echo ===========================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM HitmanPro_Tool
@@ -1076,17 +839,11 @@ if "%HitmanPro_Update_Tool_Online%" GTR "%HitmanPro_Update_Tool_Local%" (
 	echo   Updating HitmanPro_Tool...
 	echo.
 	echo ==============================
+	REM Update 32 bit version
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%HitmanPro_Url%" -O "%Output%\Tools\HitmanPro\HitmanPro.exe" 2>NUL
+	REM Update 64 bit version
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%HitmanPro_64_Url%" -O "%Output%\Tools\HitmanPro\HitmanPro_x64.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Done updating HitmanPro_Tool!
-	echo.
-	echo =================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM Zemana_Tool
@@ -1100,15 +857,7 @@ if "%Zemana_Update_Tool_Online%" GTR "%Zemana_Update_Tool_Local%" (
 	echo.
 	echo ======================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Zemana_Url%" -O "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =========================
-	echo.
-	echo   Done updating Zemana!
-	echo.
-	echo =========================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM MBAR_Tool
@@ -1123,15 +872,7 @@ if "%MBAR_Update_Tool_Online%" GTR "%MBAR_Update_Tool_Local%" (
 	echo.
 	echo =========================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%MBAR_Url%" -O "%Output%\Tools\MBAR\mbar.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ============================
-	echo.
-	echo   Done updating MBAR_Tool!
-	echo.
-	echo ============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM Malwarebytes_Tool
@@ -1145,15 +886,7 @@ if "%Malwarebytes_Update_Tool_Online%" GTR "%Malwarebytes_Update_Tool_Local%" (
 	echo.
 	echo =================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Malwarebytes_Url%" -O "%Output%\Tools\Malwarebytes\mb3-setup.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ====================================
-	echo.
-	echo   Done updating Malwarebytes_Tool!
-	echo.
-	echo ====================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM Spybot_Tool
@@ -1167,15 +900,7 @@ if "%Spybot_Update_Tool_Online%" GTR "%Spybot_Update_Tool_Local%" (
 	echo.
 	echo ===========================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Spybot_Url%" -O "%Output%\Tools\SpyBot\spybotsd.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ==============================
-	echo.
-	echo   Done updating Spybot_Tool!
-	echo.
-	echo ==============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM CCleaner_Tool
@@ -1189,33 +914,11 @@ if "%CCleaner_Update_Tool_Online%" GTR "%CCleaner_Update_Tool_Local%" (
 	echo.
 	echo =============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%CCleaner_Url%" -O "%Output%/ccsetup.zip" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===================
-	echo.
-	echo   Unzipping file!
-	echo.
-	echo ===================
+	REM Unzip zip file
 	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\CCleaner'); $zip = $shell.NameSpace('%Output%\ccsetup.zip'); $target.CopyHere($zip.Items(), 16); }"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===============================
-	echo.
-	echo   Deleting downloaded file...
-	echo.
-	echo ===============================
+	REM Delete zip file
 	del "%Output%\ccsetup.zip"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ================================
-	echo.
-	echo   Done updating CCleaner_Tool!
-	echo.
-	echo ================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM DefragSystem_A_Tool
@@ -1229,15 +932,7 @@ if "%DefragSystem_A_Update_Tool_Online%" GTR "%DefragSystem_A_Update_Tool_Local%
 	echo.
 	echo ================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%DefragSystem_A_Url%" -O "%Output%\Tools\AUS\ausdiskdefrag.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ======================================
-	echo.
-	echo   Done updating DefragSystem_A_Tool!
-	echo.
-	echo ======================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM DefragSystem_D_Tool
@@ -1251,33 +946,11 @@ if "%DefragSystem_D_Update_Tool_Online%" GTR "%DefragSystem_D_Update_Tool_Local%
 	echo.
 	echo ===================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%DefragSystem_D_Url%" -O "%Output%\dfsetup.zip" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===================
-	echo.
-	echo   Unzipping file!
-	echo.
-	echo ===================
+	REM Unzip zip file
 	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Defraggler'); $zip = $shell.NameSpace('%Output%\dfsetup.zip'); $target.CopyHere($zip.Items(), 16); }"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ================================
-	echo.
-	echo   Deleting downloaded file...
-	echo.
-	echo ================================
+	REM Delete zip file
 	del "%Output%\dfsetup.zip"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ======================================
-	echo.
-	echo   Done updating DefragSystem_D_Tool!
-	echo.
-	echo ======================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM Caffeine_Update_Tool
@@ -1291,15 +964,7 @@ if "%Caffeine_Update_Tool_Online%" GTR "%Caffeine_Update_Tool_Local%" (
 	echo.
 	echo =============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Caffeine_Url%" -O "%Output%\Tools\Caffeine\caffeine.exe" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ================================
-	echo.
-	echo   Done updating Caffeine_Tool!
-	echo.
-	echo ================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM Geek_Update_Tool
@@ -1317,17 +982,11 @@ if not exist "%Output%\Tools\Geek\" (
 	echo ============================
 	mkdir "%Output%\Tools\Geek\"
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Geek_Url%" -O "%Output%\Tools\Geek\geek.zip" 2>NUL
+	REM Unzip zip file
 	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Geek'); $zip = $shell.NameSpace('%Output%\Tools\Geek\geek.zip'); $target.CopyHere($zip.Items(), 16); }"
+	REM Delete zip file
 	del "%Output%\Tools\Geek\geek.zip"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===============================
-	echo.
-	echo   Done downloading Geek_Tool!
-	echo.
-	echo ===============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 	goto Skip_Geek_Update
 )
 
@@ -1342,33 +1001,11 @@ if "%Geek_Update_Tool_Online%" GTR "%Geek_Update_Tool_Local%" (
 	echo.
 	echo =========================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Geek_Url%" -O "%Output%\Tools\Geek\geek.zip" 2>NUL
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =====================
-	echo.
-	echo   Unzipping file...
-	echo.
-	echo =====================
+	REM Unzip zip file
 	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Geek'); $zip = $shell.NameSpace('%Output%\Tools\Geek\geek.zip'); $target.CopyHere($zip.Items(), 16); }"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===============================
-	echo.
-	echo   Deleting downloaded file...
-	echo.
-	echo ===============================
+	REM Deleteing zip file
 	del "%Output%\Tools\Geek\geek.zip"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ============================
-	echo.
-	echo   Done updating Geek_Tool!
-	echo.
-	echo ============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 :Skip_Geek_Update
 
@@ -1383,15 +1020,7 @@ if "%Readme_Online%" GTR "%Readme_Local%" (
 	echo.
 	echo ===========================
 	"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Readme.txt" -O "%Output%\Readme.txt"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ==============================
-	echo.
-	echo   Done updating Readme file!
-	echo.
-	echo ==============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM Update Version file
@@ -1405,15 +1034,7 @@ if "%Version_Online%" GTR "%Version_Local%" (
 	echo.
 	echo ============================
 	"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Version.txt" -O "%Output%\Version.txt"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===============================
-	echo.
-	echo   Done updating Verison file!
-	echo.
-	echo ===============================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM Update Changelog file
@@ -1427,15 +1048,7 @@ if "%Changelog_Online%" GTR "%Changelog_Local%" (
 	echo.
 	echo ==============================
 	"%Output%\Tools\WGET\wget.exe" -q  --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 "%REPO_URL%/%REPO_BRANCH%/Changelog.txt" -O "%Output%\Changelog.txt"
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Done updating Changelog file!
-	echo.
-	echo =================================
-	TIMEOUT 2
+	TIMEOUT 1 >nul
 )
 
 REM Set the window title
