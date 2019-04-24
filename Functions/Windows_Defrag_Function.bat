@@ -51,7 +51,10 @@ echo.
 echo ===================================================================================
 pause
 CLS
-defrag C: /O /V /H
+defrag C: /O /V /H /U
+pause
+REM Add defrag notes
+echo -Defragged main drive >> %Output%\Notes\Comments.txt
 pause
 if "%Defrag_External%"=="Yes" (
   REM Exit if ran internally

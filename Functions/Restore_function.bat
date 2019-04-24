@@ -33,7 +33,8 @@ if !SAFE_MODE!==yes (
 )
 
 REM Detect if reg key has been added already to prevent false positive
-reg query "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v SystemRestorePointCreationFrequency >nul
+CLS
+reg query "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v SystemRestorePointCreationFrequency >NUL 2>&1
 if /i not !ERRORLEVEL!==0 (
 	set DELETE_COOLDOWN=yes
 ) else (

@@ -78,14 +78,14 @@ if exist "%systemdrive%\BB Tools" (
 )
 
 REM Delete %userprofile%\Desktop\Cleanup or %systemdrive%\Cleanup
-if exist "%userprofile%\Desktop\Cleanup" (
-	rd /s /q  "%userprofile%\Desktop\Cleanup" >nul
-	set TOOL_REMNANTS=yes
-)
-if exist "%systemdrive%\Cleanup" (
-	rd /s /q  "%systemdrive%\Cleanup" >nul
-	set TOOL_REMNANTS=yes
-)
+REM if exist "%userprofile%\Desktop\Cleanup" (
+REM 	rd /s /q  "%userprofile%\Desktop\Cleanup" >nul
+REM 	set TOOL_REMNANTS=yes
+REM )
+REM if exist "%systemdrive%\Cleanup" (
+REM 	rd /s /q  "%systemdrive%\Cleanup" >nul
+REM 	set TOOL_REMNANTS=yes
+REM )
 
 REM Delete %userprofile%\Desktop\Tool or %userprofile%\Desktop\Tools
 if exist "%userprofile%\Desktop\Tool" (

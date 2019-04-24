@@ -1352,7 +1352,7 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   :Run_External_Defrag_Windows
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   set Defrag_External=Yes
-  start functions\Windows_Defrag
+  start functions\Windows_Defrag_Function
   set Defrag_External=No
   goto Defrag_Done
   :Next_Boot_Defrag_Windows_Choice
@@ -1368,7 +1368,7 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   REM Schedule for next reboot/delete task after
   :Next_Boot_Defrag_Windows
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-  xcopy /v "%Output%\Functions\Windows_Defrag.bat" "%SystemDrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
+  xcopy /v "%Output%\functions\Windows_Defrag_Function.bat" "%SystemDrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
   cls
   echo.
   echo  ^! ALERT
@@ -1396,7 +1396,7 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   :Windows_Defrag_Function
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
   set Defrag_Internal=Yes
-  call functions\Windows_Defrag
+  call functions\Windows_Defrag_Function
   set Defrag_Internal=No
   goto Defrag_Done
   REM Open Defraggler_function.
