@@ -757,29 +757,29 @@ if "%DefragSystem_A_Update_Function_Online%" GTR "%DefragSystem_A_Update_Functio
 	CLS
 	echo.
 	echo  ^! ALERT
-	echo ==================================
+	echo ====================================
 	echo.
-	echo   Updating AusDefrag_function...
+	echo   Updating Aus_Defrag_function...
 	echo.
-	echo ==================================
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/AusDefrag_function.bat" -O "%Output%\Functions\AusDefrag_function.bat" 2>NUL
+	echo ====================================
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
 	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	REM Download if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/AusDefrag_function.bat" -O "%Output%\Functions\AusDefrag_function.bat" 2>NUL
-) else if not exist "%Output%\Functions\AusDefrag_function.bat" (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
+) else if not exist "%Output%\Functions\Aus_Defrag_function.bat" (
 	REM Download if not present
 	CLS
 	echo.
 	echo  ^! ALERT
-	echo =====================================
+	echo ======================================
 	echo.
-	echo   AusDefrag_function not present.
+	echo   Aus_Defrag_function not present.
 	echo.
-	echo   Downloading AusDefrag_function...
+	echo   Downloading Aus_Defrag_function...
 	echo.
-	echo =====================================
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/AusDefrag_function.bat" -O "%Output%\Functions\AusDefrag_function.bat" 2>NUL
+	echo ======================================
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
 	TIMEOUT 1 >nul
 )
 
@@ -788,29 +788,29 @@ if "%DefragSystem_D_Update_Function_Online%" GTR "%DefragSystem_D_Update_Functio
 	CLS
 	echo.
 	echo  ^! ALERT
-	echo ===================================
+	echo ==========================================
 	echo.
-	echo   Updating Defraggler_function...
+	echo   Updating Defraggler_Defrag_function...
 	echo.
-	echo ===================================
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_function.bat" -O "%Output%\Functions\Defraggler_function.bat" 2>NUL
+	echo ==========================================
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
 	TIMEOUT 1 >nul
 ) else if %Test_Update_All%==yes (
 	REM Download if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_function.bat" -O "%Output%\Functions\Defraggler_function.bat" 2>NUL
-) else if not exist "%Output%\Functions\Defraggler_function.bat" (
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
+) else if not exist "%Output%\Functions\Defraggler_Defrag_function.bat" (
 	REM Download if not present
 	CLS
 	echo.
 	echo  ^! ALERT
-	echo ======================================
+	echo =============================================
 	echo.
-	echo   Defraggler_function not present.
+	echo   Defraggler_Defrag_function not present.
 	echo.
-	echo   Downloading Defraggler_function...
+	echo   Downloading Defraggler_Defrag_function...
 	echo.
-	echo ======================================
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_function.bat" -O "%Output%\Functions\Defraggler_function.bat" 2>NUL
+	echo =============================================
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
 	TIMEOUT 1 >nul
 )
 

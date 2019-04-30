@@ -1,7 +1,7 @@
 
 CHANGELOG
 ===================================================================================
-Brainiacs Cleanup Tool v1.5 (2019-04-)
+Brainiacs Cleanup Tool v1.5 (2019-00-00)
 ---
 -Moved SSD warning for Auslogic defrag to "Aus_Defrag_function".
 -Fixed Caffeine stopping prematurely.
@@ -13,6 +13,13 @@ Brainiacs Cleanup Tool v1.5 (2019-04-)
 -Move SSD check to Auslogic defrag only as it does not have the ability to automatically detect SSD.
 -Changed default defrag program to Windows defrag.
 -Tool will now try to auto start with elevated privileges.
+-Added Windows 7+ check to Zemana.
+-Fixed notes deleting when selecting the option to remove tools.
+-Unified Defrag Function names.
+
+TO-DO
+UPDATE WINDOWS DEFRAG TO DISPLAY MESSAGE IF FAILED
+ADD EMAIL NOTES WHEN DONE/ABRUPT SESSION DISCONNECT
 
 Brainiacs Cleanup Tool v1.4 (2019-03-27)
 ---

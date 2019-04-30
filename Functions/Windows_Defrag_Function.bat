@@ -51,10 +51,13 @@ echo.
 echo ===================================================================================
 pause
 CLS
-defrag C: /O /V /H /U
+start /WAIT "defrag" defrag "%SystemDrive%" /O /V /H /U
+REM DEBUG --ADDING ERROR IF DEFRAG FAIL-- DEBUG
+echo %ERRORLEVEL%
+REM DEBUG --ADDING ERROR IF DEFRAG FAIL-- DEBUG
 pause
 REM Add defrag notes
-echo -Defragged main drive >> %Output%\Notes\Comments.txt
+echo -Defragged & Optimized main drive >> %Output%\Notes\Comments.txt
 pause
 if "%Defrag_External%"=="Yes" (
   REM Exit if ran internally

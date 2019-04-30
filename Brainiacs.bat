@@ -1399,15 +1399,15 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   call functions\Windows_Defrag_Function
   set Defrag_Internal=No
   goto Defrag_Done
-  REM Open Defraggler_function.
+  REM Open Defraggler_Defrag_function.
   :Defraggler
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-  call functions\Defraggler_function
+  call functions\Defraggler_Defrag_function
   goto Defrag_Done
-  REM Open AusDefrag_function.
+  REM Open Aus_Defrag_function.
   :AusDefrag
   echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-  call functions\AusDefrag_function
+  call functions\Aus_Defrag_function
   goto Defrag_Done
   REM Finish defrag
   :Defrag_Done
