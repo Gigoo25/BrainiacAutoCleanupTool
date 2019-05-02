@@ -42,23 +42,48 @@ CLS
 title [External Defrag] Brainiacs Cleanup Tool
 echo.
 echo  ^! ALERT
-echo ===================================================================================
+echo ==============================================================
 echo.
 echo    Defrag waiting to begin.
 echo.
 echo    Press any key to begin defrag/optimization on all drives.
 echo.
-echo ===================================================================================
+echo ==============================================================
 pause
 CLS
 start /WAIT "defrag" defrag "%SystemDrive%" /O /V /H /U
-REM DEBUG --ADDING ERROR IF DEFRAG FAIL-- DEBUG
-echo %ERRORLEVEL%
-REM DEBUG --ADDING ERROR IF DEFRAG FAIL-- DEBUG
-pause
 REM Add defrag notes
 echo -Defragged & Optimized main drive >> %Output%\Notes\Comments.txt
-pause
+if /i !ERRORLEVEL!==0 (
+  echo.
+  echo  ^! ALERT
+  echo ===========================================
+  echo.
+  echo    Defrag complete!
+  echo.
+  echo    Press any key to continue the cleanup.
+  echo.
+  echo ===========================================
+  pause
+) else (
+  REM Set Color
+  color 0c
+  CLS
+  echo.
+  echo  ^! ERROR
+  echo ============================================================================
+  echo.
+  echo    Windows defrag failed!
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ============================================================================
+  TIMEOUT 10
+  color 07
+	GOTO :EOF
+)
 if "%Defrag_External%"=="Yes" (
   REM Exit if ran internally
   exit
