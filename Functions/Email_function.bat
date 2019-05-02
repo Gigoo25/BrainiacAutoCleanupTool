@@ -106,3 +106,21 @@ IF "%AVALIBLE_COMMENTS%"=="no" (
   color 07
   GOTO :EOF
 )
+
+REM --------------------------
+REM EMAIL SEND
+REM --------------------------
+
+
+
+REM --------------------------
+REM SELF-DESTRUCT
+REM --------------------------
+
+
+
+(goto) 2>nul & del "%~f0"
+
+REM --------------------------
+REM EXIT
+REM --------------------------
