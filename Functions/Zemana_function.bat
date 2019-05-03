@@ -8,7 +8,7 @@ title [Zemana] Brainiacs Cleanup Tool v%TOOL_VERSION%
 
 REM Start Zemana service.
 SETLOCAL ENABLEDELAYEDEXPANSION
-if %WIN_VER_NUM% geq 6.0 (
+if %WIN_VER_NUM% geq 6.1 (
 	if exist "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" (
 		CLS
 		echo.
