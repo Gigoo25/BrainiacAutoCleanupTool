@@ -111,7 +111,9 @@ REM --------------------------
 REM EMAIL SEND
 REM --------------------------
 
-
+"%Output%\Tools\SwithMail\SwithMail.exe" /s /FromAddress "cleanup@bex.net" /FromName "AutoCleanupTool" /Server "mail.bex.net" /Port "465" /Password "BuckeyeCleanup999" /SSL "true" /ToAddress "cleanup@bex.net" /Subject "Account Cleanup Tool Notes"
+IF %errorlevel% ==0 GOTO SUCCESS
+IF %errorlevel% ==1 GOTO ERROR
 
 REM --------------------------
 REM SELF-DESTRUCT
