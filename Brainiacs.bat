@@ -60,6 +60,7 @@ set Skip_Comments=unidentified
 set VarGeek=None
 set Test_Update_All=undetected
 set password=undetected
+set PID_Brainiacs=undetected
 
 REM Menu variables
 set RKill_choice=,Yes,No,
@@ -142,6 +143,12 @@ if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
 
 REM Check if 32/64bit windows
 reg Query "HKLM\Hardware\Description\System\CentralProcessor\0" | find /i "x86" > NUL && set OS=32BIT || set OS=64BIT
+
+REM Get PID of BrainiacsAutoCleanupTool CMD
+set T=%TEMP%\sthUnique.tmp
+wmic process where (Name="WMIC.exe" AND CommandLine LIKE "%%%TIME%%%") get ParentProcessId /value | find "ParentProcessId" >%T%
+set /P A=<%T%
+set PID_Brainiacs=%A:~16%%
 
 REM Set Initial Color
 color 07
@@ -290,6 +297,10 @@ tasklist | find /i "caffeine.exe" >nul
 if "%ERRORLEVEL%"=="1" (
   start "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
 )
+
+REM DEBUG -----------------------------------------------------------------------------------------------------------------------------------------------
+start "TEST" functions\Email_function
+REM DEBUG -----------------------------------------------------------------------------------------------------------------------------------------------
 
 REM Start interface
 CLS
