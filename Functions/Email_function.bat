@@ -6,7 +6,6 @@ set ACTIVE_TOOL=undetected
 set NETWORK_AVAILABLE=undetected
 set AVALIBLE_COMMENTS=undetected
 set AVALIBLE_SWITHMAIL=undetected
-set ABRUPTCLOSE=undetected
 
 REM Start function minimized
 if not "%1" == "min" start /MIN cmd /c %0 min & exit/b
@@ -17,7 +16,7 @@ REM --------------------------
 
 REM Detect if BrainiacsAutoCleanupTool was abruptly closed
 if exist "%Output%\Functions\Variables\ABRUPTCLOSE.txt" (
-    set /p ABRUPTCLOSE=<!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  set /p ABRUPTCLOSE=<%Output%\Functions\Variables\ABRUPTCLOSE.txt
 )
 
 REM --------------------------
@@ -26,7 +25,7 @@ REM --------------------------
 
 REM Detect if BrainiacsAutoCleanupTool is running
 :Check_Tool_Active
-tasklist.exe /v  | find /i "%PID_Brainiacs%" >NUL
+tasklist.exe /v  | find /i "%PID_BRAINIACS%" >NUL
 IF NOT ERRORLEVEL 1 (
   SET ACTIVE_TOOL=yes
 ) else (
@@ -52,9 +51,11 @@ REM --------------------------
 REM SESSION STATUS
 REM --------------------------
 
-REM Detect if LogMeIn is running
+REM Detect if LogMeIn is running & currently connected to a session
 :Check_Session_Active
-tasklist | find /i "" >nul
+REM DEBUG FOR POSSIBLE PROCESS NAMES -- tasklist | find /i "LMI_Rescue_srv.exe" >nul
+REM DEBUG FOR POSSIBLE PROCESS NAMES -- tasklist | find /i "CallingCard_srv.exe" >nul
+tasklist | find /i "LMI_RescueRC.exe" >nul
 IF NOT ERRORLEVEL 1 (
   set ACTIVE_SESSION=yes
 ) else (
@@ -83,33 +84,65 @@ if exist "%Output%\Notes\Comments.txt" (
   set AVALIBLE_COMMENTS=no
 )
 
-REM If notes are avalible then continue, if not error out + exit
-IF "%AVALIBLE_COMMENTS%"=="no" (
-	CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===========================
-  echo.
-  echo    Comments not found.
-  echo.
-  echo    Exiting in 10 seconds.
-  echo.
-  echo ===========================
-  TIMEOUT 10
-  color 07
-  GOTO :EOF
-)
-
 REM --------------------------
 REM EMAIL SEND
 REM --------------------------
+
+echo ACTIVE_SESSION
+echo %ACTIVE_SESSION%
+echo ACTIVE_TOOL
+echo %ACTIVE_TOOL%
+echo NETWORK_AVAILABLE
+echo %NETWORK_AVAILABLE%
+echo AVALIBLE_COMMENTS
+echo %AVALIBLE_COMMENTS%
+echo AVALIBLE_SWITHMAIL
+echo %AVALIBLE_SWITHMAIL%
+echo ABRUPTCLOSE
+echo %ABRUPTCLOSE%
+pause
+
+IF "%ACTIVE_SESSION%"=="no" (
+  IF "%AVALIBLE_SWITHMAIL%"=="no" (
+    IF "%AVALIBLE_COMMENTS%"=="no" (
+
+    )
+  )
+)
+
+IF "%ACTIVE_TOOL%"=="no" (
+
+)
+
+IF "%NETWORK_AVAILABLE%"=="no" (
+
+)
+
+
+
+:::::::::::::: Lets set some variables ::::::::::::::
+set eMail=cleanup@buckeye-express.com
+set subj=-s "Test Blat"
+set server=-server mail.buckeye-express.com
+set x=-x "X-Header-Test: Can Blat do it? Yes it Can!"
+set debug=-debug -log blat.log -timestamp
+set port=-port 465
+set usr=-u cleanup@buckeye-express.com
+set pass=-pw BuckeyeCleanup999
+::::::::::::::::: Now we run Blat!  :::::::::::::::::
+blat %0 -to %eMail% -f %eMail% %subj% %server% %port% %usr% %pass% %debug% %x%
+pause
+
+
+
+
 
 IF "%NETWORK_AVAILABLE%"=="yes" (
   IF "%ACTIVE_SESSION%"=="no" (
     IF "%AVALIBLE_COMMENTS%"=="yes" (
       IF "%ACTIVE_SESSION%"=="no" (
         start "SwithMail" "%Output%\Tools\SwithMail\SwithMail.exe" /s /from "cleanup@buckeye-express.com" /name "AutoCleanupTool" /pass "BuckeyeCleanup999" /server "mail.buckeye-express.com" /p "465" /SSL /to "test@bex.net" /sub "Account Cleanup Tool Notes"
+        SwithMail.exe /test /from "cleanup@buckeye-express.com" /name "AutoCleanupTool" /pass "BuckeyeCleanup999" /server "mail.buckeye-express.com" /p "465" /SSL /to "test@bex.net" /sub "Account Cleanup Tool Notes"
         if "%ERRORLEVEL%"=="0" (
           CLS
           echo.
@@ -140,8 +173,27 @@ IF "%NETWORK_AVAILABLE%"=="yes" (
            goto Check_Internet
         )
       )
+    ) ELSE IF "%AVALIBLE_COMMENTS%"=="no" (
+    	CLS
+      color 0c
+      echo.
+      echo  ^! ERROR
+      echo ===========================
+      echo.
+      echo    Comments not found.
+      echo.
+      echo    Exiting in 10 seconds.
+      echo.
+      echo ===========================
+      TIMEOUT 10
+      color 07
+      GOTO :EOF
     )
+  ) ELSE IF "%ACTIVE_SESSION%"=="no" (
+
   )
+) ELSE IF "%NETWORK_AVAILABLE%"=="no" (
+
 )
 
 REM --------------------------
