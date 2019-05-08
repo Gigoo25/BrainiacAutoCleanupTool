@@ -37,5 +37,5 @@ if exist "%Output%\Notes\Comments.txt" (
   TIMEOUT 10
   color 07
   GOTO :EOF
-  set Skip_Comments=yes
+  set SKIP_COMMENTS=yes
 )

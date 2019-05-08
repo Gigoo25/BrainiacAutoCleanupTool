@@ -50,17 +50,17 @@ set WIN_VER_NUM=undetected
 set DELETEFUNCTIONS=yes
 set DELETE_RESTORE=undetected
 set ABRUPTCLOSE=undetected
-set ABORT=no
-set VarID=unidentified
-REM set VarACC=unidentified
-set VarPHN=unidentified
-set VarAddtlNote=None
+set ABORT_CLEANUP=no
+set VARID=unidentified
+set VARPHN=unidentified
+set VAR_ADDT_NOTES=None
 set SKIP_DEFRAG=no
-set Skip_Comments=unidentified
-set VarGeek=None
-set Test_Update_All=undetected
-set password=undetected
-set PID_Brainiacs=undetected
+set SKIP_COMMENTS=unidentified
+set VAR_GEEK=None
+set TEST_UPDATE_ALL=undetected
+set PASSWORD=undetected
+set PID_BRAINIACS=undetected
+set EMAIL_SEND=undetected
 
 REM Menu variables
 set RKill_choice=,Yes,No,
@@ -91,6 +91,8 @@ set ImageChecker_choice=,Yes,No,
 call:setPersist ImageChecker=Yes
 set DriveChecker_choice=,Yes,No,
 call:setPersist DriveChecker=Yes
+set EmailNotes_choice=,Yes,No,
+call:setPersist EmailNotes=Yes
 set SystemRestore_choice=,Yes,No,
 call:setPersist SystemRestore=Yes
 set AutoClose_choice=,Yes,No,
@@ -136,9 +138,24 @@ if exist "%Output%\Version.txt" (
   )
 )
 
+REM Create Variables folder if not found
+if not exist "%Output%\Functions\Variables\" (
+  mkdir "%Output%\Functions\Variables" >nul
+)
+
+REM Create notes folder if not found
+if not exist "%Output%\Notes\" (
+  mkdir "%Output%\Notes" >nul
+)
+
+REM Create logs folder if not found
+if not exist "%Output%\Logs\" (
+  mkdir "%Output%\Logs" >nul
+)
+
 REM Pull ABRUPTCLOSE var if present
-if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
-    set /p ABRUPTCLOSE=<!Output!\Functions\ABRUPTCLOSE.txt
+if exist "!Output!\Functions\Variables\ABRUPTCLOSE.txt" (
+    set /p ABRUPTCLOSE=<!Output!\Functions\Variables\ABRUPTCLOSE.txt
 )
 
 REM Check if 32/64bit windows
@@ -148,7 +165,7 @@ REM Get PID of BrainiacsAutoCleanupTool CMD
 set T=%TEMP%\sthUnique.tmp
 wmic process where (Name="WMIC.exe" AND CommandLine LIKE "%%%TIME%%%") get ParentProcessId /value | find "ParentProcessId" >%T%
 set /P A=<%T%
-set PID_Brainiacs=%A:~16%%
+set PID_BRAINIACS=%A:~16%%
 
 REM Set Initial Color
 color 07
@@ -189,8 +206,8 @@ echo.
 echo    If you do not have the password please close out of this tool.
 echo.
 echo ===================================================================================
-set /p password="Enter password: "
-if "%password%"=="RedRuby" (
+set /p PASSWORD="Enter password: "
+if "%PASSWORD%"=="RedRuby" (
   cls
   color 0c
   echo.
@@ -202,7 +219,7 @@ if "%password%"=="RedRuby" (
   echo ==================================
   TIMEOUT 2
   goto Choice_Test_Upgrade_All
-) else if /I "%password%"=="Bluemoon" (
+) else if /I "%PASSWORD%"=="Bluemoon" (
   goto No_Test_Continue
 ) else (
   cls
@@ -236,9 +253,9 @@ choice /M "Do you want to update from the latest commits?" /c YN
 IF errorlevel 2 goto :Test_Upgrade_All_Decline
 IF errorlevel 1 goto :Test_Upgrade_All_Accept
 :Test_Upgrade_All_Accept
-set Test_Update_All=yes
+set TEST_UPDATE_ALL=yes
 call functions\Update_function
-set Test_Update_All=no
+set TEST_UPDATE_ALL=no
 
 REM Ask to enable debugging
 :Test_Upgrade_All_Decline
@@ -290,7 +307,7 @@ for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Curren
 for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentVersion ^| %FIND% "CurrentVersion"') DO set WIN_VER_NUM=%%i
 
 REM If unsupported os then set variable to abort
-if %WIN_VER_NUM% LSS 6.0 set ABORT=yes
+if %WIN_VER_NUM% LSS 6.0 set ABORT_CLEANUP=yes
 
 REM  Run caffeine
 tasklist | find /i "caffeine.exe" >nul
@@ -299,7 +316,7 @@ if "%ERRORLEVEL%"=="1" (
 )
 
 REM DEBUG -----------------------------------------------------------------------------------------------------------------------------------------------
-start "TEST" functions\Email_function
+REM start "TEST" functions\Email_function
 REM DEBUG -----------------------------------------------------------------------------------------------------------------------------------------------
 
 REM Start interface
@@ -367,7 +384,7 @@ if /i not "%SAFE_MODE%"=="yes" (
 )
 
 REM Quit if windows version is unsupported
-if %ABORT%==yes (
+if %ABORT_CLEANUP%==yes (
   CLS
 	color 0c
 	echo.
@@ -435,7 +452,7 @@ REM Continue if functions folder was found
 
 REM Setup resume state if not found, if found ask if you want to resume the last state
 if "%ABRUPTCLOSE%"=="yes" (
-  if exist "%Output%\Functions\ABRUPTCLOSE.txt" (
+  if exist "!Output!\Functions\Variables\ABRUPTCLOSE.txt" (
     cls
     color 0c
     echo.
@@ -456,18 +473,8 @@ if "%ABRUPTCLOSE%"=="yes" (
     :restore_no
     REM Set var to delete restore point on start
     set DELETE_RESTORE=Yes
-    del "%Output%\Functions\ABRUPTCLOSE.txt"
+    del "!Output!\Functions\Variables\ABRUPTCLOSE.txt"
   )
-)
-
-REM Create notes folder if not found
-if not exist "%Output%\Notes\" (
-  mkdir "%Output%\Notes" >nul
-)
-
-REM Create logs folder if not found
-if not exist "%Output%\Logs\" (
-  mkdir "%Output%\Logs" >nul
 )
 
 REM Start notes template
@@ -495,8 +502,8 @@ echo.
 echo  ^! USER INPUT
 echo =================================
 echo.
-set /p VarID=Enter your CSG user ID:
-echo "%VarID%" >> "%Output%\Notes\Comments.txt"
+set /p VARID=Enter your CSG user ID:
+echo "%VARID%" >> "%Output%\Notes\Comments.txt"
 echo. >> "%Output%\Notes\Comments.txt"
 
 REM Enter general cleanup as the reason
@@ -509,8 +516,8 @@ echo.
 echo  ^! USER INPUT
 echo =================================
 echo.
-set /p VarAddtlNote=Enter any additional notes:
-echo Additional notes: "%VarAddtlNote%" >> "%Output%\Notes\Comments.txt"
+set /p VAR_ADDT_NOTES=Enter any additional notes:
+echo Additional notes: "%VAR_ADDT_NOTES%" >> "%Output%\Notes\Comments.txt"
 echo --- >> "%Output%\Notes\Comments.txt"
 echo -Picked up session >> "%Output%\Notes\Comments.txt"
 
@@ -546,17 +553,8 @@ echo.
 echo  ^! USER INPUT
 echo =================================
 echo.
-set /p VarID=Enter your CSG user ID:
-echo "%VarID%" >> "%Output%\Notes\Comments.txt"
-
-REM Ask & enter Account number notes
-REM CLS
-REM echo.
-REM echo  ^! USER INPUT
-REM echo =================================
-REM echo.
-REM set /p VarACC=Enter the subscribers Account number:
-REM echo ACC#"%VarACC%" >> "%Output%\Notes\Comments.txt"
+set /p VARID=Enter your CSG user ID:
+echo "%VARID%" >> "%Output%\Notes\Comments.txt"
 
 REM Ask & enter Phone number into notes
 CLS
@@ -564,8 +562,8 @@ echo.
 echo  ^! USER INPUT
 echo =================================
 echo.
-set /p VarPHN=Enter the subscribers Phone number:
-echo PHN#"%VarPHN%" >> "%Output%\Notes\Comments.txt"
+set /p VARPHN=Enter the subscribers Phone number:
+echo PHN#"%VARPHN%" >> "%Output%\Notes\Comments.txt"
 echo. >> "%Output%\Notes\Comments.txt"
 
 REM Enter general cleanup reason
@@ -577,14 +575,14 @@ echo.
 echo  ^! USER INPUT
 echo =================================
 echo.
-set /p VarAddtlNote=Enter any additional notes:
-echo Additional Notes: "%VarAddtlNote%" >> "%Output%\Notes\Comments.txt"
+set /p VAR_ADDT_NOTES=Enter any additional notes:
+echo Additional Notes: "%VAR_ADDT_NOTES%" >> "%Output%\Notes\Comments.txt"
 echo --- >> "%Output%\Notes\Comments.txt"
 
 REM Add check for restore deletion
 if /i "!DELETE_RESTORE!"=="Yes" (
   del /Q "%FilePersist%"  >nul
-  del "%Output%\Functions\ABRUPTCLOSE.txt"
+  del "!Output!\Functions\Variables\ABRUPTCLOSE.txt"
 )
 
 REM Goto menu
@@ -616,14 +614,14 @@ echo.&call:menu_%choice%
 GOTO:menuLOOP
 
 REM Display notes
-:menu_CSG ID: !VarID!
+:menu_CSG ID: !VARID!
 :menu_Account#: !VarACC!
-:menu_Phone#: !VarPHN!
+:menu_Phone#: !VARPHN!
 
 REM Display additional notes
 :menu_
 :menu_Additional Notes:
-:menu_!VarAddtlNote!
+:menu_!VAR_ADDT_NOTES!
 
 REM Display menu tools
 :menu_
@@ -691,7 +689,7 @@ call:getNextInList Malwarebytes "!Malwarebytes_choice!"
 cls
 
 REM Check for testing mode
-if not "%password%"=="RedRuby" (
+if not "%PASSWORD%"=="RedRuby" (
     set Malwarebytes=No
     cls
     color 0c
@@ -710,7 +708,7 @@ if not "%password%"=="RedRuby" (
 )
 
 REM Check if system restore is enabled
-if /I "%password%"=="Bluemoon" (
+if /I "%PASSWORD%"=="Bluemoon" (
 if /i "!SystemRestore!"=="No" (
   set Malwarebytes=No
   cls
@@ -759,7 +757,7 @@ call:getNextInList Spybot "!Spybot_choice!"
 cls
 
 REM Check for testing mode
-if not "%password%"=="RedRuby" (
+if not "%PASSWORD%"=="RedRuby" (
     cls
     set Spybot=No
     color 0c
@@ -778,7 +776,7 @@ if not "%password%"=="RedRuby" (
 )
 
 REM Check if system restore is enabled
-if /I "%password%"=="Bluemoon" (
+if /I "%PASSWORD%"=="Bluemoon" (
 if /i "!SystemRestore!"=="No" (
   CLS
   set Spybot=No
@@ -863,8 +861,8 @@ if exist "%Output%\Tools\Geek\geek.exe" (
   start /WAIT "Geek" "%Output%\Tools\Geek\geek.exe"
   CLS
   echo -Ran Geek Uninsaller >> %Output%\Notes\Comments.txt
-  set /p VarGeek=Enter any uninstalled programs separated by a comma:
-  echo Uninstalled programs-!!VarGeek!! >> %Output%\Notes\Comments.txt
+  set /p VAR_GEEK=Enter any uninstalled programs separated by a comma:
+  echo Uninstalled programs-!!VAR_GEEK!! >> %Output%\Notes\Comments.txt
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 ) else (
@@ -887,6 +885,13 @@ GOTO:EOF
 REM Display menu options
 :menu_
 :menu_Options:
+
+REM Email notes?
+:menu_E    Email notes?                              : '!EmailNotes!' [!EmailNotes_choice:~1,-1!]
+call:getNextInList EmailNotes "!EmailNotes_choice!"
+cls
+call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+GOTO:EOF
 
 REM Start system restore service
 :menu_R    Create system restore point?              : '!SystemRestore!' [!SystemRestore_choice:~1,-1!]
@@ -1132,6 +1137,7 @@ set CCleaner=Yes
 set DefragSystem=Yes
 set ImageChecker=Yes
 set DriveChecker=Yes
+set EmailNotes=Yes
 set SystemRestore=Yes
 set AutoClose=Yes
 set ReviewLogs=Yes
@@ -1160,6 +1166,7 @@ set CCleaner=Yes
 set DefragSystem=Yes
 set ImageChecker=Yes
 set DriveChecker=Yes
+set EmailNotes=Yes
 set SystemRestore=Yes
 set AutoClose=Yes
 set ReviewLogs=Yes
@@ -1188,6 +1195,7 @@ set CCleaner=No
 set DefragSystem=No
 set ImageChecker=No
 set DriveChecker=No
+set EmailNotes=No
 set SystemRestore=No
 set AutoClose=No
 set ReviewLogs=No
@@ -1205,11 +1213,21 @@ REM Display execute options.
 :menu_Execute_Actions:
 :menu_SC   Start Cleanup
 
+if /i "%EmailNotes:~0,1%"=="Y" (
+  REM Call function
+  call functions\Email_function
+  REM Create restore point
+  set EmailNotes=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  REM Set title
+  title Brainiacs Cleanup Tool v%TOOL_VERSION%
+)
+
 if /i "%SystemRestore:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Restore_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set SystemRestore=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1219,9 +1237,9 @@ if /i "%SystemRestore:~0,1%"=="Y" (
 
 if /i "%RKill:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Rkill_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set RKill=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1231,9 +1249,9 @@ if /i "%RKill:~0,1%"=="Y" (
 
 if /i "%JRT:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\JRT_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set JRT=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1243,9 +1261,9 @@ if /i "%JRT:~0,1%"=="Y" (
 
 if /i "%TDSS:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\TDSS_Killer_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set TDSS=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1255,9 +1273,9 @@ if /i "%TDSS:~0,1%"=="Y" (
 
 if /i "%Rogue:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\RogueKiller_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set Rogue=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1267,9 +1285,9 @@ if /i "%Rogue:~0,1%"=="Y" (
 
 if /i "%ADW:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\ADW_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set ADW=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1279,9 +1297,9 @@ if /i "%ADW:~0,1%"=="Y" (
 
 if /i "%HitmanPro:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\HitmanPro_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set HitmanPro=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1291,9 +1309,9 @@ if /i "%HitmanPro:~0,1%"=="Y" (
 
 if /i "%Zemana:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Zemana_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set Zemana=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1303,9 +1321,9 @@ if /i "%Zemana:~0,1%"=="Y" (
 
 if /i "%MBAR:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\MBAR_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set MBAR=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1315,9 +1333,9 @@ if /i "%MBAR:~0,1%"=="Y" (
 
 if /i "%Malwarebytes:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Malwarebytes_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set Malwarebytes=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1327,9 +1345,9 @@ if /i "%Malwarebytes:~0,1%"=="Y" (
 
 if /i "%Spybot:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Spybot_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set Spybot=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1339,9 +1357,9 @@ if /i "%Spybot:~0,1%"=="Y" (
 
 if /i "%CCleaner:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\CCleaner_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set CCleaner=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1350,6 +1368,21 @@ if /i "%CCleaner:~0,1%"=="Y" (
 )
 
 if /i "%DefragSystem:~0,1%"=="Y" (
+  REM Ask which program to use to defrag
+  :choice_start
+  CLS
+  echo.
+  echo  ^! USER INPUT
+  echo =================================
+  echo.
+  choice /C ADW /T 20 /D W /M "Which program do you want to defrag with [A] AusDefrag, [D] Defraggler or [W] Windows Defrag"
+  IF errorlevel 3 goto Windows_Defrag_Function
+  IF errorlevel 2 goto Defraggler
+  IF errorlevel 1 goto AusDefrag
+  REM Windows_Defrag function.
+  :Windows_Defrag_Function
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  set Defrag_Internal=Yes
   REM Ask if want to run externally
   CLS
   echo.
@@ -1361,7 +1394,7 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   IF errorlevel 1 goto Run_External_Defrag_Windows
   REM Initiate external run
   :Run_External_Defrag_Windows
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   set Defrag_External=Yes
   start functions\Windows_Defrag_Function
   set Defrag_External=No
@@ -1378,7 +1411,7 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   IF errorlevel 1 goto Next_Boot_Defrag_Windows
   REM Schedule for next reboot/delete task after
   :Next_Boot_Defrag_Windows
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   xcopy /v "%Output%\functions\Windows_Defrag_Function.bat" "%SystemDrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
   cls
   echo.
@@ -1392,37 +1425,23 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   echo ===================================================================================
   TIMEOUT 5
   goto Defrag_Done
-  REM Ask which program to use to defrag
-  :choice_start
-  CLS
-  echo.
-  echo  ^! USER INPUT
-  echo =================================
-  echo.
-  choice /C ADW /T 20 /D W /M "Which program do you want to defrag with [A] AusDefrag, [D] Defraggler or [W] Windows Defrag"
-  IF errorlevel 3 goto Windows_Defrag_Function
-  IF errorlevel 2 goto Defraggler
-  IF errorlevel 1 goto AusDefrag
-  REM Open Windows_Defrag function.
-  :Windows_Defrag_Function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
-  set Defrag_Internal=Yes
+  REM Open Windows Defrag if other options were denied.
   call functions\Windows_Defrag_Function
   set Defrag_Internal=No
   goto Defrag_Done
   REM Open Defraggler_Defrag_function.
   :Defraggler
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Defraggler_Defrag_function
   goto Defrag_Done
   REM Open Aus_Defrag_function.
   :AusDefrag
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Aus_Defrag_function
   goto Defrag_Done
   REM Finish defrag
   :Defrag_Done
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set DefragSystem=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1432,9 +1451,9 @@ if /i "%DefragSystem:~0,1%"=="Y" (
 
 if /i "%ImageChecker:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Image_Checker_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set ImageChecker=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -1444,9 +1463,9 @@ if /i "%ImageChecker:~0,1%"=="Y" (
 
 if /i "%DriveChecker:~0,1%"=="Y" (
   REM Call function
-  echo yes>!Output!\Functions\ABRUPTCLOSE.txt
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\CHKDSK_function
-  echo No >!Output!\Functions\ABRUPTCLOSE.txt
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Create restore point
   set DriveChecker=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
