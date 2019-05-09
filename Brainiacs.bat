@@ -92,7 +92,7 @@ call:setPersist ImageChecker=Yes
 set DriveChecker_choice=,Yes,No,
 call:setPersist DriveChecker=Yes
 set EmailNotes_choice=,Yes,No,
-call:setPersist EmailNotes=Yes
+call:setPersist EmailNotes=No
 set SystemRestore_choice=,Yes,No,
 call:setPersist SystemRestore=Yes
 set AutoClose_choice=,Yes,No,
@@ -687,137 +687,51 @@ REM Start Malwarebytes service
 :menu_9   Run Malwarebytes? (Experimental)          : '!Malwarebytes!' [!Malwarebytes_choice:~1,-1!]
 call:getNextInList Malwarebytes "!Malwarebytes_choice!"
 cls
-
-REM Check for testing mode
-if not "%PASSWORD%"=="RedRuby" (
-    set Malwarebytes=No
-    cls
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    You are not in testing mode and are not able to try Experimental tools.
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 30
-    color 07
-    GOTO :EOF
-)
-
 REM Check if system restore is enabled
-if /I "%PASSWORD%"=="Bluemoon" (
 if /i "!SystemRestore!"=="No" (
   set Malwarebytes=No
   cls
   color 0c
   echo.
   echo  ^! ERROR
-  echo ===================================================================================
+  echo =====================================================================================
   echo.
   echo    Malwarebytes requires you to have the option "Create system restore point" to be
   echo    enabled. Please enable this option and try again.
   echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
   echo.
-  echo ===================================================================================
+  echo =====================================================================================
   TIMEOUT 30
   color 07
 )
-)
-
-REM Check for windows 8 or above
-if %WIN_VER_NUM% geq 6.2 (
-  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-  GOTO:EOF
-) else (
-  CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    Malwarebytes does not support "%WIN_VER%".
-  echo.
-  echo    Skipping...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
-  color 07
-  GOTO :EOF
-)
+call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+GOTO:EOF
 
 REM Start Spybot service
 :menu_10   Run Spybot? (Experimental)               : '!Spybot!' [!Spybot_choice:~1,-1!]
 call:getNextInList Spybot "!Spybot_choice!"
 cls
-
-REM Check for testing mode
-if not "%PASSWORD%"=="RedRuby" (
-    cls
-    set Spybot=No
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ===================================================================================
-    echo.
-    echo    You are not in testing mode and are not able to try Experimental tools.
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
-    echo.
-    echo ===================================================================================
-    TIMEOUT 30
-    color 07
-    GOTO :EOF
-)
-
 REM Check if system restore is enabled
-if /I "%PASSWORD%"=="Bluemoon" (
 if /i "!SystemRestore!"=="No" (
   CLS
   set Spybot=No
   color 0c
   echo.
   echo  ^! ERROR
-  echo ===================================================================================
+  echo ===============================================================================
   echo.
   echo    Spybot requires you to have the option "Create system restore point" to be
   echo    enabled. Please enable this option and try again.
   echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
   echo.
-  echo ===================================================================================
+  echo ===============================================================================
   TIMEOUT 30
   color 07
 )
-)
-
-REM Check for windows 8 or above
-if %WIN_VER_NUM% geq 6.2 (
-  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-  GOTO:EOF
-) else (
-  CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    Spybot does not support "%WIN_VER%".
-  echo.
-  echo    Skipping...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
-  color 07
-  GOTO :EOF
-)
+call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+GOTO:EOF
 
 REM Start CCleaner service
 :menu_11   Run CCleaner?                            : '!CCleaner!' [!CCleaner_choice:~1,-1!]
@@ -870,13 +784,13 @@ if exist "%Output%\Tools\Geek\geek.exe" (
   color 0c
   echo.
   echo  ^! WARNING
-  echo ===================================================================================
+  echo ================================
   echo.
   echo    Geek Uninstaller not found.
   echo.
   echo    Returning to menu...
   echo.
-  echo ===================================================================================
+  echo ================================
   TIMEOUT 5
   color 07
 )
@@ -887,7 +801,7 @@ REM Display menu options
 :menu_Options:
 
 REM Email notes?
-:menu_E    Email notes?                              : '!EmailNotes!' [!EmailNotes_choice:~1,-1!]
+:menu_E    Email notes? (Experimental)               : '!EmailNotes!' [!EmailNotes_choice:~1,-1!]
 call:getNextInList EmailNotes "!EmailNotes_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
@@ -958,12 +872,12 @@ if /i "!DeleteNotes!"=="Yes" (
       color 0c
       echo.
       echo  ^! ERROR
-      echo ===================================================================================
+      echo ============================================================================
       echo.
       echo    Delete notes requires you to have the options "Auto close when done" or
       echo    "Reboot when done" to be enabled.
       echo.
-      echo ===================================================================================
+      echo ============================================================================
       choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
       IF errorlevel 2 goto Reboot_deletenotes_choice
       IF errorlevel 1 goto AutoClose_deletenotes_choice
@@ -982,14 +896,14 @@ if /i "!DeleteNotes!"=="Yes" (
     color 0c
     echo.
     echo  ^! ERROR
-    echo ===================================================================================
+    echo =====================================================================================
     echo.
     echo    Delete comments requires you to have the option "Open comments when done" to be
     echo    enabled. Please enable this option and try again.
     echo.
     echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
     echo.
-    echo ===================================================================================
+    echo =====================================================================================
     set DeleteNotes=No
     TIMEOUT 30
     color 07
@@ -999,14 +913,14 @@ if /i "!DeleteNotes!"=="Yes" (
   color 0c
   echo.
   echo  ^! WARNING
-  echo ===================================================================================
+  echo =====================================================================================
   echo.
   echo    You have selected to delete the comments when done.
   echo.
   echo    The comments will still open before deletion for you to copy, but once you close
   echo    the prompt it will all be gone.
   echo.
-  echo ===================================================================================
+  echo =====================================================================================
   choice /C YN /T 20 /D N /M "Are you really sure you want to delete the notes after run?"
   IF errorlevel 2 goto DontDeleteNotes_Prompt_choice
   IF errorlevel 1 goto DeleteNotes_Prompt_Continue
@@ -1038,12 +952,12 @@ if /i "!DeleteTools!"=="Yes" (
       color 0c
       echo.
       echo  ^! ERROR
-      echo ===================================================================================
+      echo ============================================================================
       echo.
       echo    Delete tools requires you to have the options "Auto close when done" or
       echo    "Reboot when done" to be enabled.
       echo.
-      echo ===================================================================================
+      echo ============================================================================
       choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
       IF errorlevel 2 goto Reboot_deletetools_choice
       IF errorlevel 1 goto AutoClose_deletetools_choice
@@ -1072,12 +986,12 @@ if /i "!SelfDestruct!"=="Yes" (
       color 0c
       echo.
       echo  ^! ERROR
-      echo ===================================================================================
+      echo =============================================================================
       echo.
       echo    Self-Destruct requires you to have the options "Auto close when done" or
       echo    "Reboot when done" to be enabled.
       echo.
-      echo ===================================================================================
+      echo =============================================================================
       choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
       IF errorlevel 2 goto Reboot_selfdestruct_choice
       IF errorlevel 1 goto AutoClose_selfdestruct_choice
@@ -1137,7 +1051,7 @@ set CCleaner=Yes
 set DefragSystem=Yes
 set ImageChecker=Yes
 set DriveChecker=Yes
-set EmailNotes=Yes
+set EmailNotes=No
 set SystemRestore=Yes
 set AutoClose=Yes
 set ReviewLogs=Yes
