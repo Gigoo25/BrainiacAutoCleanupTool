@@ -1,6 +1,46 @@
 @echo off
 CLS
 
+REM Check for testing mode since this is an experimental tool still
+if not "%PASSWORD%"=="RedRuby" (
+    set Spybot=No
+		cls
+    color 0c
+    echo.
+    echo  ^! ERROR
+    echo ===================================================================================
+    echo.
+    echo    You are not in testing mode and are not able to try Experimental tools.
+    echo.
+    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
+    echo.
+    echo ===================================================================================
+    TIMEOUT 30
+    color 07
+    GOTO :EOF
+)
+
+REM Check for windows 7 or above
+if not %WIN_VER_NUM% geq 6.1 (
+  CLS
+  color 0c
+  echo.
+  echo  ^! ERROR
+  echo ===================================================================================
+  echo.
+  echo    Spybot does not support "%WIN_VER%".
+  echo.
+  echo    Skipping...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 10
+  color 07
+  GOTO :EOF
+)
+
+
 REM Enable delayed expansion
 setlocal enableDelayedExpansion
 
