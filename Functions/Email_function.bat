@@ -1,11 +1,56 @@
 @echo off
 
+REM Prevent noobies from testing function before its finished.
+if not "%PASSWORD%"=="RedRuby" (
+  REM Skip function for now until it is fixed & functioning.
+  CLS
+  echo.
+  echo  ^! NOTICE
+  echo ===================================================================================
+  echo.
+  echo    Email function coming soon.
+  echo.
+  echo    Skipping for now...
+  echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
+  echo.
+  echo ===================================================================================
+  TIMEOUT 10
+  GOTO:EOF
+) else (
+  CLS
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo ===================================================================================
+  echo.
+  echo    Dragons ahead.
+  echo.
+  echo    Highly experimental option.
+  echo.
+  echo ===================================================================================
+  pause
+  color 07
+)
+
 REM Variables
 set ACTIVE_SESSION=undetected
 set ACTIVE_TOOL=undetected
 set NETWORK_AVAILABLE=undetected
 set AVALIBLE_COMMENTS=undetected
 set AVALIBLE_SWITHMAIL=undetected
+set AVALIBLE_BLAT=undetected
+
+REM Email Variables
+set EMAIL_TO=cleanup@bex.net
+set EMAIL_FROM=cleanup@bex.net
+set EMAIL_SUBJECT=-s "Test Blat"
+set EMAIL_SERVER=-server mail.bex.net
+set HEADER=-x "X-Header-Test: Can Blat do it? Yes it Can!"
+set EMAIL_DEBUG=-debug -log %Output%\Logs\blat.log -timestamp
+set EMAIL_PORT=-port 587
+set EMAIL_USERNAME=-u cleanup@bex.net
+set EMAIL_PASSWORD=-pw BuckeyeCleanup999
 
 REM Start function minimized
 if not "%1" == "min" start /MIN cmd /c %0 min & exit/b
@@ -74,6 +119,17 @@ if exist "%Output%\Tools\SwithMail\SwithMail.exe" (
 )
 
 REM --------------------------
+REM BLAT STATUS
+REM --------------------------
+
+REM Detect if SWITHMAIL is avalible
+if exist "%Output%\Tools\Blat\blat.exe" (
+  set AVALIBLE_BLAT=yes
+) else (
+  set AVALIBLE_BLAT=no
+)
+
+REM --------------------------
 REM NOTES STATUS
 REM --------------------------
 
@@ -98,41 +154,18 @@ echo AVALIBLE_COMMENTS
 echo %AVALIBLE_COMMENTS%
 echo AVALIBLE_SWITHMAIL
 echo %AVALIBLE_SWITHMAIL%
+echo AVALIBLE_BLAT
+echo %AVALIBLE_BLAT%
 echo ABRUPTCLOSE
 echo %ABRUPTCLOSE%
 pause
 
 IF "%ACTIVE_SESSION%"=="no" (
-  IF "%AVALIBLE_SWITHMAIL%"=="no" (
-    IF "%AVALIBLE_COMMENTS%"=="no" (
-
-    )
-  )
-)
-
-IF "%ACTIVE_TOOL%"=="no" (
-
-)
-
-IF "%NETWORK_AVAILABLE%"=="no" (
-
-)
 
 
 
-:::::::::::::: Lets set some variables ::::::::::::::
-set eMail=cleanup@buckeye-express.com
-set subj=-s "Test Blat"
-set server=-server mail.buckeye-express.com
-set x=-x "X-Header-Test: Can Blat do it? Yes it Can!"
-set debug=-debug -log blat.log -timestamp
-set port=-port 465
-set usr=-u cleanup@buckeye-express.com
-set pass=-pw BuckeyeCleanup999
-::::::::::::::::: Now we run Blat!  :::::::::::::::::
-blat %0 -to %eMail% -f %eMail% %subj% %server% %port% %usr% %pass% %debug% %x%
+%Output%\Tools\Blat\blat %0 -to %EMAIL_TO% -f %EMAIL_FROM% %EMAIL_SUBJECT% %EMAIL_SERVER% %EMAIL_PORT% %EMAIL_USERNAME% %EMAIL_PASSWORD% %EMAIL_DEBUG% %HEADER%
 pause
-
 
 
 
