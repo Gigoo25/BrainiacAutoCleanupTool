@@ -41,6 +41,7 @@ set DeleteTools_Update_Function_Local=unidentified
 set Brainiacs_Update_Function_Local=unidentified
 set Update_Function_Local=unidentified
 set Windows_Defrag_Function_Local=unidentified
+set Email_function_Local=unidentified
 
 REM Function online variables
 set RKill_Update_Function_Online=unidentified
@@ -65,6 +66,7 @@ set DeleteTools_Update_Function_Online=unidentified
 set Brainiacs_Update_Function_Online=unidentified
 set Update_Function_Online=unidentified
 set Windows_Defrag_Function_Online=unidentified
+set Email_function_Online=unidentified
 
 REM Tool local variables
 set RKill_Update_Tool_Local=unidentified
@@ -82,6 +84,7 @@ set DefragSystem_A_Update_Tool_Local=unidentified
 set DefragSystem_D_Update_Tool_Local=unidentified
 set Caffeine_Update_Tool_Local=unidentified
 set Geek_Update_Tool_Local=unidentified
+set Blat_Update_Tool_Local=unidentified
 
 REM Tool online variables
 set RKill_Update_Tool_Online=unidentified
@@ -99,6 +102,7 @@ set DefragSystem_A_Update_Tool_Online=unidentified
 set DefragSystem_D_Update_Tool_Online=unidentified
 set Caffeine_Update_Tool_Online=unidentified
 set Geek_Update_Tool_Online=unidentified
+set Blat_Update_Tool_Online=unidentified
 
 REM Tool download location variables
 set RKill_Url=unidentified
@@ -117,6 +121,7 @@ set DefragSystem_A_Url=http://downloads.auslogics.com/en/disk-defrag/ausdiskdefr
 set DefragSystem_D_Url=https://softpedia-secure-download.com/dl/43f41169943fef85b1fcc5f7e22ac9bf/5c9b623b/100100698/software/portable/system/dfsetup222.zip
 set Caffeine_Url=unidentified
 set Geek_Url=https://geekuninstaller.com/geek.zip
+set Blat_Url=unidentified
 
 REM Update all functions if ran in test mode
 if %Test_Update_All%==yes (
@@ -293,11 +298,12 @@ REM Set variables for Functions_Local
 	set /p Brainiacs_Update_Function_Local=
 	set /p Update_Function_Local=
 	set /p Windows_Defrag_Function_Local=
+	set /p Email_function_Local=
 )
 
 REM Set variables for Tools_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,80) do set /p =
+	for /l %%i in (1,1,82) do set /p =
 	set /p RKill_Update_Tool_Local=
 	set /p JRT_Update_Tool_Local=
 	set /p TDSS_Update_Tool_Local=
@@ -313,6 +319,7 @@ REM Set variables for Tools_Local
 	set /p DefragSystem_D_Update_Tool_Local=
 	set /p Caffeine_Update_Tool_Local=
 	set /p Geek_Update_Tool_Local=
+	set /p Blat_Update_Tool_Local=
 )
 
 REM Set variables for Functions_Online
@@ -340,11 +347,12 @@ REM Set variables for Functions_Online
 	set /p Brainiacs_Update_Function_Online=
 	set /p Update_Function_Online=
 	set /p Windows_Defrag_Function_Online=
+	set /p Email_function_Online=
 )
 
 REM Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,80) do set /p =
+	for /l %%i in (1,1,82) do set /p =
 	set /p RKill_Update_Tool_Online=
 	set /p JRT_Update_Tool_Online=
 	set /p TDSS_Update_Tool_Online=
@@ -360,6 +368,7 @@ REM Set variables for Tools_Online
 	set /p DefragSystem_D_Update_Tool_Online=
 	set /p Caffeine_Update_Tool_Online=
 	set /p Geek_Update_Tool_Online=
+	set /p Blat_Update_Tool_Online=
 )
 
 REM Update if ran in test mode
@@ -1062,6 +1071,37 @@ if "%Windows_Defrag_Function_Online%" GTR "%Windows_Defrag_Function_Local%" (
 	TIMEOUT 1 >nul
 )
 
+REM Email_Function
+if "%Email_Function_Online%" GTR "%Email_Function_Local%" (
+	CLS
+	echo.
+	echo  ^! ALERT
+	echo ==============================
+	echo.
+	echo   Updating Email_Function...
+	echo.
+	echo ==============================
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
+	TIMEOUT 1 >nul
+) else if %Test_Update_All%==yes (
+	REM Download if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
+) else if not exist "%Output%/Functions/Email_Function.bat" (
+	REM Download if not present
+	CLS
+	echo.
+	echo  ^! ALERT
+	echo =================================
+	echo.
+	echo   Email_Function not present
+	echo.
+	echo   Downloading Email_Function...
+	echo.
+	echo =================================
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
+	TIMEOUT 1 >nul
+)
+
 REM End file if updated due to testing
 if %Test_Update_All%==yes (
 	  goto:Backtotool
@@ -1321,6 +1361,28 @@ if "%Geek_Update_Tool_Online%" GTR "%Geek_Update_Tool_Local%" (
 	TIMEOUT 1 >nul
 )
 :Skip_Geek_Update
+
+REM Blat_Update_Tool_Online
+if "%Blat_Update_Tool_Online%" GTR "%Blat_Update_Tool_Local%" (
+	CLS
+	echo.
+	echo  ^! ALERT
+	echo =========================
+	echo.
+	echo   Updating Blat_Tool...
+	echo.
+	echo =========================
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Blat_Url%" -O "%Output%\blat3219_32.full.zip" 2>NUL
+	REM Unzip zip file
+	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\'); $zip = $shell.NameSpace('%Output%\blat3219_32.full.zip'); $target.CopyHere($zip.Items(), 16); }" 2>NUL
+	REM Move folder
+	move "%Output%\blat3219\full" "%Output%\Tools\Blat" 2>NUL
+	REM Delete zip file
+	del "%Output%\blat3219_32.full.zip" 2>NUL
+	REM Delete unecessary remaining folder
+	rmdir "%Output%\blat3219" /s /q 2>NUL
+	TIMEOUT 1 >nul
+)
 
 REM Update Readme file
 if "%Readme_Online%" GTR "%Readme_Local%" (
