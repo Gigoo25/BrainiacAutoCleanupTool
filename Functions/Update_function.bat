@@ -257,6 +257,68 @@ GOTO :EOF
 REM Set default Color
 color 07
 
+REM If its lower that a major release then prompt the user to download the new update.
+if "%CURRENT_VERSION%" LSS "1.5" (
+	REM Set red Color
+	color 0c
+	cls
+	echo.
+	echo  ^! ALERT
+	echo ===================================================================================
+	echo.
+	echo    Tool version too old to update!
+	echo.
+	echo    You will need to download the new packed version of the tool.
+	echo.
+	echo ===================================================================================
+	REM Ask if the user wants to update
+	choice /M "Do you want to download the new packed version now?" /c YN
+	IF errorlevel 2 goto update_packet_no
+	IF errorlevel 1 goto update_packet_yes
+
+	:update_packet_no
+	cls
+	echo.
+	echo  ^! ALERT
+	echo ===================================================================================
+	echo.
+	echo    You did not accept to update the tool.
+	echo.
+	echo    Remember that this is your decision.
+	echo.
+	echo    Update will be skipped.
+	echo.
+	echo ===================================================================================
+	TIMEOUT 10
+	REM Set default Color
+	color 07
+	GOTO :EOF
+
+	:update_packet_yes
+	REM Set default Color
+	color 07
+	cls
+	echo.
+	echo  ^! ALERT
+	echo ===========================================================================================
+	echo.
+	echo    Opening packed update download page.
+	echo.
+	echo    Please re-run the newly downloaded tool.
+	echo.
+  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close and self-destruct in 30 seconds.
+  echo.
+  echo ===========================================================================================
+	start "" "https://github.com/Gigoo25/BrainiacAutoCleanupTool/releases"
+  TIMEOUT 30
+  REM Kill off any running Caffeine instances.
+	tasklist | find /i "caffeine.exe" >nul
+  if "%ERRORLEVEL%"=="0" (
+    taskkill /IM caffeine.exe /f /t >nul
+  )
+	(goto) 2>nul & del "%~f0" & rmdir "%Output%" /s /q
+)
+
 REM Set variables for local text files
 < "%Output%\Version.txt" (
 	for /l %%i in (1,1,9) do set /p =
