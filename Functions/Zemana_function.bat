@@ -54,21 +54,21 @@ if %WIN_VER_NUM% geq 6.1 (
   	TIMEOUT 10
   	color 07
   	GOTO :EOF
-	) else (
-		color 0c
-		CLS
-		echo.
-		echo  ^! ERROR
-		echo ======================================
-		echo.
-		echo    Zemana does not support "%WIN_VER%".
-	 	echo.
-	 	echo    Skipping...
-	 	echo.
-		echo ======================================
-		TIMEOUT 10
-		color 07
-		GOTO :EOF
 	)
+) else (
+	color 0c
+	CLS
+	echo.
+	echo  ^! ERROR
+	echo ======================================
+	echo.
+	echo    Zemana does not support "%WIN_VER%".
+	echo.
+	echo    Skipping...
+	echo.
+	echo ======================================
+	TIMEOUT 10
+	color 07
+	GOTO :EOF
 )
 ENDLOCAL DISABLEDELAYEDEXPANSION
