@@ -72,8 +72,6 @@ echo.
 echo  ^! WARNING
 echo ===================================================================================
 echo.
-echo    Auslogic Defrag does not check for an SSD!
-echo.
 echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% does have a limited check for SSD but
 echo    it is not bulletproof.
 echo.

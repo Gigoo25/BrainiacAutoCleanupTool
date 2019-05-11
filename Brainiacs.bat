@@ -321,10 +321,6 @@ if "%ERRORLEVEL%"=="1" (
   start "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
 )
 
-REM DEBUG -----------------------------------------------------------------------------------------------------------------------------------------------
-REM start "TEST" functions\Email_function
-REM DEBUG -----------------------------------------------------------------------------------------------------------------------------------------------
-
 REM Start interface
 CLS
 echo.
@@ -694,6 +690,16 @@ REM Start Malwarebytes service
 :menu_9   Run Malwarebytes? (Experimental)          : '!Malwarebytes!' [!Malwarebytes_choice:~1,-1!]
 call:getNextInList Malwarebytes "!Malwarebytes_choice!"
 cls
+REM ---------------------------TEMPORARIY------------------------------------
+REM ADD TO DISABLE MALWAREBYTES UNLESS TESTING.
+if not "%PASSWORD%"=="RedRuby" (
+  call functions\Malwarebytes_function
+  set Malwarebytes=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  GOTO:EOF
+)
+REM ADD TO DISABLE MALWAREBYTES UNLESS TESTING.
+REM ---------------------------TEMPORARIY------------------------------------
 REM Check if system restore is enabled
 if /i "!SystemRestore!"=="No" (
   set Malwarebytes=No
@@ -712,6 +718,7 @@ if /i "!SystemRestore!"=="No" (
   TIMEOUT 30
   color 07
 )
+call:getNextInList EmailNotes "!EmailNotes_choice!"
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
@@ -719,6 +726,16 @@ REM Start Spybot service
 :menu_10   Run Spybot? (Experimental)               : '!Spybot!' [!Spybot_choice:~1,-1!]
 call:getNextInList Spybot "!Spybot_choice!"
 cls
+REM ---------------------------TEMPORARIY------------------------------------
+REM ADD TO DISABLE SPYBOT UNLESS TESTING.
+if not "%PASSWORD%"=="RedRuby" (
+  call functions\Spybot_function
+  set Spybot=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  GOTO:EOF
+)
+REM ADD TO DISABLE SPYBOT UNLESS TESTING.
+REM ---------------------------TEMPORARIY------------------------------------
 REM Check if system restore is enabled
 if /i "!SystemRestore!"=="No" (
   CLS
@@ -809,6 +826,16 @@ REM Display menu options
 
 REM Email notes?
 :menu_E    Email notes? (Experimental)               : '!EmailNotes!' [!EmailNotes_choice:~1,-1!]
+REM ---------------------------TEMPORARIY------------------------------------
+REM ADD TO DISABLE EMAIL UNLESS TESTING.
+if not "%PASSWORD%"=="RedRuby" (
+  call functions\Email_function
+  set EmailNotes=No
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  GOTO:EOF
+)
+REM ADD TO DISABLE EMAIL UNLESS TESTING.
+REM ---------------------------TEMPORARIY------------------------------------
 call:getNextInList EmailNotes "!EmailNotes_choice!"
 cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
