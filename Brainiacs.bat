@@ -98,7 +98,7 @@ call:setPersist SystemRestore=Yes
 set AutoClose_choice=,Yes,No,
 call:setPersist AutoClose=Yes
 set ReviewLogs_choice=,Yes,No,
-call:setPersist ReviewLogs=Yes
+call:setPersist ReviewLogs=No
 set OpenNotes_choice=,Yes,No,
 call:setPersist OpenNotes=Yes
 set DeleteNotes_choice=,Yes,No,
@@ -185,11 +185,11 @@ if exist "%Output%\Debug" (
   CLS
   echo.
   echo  ^! WARNING
-  echo ==============================
+  echo =============================
   echo.
   echo    Entering Debugging mode.
   echo.
-  echo ==============================
+  echo =============================
   TIMEOUT 3
   @echo on
   goto :menuLOOP
@@ -199,13 +199,13 @@ REM Ask for password for beta testing purposes
 CLS
 echo.
 echo  ^! PASSWORD
-echo ===================================================================================
+echo ===================================================================
 echo.
 echo    Enter the password in order to access the tool.
 echo.
 echo    If you do not have the password please close out of this tool.
 echo.
-echo ===================================================================================
+echo ===================================================================
 set /p PASSWORD="Enter password: "
 if "%PASSWORD%"=="RedRuby" (
   cls
@@ -226,13 +226,13 @@ if "%PASSWORD%"=="RedRuby" (
   color 0c
   echo.
   echo  ^! ERROR
-  echo ===================================================================================
+  echo =========================================================================
   echo.
   echo    Password is incorrect.
   echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 30 seconds.
   echo.
-  echo ===================================================================================
+  echo =========================================================================
   TIMEOUT 30
   exit /b
 )
@@ -244,11 +244,11 @@ REM Ask to upgrade from latest commits
 CLS
 echo.
 echo  ^! WARNING
-echo =================================
+echo ================================
 echo.
 echo    This may break some things.
 echo.
-echo =================================
+echo ================================
 choice /M "Do you want to update from the latest commits?" /c YN
 IF errorlevel 2 goto :Test_Upgrade_All_Decline
 IF errorlevel 1 goto :Test_Upgrade_All_Accept
@@ -309,6 +309,9 @@ for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Curren
 REM If unsupported os then set variable to abort
 if %WIN_VER_NUM% LSS 6.0 set ABORT_CLEANUP=yes
 
+REM If 32 bit os then set variable to abort
+if %OS%==32BIT set ABORT_CLEANUP=yes
+
 REM  Run caffeine
 tasklist | find /i "caffeine.exe" >nul
 if "%ERRORLEVEL%"=="1" (
@@ -323,7 +326,7 @@ REM Start interface
 CLS
 echo.
 echo  ^! DISCLAIMER
-echo ===================================================================================
+echo =========================================================================
 echo.
 echo    I am not responsible if this program ends up causing any harm, blows
 echo    up a computer or causes a nuclear war.
@@ -336,7 +339,7 @@ echo.
 echo    Please run the program as administrator. Otherwise you'll have to
 echo    you'll have to accept UAC for each program that tries to run.
 echo.
-echo ===================================================================================
+echo =========================================================================
 choice /M "Do you accept responsibility for running this tool" /c YN
 IF errorlevel 2 goto :accept_no
 IF errorlevel 1 goto :accept_yes
@@ -347,7 +350,7 @@ cls
 color 0c
 echo.
 echo  ^! ERROR
-echo ===================================================================================
+echo =========================================================================
 echo.
 echo    You did not accept responsibility for running this tool.
 echo.
@@ -356,7 +359,7 @@ echo    and accept the disclaimer.
 echo.
 echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 60 seconds.
 echo.
-echo ===================================================================================
+echo =========================================================================
 TIMEOUT 60
 exit 1
 
@@ -369,7 +372,7 @@ if /i not "%SAFE_MODE%"=="yes" (
     color 0c
     echo.
     echo  ^! ERROR
-    echo ===================================================================================
+    echo ================================================================================================
     echo.
     echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% doesn't think it is running as an Administrator.
     echo    You MUST run with full Administrator rights to function correctly.
@@ -377,7 +380,7 @@ if /i not "%SAFE_MODE%"=="yes" (
     echo    Close this window and re-run the cleanup tool as an Administrator.
     echo    ^(right-click Brainiacs.bat and click "Run as Administrator"^)
     echo.
-    echo ===================================================================================
+    echo ================================================================================================
     pause
     exit
   )
@@ -389,9 +392,9 @@ if %ABORT_CLEANUP%==yes (
 	color 0c
 	echo.
 	echo  ^! ERROR
-	echo ===================================================================================
+	echo ====================================================================================
 	echo.
-	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% does not support "%WIN_VER%".
+	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% does not support "%WIN_VER%" "%OS%".
 	echo.
 	echo    You will have to run your tools manually.
 	echo.
@@ -399,7 +402,7 @@ if %ABORT_CLEANUP%==yes (
 	echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
 	echo.
-	echo ===================================================================================
+	echo ====================================================================================
   TIMEOUT 15
 	exit 1
 )
@@ -412,14 +415,14 @@ if exist "%Output%\Tools" (
   color 0c
   echo.
 	echo  ^! ERROR
-	echo ===================================================================================
+	echo =========================================================================
   echo.
   echo    Tools folder not found.
   echo    You MUST have tools folder under %Output%
   echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
 	echo.
-	echo ===================================================================================
+	echo =========================================================================
   TIMEOUT 15
 	exit 1
 )
@@ -435,14 +438,14 @@ if exist "%Output%\Functions" (
   color 0c
   echo.
 	echo  ^! ERROR
-	echo ===================================================================================
+	echo =========================================================================
   echo.
   echo    Functions folder not found.
   echo    You MUST have functions folder under %Output%
   echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
 	echo.
-	echo ===================================================================================
+	echo =========================================================================
   TIMEOUT 15
 	exit 1
 )
@@ -457,16 +460,17 @@ if "%ABRUPTCLOSE%"=="yes" (
     color 0c
     echo.
     echo  ^! WARNING
-    echo ===================================================================================
+    echo ==========================
     echo.
     echo    Abrupt stop detected!
     echo.
-    echo ===================================================================================
+    echo ==========================
 	  choice /M "Do you want to restore the session?" /c YN
 	  IF errorlevel 2 goto :restore_no
 	  IF errorlevel 1 goto :restore_yes
 	  :restore_yes
 	  call:restorePersistentVars "%FilePersist%"
+    REM Set Color
     color 07
 	  REM Start cleanup
 	  goto :menu_SC
@@ -595,13 +599,13 @@ REM Set title
 title [Menu] Brainiacs Cleanup Tool v%TOOL_VERSION%
 echo.
 echo  ^! MENU
-echo ===================================================================================
+echo ========================================================================================
 echo.
 echo  ^! Select a tool, option or preset from the list below by inputting the corresponding
 echo  ^! character. Once you are okay with your selection type "SC" and then enter to
 echo  ^! start the automated process.
 echo.
-echo ===================================================================================
+echo ========================================================================================
 echo.
 for /f "tokens=1,2,* delims=_ " %%A in ('"findstr /b /c:":menu_" "%~f0""') do echo.  %%B  %%C
 set choice=
@@ -896,14 +900,14 @@ if /i "!DeleteNotes!"=="Yes" (
     color 0c
     echo.
     echo  ^! ERROR
-    echo =====================================================================================
+    echo ====================================================================================
     echo.
     echo    Delete comments requires you to have the option "Open comments when done" to be
     echo    enabled. Please enable this option and try again.
     echo.
     echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 30 seconds.
     echo.
-    echo =====================================================================================
+    echo ====================================================================================
     set DeleteNotes=No
     TIMEOUT 30
     color 07
@@ -913,14 +917,14 @@ if /i "!DeleteNotes!"=="Yes" (
   color 0c
   echo.
   echo  ^! WARNING
-  echo =====================================================================================
+  echo ======================================================================================
   echo.
   echo    You have selected to delete the comments when done.
   echo.
   echo    The comments will still open before deletion for you to copy, but once you close
   echo    the prompt it will all be gone.
   echo.
-  echo =====================================================================================
+  echo ======================================================================================
   choice /C YN /T 20 /D N /M "Are you really sure you want to delete the notes after run?"
   IF errorlevel 2 goto DontDeleteNotes_Prompt_choice
   IF errorlevel 1 goto DeleteNotes_Prompt_Continue
@@ -1054,7 +1058,7 @@ set DriveChecker=Yes
 set EmailNotes=No
 set SystemRestore=Yes
 set AutoClose=Yes
-set ReviewLogs=Yes
+set ReviewLogs=No
 set OpenNotes=Yes
 set DeleteNotes=No
 set DeleteLogs=No
@@ -1293,10 +1297,11 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   IF errorlevel 3 goto Windows_Defrag_Function
   IF errorlevel 2 goto Defraggler
   IF errorlevel 1 goto AusDefrag
+
   REM Windows_Defrag function.
   :Windows_Defrag_Function
   echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-  set Defrag_Internal=Yes
+
   REM Ask if want to run externally
   CLS
   echo.
@@ -1306,6 +1311,7 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   choice /C YN /T 20 /D N /M "Do you want to run defrag externally?"
   IF errorlevel 2 goto Next_Boot_Defrag_Windows_Choice
   IF errorlevel 1 goto Run_External_Defrag_Windows
+
   REM Initiate external run
   :Run_External_Defrag_Windows
   echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
@@ -1313,6 +1319,7 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   start functions\Windows_Defrag_Function
   set Defrag_External=No
   goto Defrag_Done
+
   :Next_Boot_Defrag_Windows_Choice
   REM Ask if want to schedule boot
   CLS
@@ -1321,8 +1328,9 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   echo =================================
   echo.
   choice /C YN /T 20 /D N /M "Do you want to run defrag on the next boot?"
-  IF errorlevel 2 goto choice_start
+  IF errorlevel 2 goto Defrag_Windows
   IF errorlevel 1 goto Next_Boot_Defrag_Windows
+
   REM Schedule for next reboot/delete task after
   :Next_Boot_Defrag_Windows
   echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
@@ -1330,35 +1338,43 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   cls
   echo.
   echo  ^! ALERT
-  echo ===================================================================================
+  echo ===========================================
   echo.
   echo    Defrag scheduled for next boot.
   echo.
   echo    Reboot PC to start the defrag process.
   echo.
-  echo ===================================================================================
+  echo ===========================================
   TIMEOUT 5
   goto Defrag_Done
+
   REM Open Windows Defrag if other options were denied.
+  :Defrag_Windows
+  set Defrag_Internal=Yes
   call functions\Windows_Defrag_Function
   set Defrag_Internal=No
   goto Defrag_Done
+
   REM Open Defraggler_Defrag_function.
   :Defraggler
   echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Defraggler_Defrag_function
   goto Defrag_Done
+
   REM Open Aus_Defrag_function.
   :AusDefrag
   echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   call functions\Aus_Defrag_function
   goto Defrag_Done
+
   REM Finish defrag
   :Defrag_Done
   echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+
   REM Create restore point
   set DefragSystem=No
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
 )
@@ -1449,11 +1465,11 @@ if /i "%AutoClose:~0,1%"=="Y" (
   color 0c
   echo.
 	echo  ^! WARNING
-	echo ===================================================================================
+	echo =========================================================================
   echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
 	echo.
-	echo ===================================================================================
+	echo =========================================================================
   TIMEOUT 15
   REM Kill off any running Caffeine instances.
 	tasklist | find /i "caffeine.exe" >nul
@@ -1488,12 +1504,12 @@ if /i "%Reboot:~0,1%"=="Y" (
   color 0c
   echo.
 	echo  ^! WARNING
-	echo ===================================================================================
+	echo =================================================================================
   echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will reboot the PC in 10 seconds.
   echo    Exit the tool to stop the reboot.
 	echo.
-	echo ===================================================================================
+	echo =================================================================================
   TIMEOUT 10
   echo -Rebooted PC >> %Output%\Notes\Comments.txt
   REM Kill off any running Caffeine instances.
@@ -1536,13 +1552,13 @@ if exist "%Output%\Readme.txt" (
   color 0c
   echo.
   echo  ^! WARNING
-  echo ===================================================================================
+  echo =========================
   echo.
   echo    Readme not found.
   echo.
   echo    Returning to menu...
   echo.
-  echo ===================================================================================
+  echo =========================
   TIMEOUT 5
   color 07
 )
@@ -1562,13 +1578,13 @@ if exist "%Output%\Notes\Comments.txt" (
   color 0c
   echo.
   echo  ^! WARNING
-  echo ===================================================================================
+  echo =========================
   echo.
   echo    Comments not found.
   echo.
   echo    Returning to menu...
   echo.
-  echo ===================================================================================
+  echo =========================
   TIMEOUT 5
   color 07
 )
@@ -1588,13 +1604,13 @@ if exist "%Output%\Changelog.txt" (
   color 0c
   echo.
   echo  ^! WARNING
-  echo ===================================================================================
+  echo =========================
   echo.
   echo    Changelog not found.
   echo.
   echo    Returning to menu...
   echo.
-  echo ===================================================================================
+  echo =========================
   TIMEOUT 5
   color 07
 )
