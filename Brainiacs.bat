@@ -172,6 +172,7 @@ color 07
 
 REM Skip to menu if verbose is enabled
 if exist "%Output%\Debug" (
+  title [Entering Testing Mode] Brainiacs Cleanup Tool v%TOOL_VERSION%
   CLS
   color 0c
   echo.
@@ -196,6 +197,7 @@ if exist "%Output%\Debug" (
 )
 
 REM Ask for password for beta testing purposes
+title Brainiacs Cleanup Tool v%TOOL_VERSION%
 CLS
 echo.
 echo  ^! PASSWORD
@@ -208,6 +210,7 @@ echo.
 echo ===================================================================
 set /p PASSWORD="Enter password: "
 if "%PASSWORD%"=="RedRuby" (
+  title [Entering Testing Mode] Brainiacs Cleanup Tool v%TOOL_VERSION%
   cls
   color 0c
   echo.
