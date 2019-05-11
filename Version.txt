@@ -1,5 +1,5 @@
-1.4
-2019-04-
+1.5
+2019-05-11
 
 Functions Legend
 --------------
@@ -34,8 +34,10 @@ Functions Legend
 19 - DeleteTools_Function
 20 - Brainiacs_Function
 21 - Update_Update_Function
-22 - Windows_Defrag
+22 - Windows_Defrag_Function
+23 - Email_function
 
+1.5
 1.5
 1.5
 1.5
@@ -76,6 +78,7 @@ Tools Legend
 13 - DefragSystem_D_Tool
 14 - Caffeine_Tool
 15 - Geek_Tool
+16 - Blat_Tool
 
 2.9.1.0
 8.1.4.0
@@ -87,8 +90,9 @@ Tools Legend
 1.0
 1.0
 1.0
-5.55
+5.56
 8.0.24.0
 2.22.995
 1.0
 1.4.5.135
+2.5.0

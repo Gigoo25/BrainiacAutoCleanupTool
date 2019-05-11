@@ -1,25 +1,48 @@
 
 CHANGELOG
 ===================================================================================
-Brainiacs Cleanup Tool v1.5 (2019-00-00)
+Brainiacs Cleanup Tool v1.5 (2019-05-11)
+*MAJOR POINT RELEASE*
 ---
--Moved SSD warning for Auslogic defrag to "Aus_Defrag_function".
--Fixed Caffeine stopping prematurely.
--Set specific folders for "DeleteTools_function" while I figure out wildcards/best folder locations.
--Changed "end" tag in "Update_function" to functioning flag to prevent warning/errors
--Removed some duplicate variables
--Implemented option to run the batch verbose & to force update from source while testing.
--Implemented "Windows defrag" into the menu to allow for external run & defrag on next boot.
--Move SSD check to Auslogic defrag only as it does not have the ability to automatically detect SSD.
+-Added some missing titles.
+-Fixed formatting to unify the menu throughout functions.
+-Fixed defrag menu options.
+-Added Windows defrag as an option.
 -Changed default defrag program to Windows defrag.
+-Moved SSD warning for Auslogic defrag to "Aus_Defrag_function".
+-Renamed "Windows_Defrag" to "Windows_Defrag_Function" to unify the name with the rest of the function.
+-Re-worked order/functionality of "Windows_Defrag_Function". It was basically garbage before. It will now detect how it was ran and appropriately run based on how it was ran (Externally/Internally/From Boot).
+-Started adding email sending functionality.
+-Fixed Caffeine stopping prematurely.
+-Removed accidental deletion of notes when "Delete Notes" was not selected.
+-Deleted old "SFC_function".
+-Fixed password prompt.
+-Added CLS to end of defrag.
+-Moved some check for Malwarebytes & Spybot.
+-Removed some unnecessary duplicate variables.
+-Added Windows 7+ check to Zemana to prevent error.
+-Updated RKill link to one that does not expire.
+-Added a 32bit check for now until I can implement 32 bit version tools for RKILL, JRT, ROGUE KILLER, ADW else they will all fail when running on a 32 bit system.
+-Changed "ReviewLogs" function to "No" by default.
+-Added a check for major updates. If there is a major update force the user to re-download the exe file from the website.
+-"Experimental" tools will now not run unless in testing mode.
 -Tool will now try to auto start with elevated privileges.
--Added Windows 7+ check to Zemana.
+-Implemented option to run the batch verbose for debugging/fixed updating from source while testing.
+-Changed "end" tag to functioning flag to prevent warning/errors
+-Set specific folders for "DeleteTools_function" while I figure out wildcards/best folder locations.
+-Moved some checks to "Malwarebytes_Function" & "Spybot_Function" from "Brainiacs to de-clutter file.
+-Moved "ABRUPTCLOSE" from "!Output!\Functions\" to "!Output!\Functions\Variables\"
+-Fully removed tool asking for the account number.
 -Fixed notes deleting when selecting the option to remove tools.
--Unified Defrag Function names.
+-Tool will now download missing functions if not found during update.
+-Hid error message if reg key was not found during system restore.
+-Restore point from abrupt close will auto resume on start now.
+-Changed "end" tag in "Update_function" to functioning flag to prevent warning/errors
+-Implemented option to run the batch verbose & to force update from source while testing.
+-Updated TDSS, Ccleaner tool versions.
 
-TO-DO
-UPDATE WINDOWS DEFRAG TO DISPLAY MESSAGE IF FAILED
-ADD EMAIL NOTES WHEN DONE/ABRUPT SESSION DISCONNECT
+**TO-DO**
+-Finish email sending implementation.
 
 Brainiacs Cleanup Tool v1.4 (2019-03-27)
 ---
