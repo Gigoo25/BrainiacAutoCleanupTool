@@ -559,18 +559,18 @@ if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 ) else if %Test_Update_All%==yes (
 	REM Download if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL
-) else if not exist "%Output%\Functions\TDSS_Function.bat" (
+) else if not exist "%Output%\Functions\TDSS_Killer_function.bat" (
 	REM Download if not present
 	CLS
 	echo.
 	echo  ^! ALERT
-	echo ================================
+	echo =======================================
 	echo.
-	echo   TDSS_Function not present.
+	echo   TDSS_Killer_function not present.
 	echo.
-	echo   Downloading TDSS_Function...
+	echo   Downloading TDSS_Killer_function...
 	echo.
-	echo ================================
+	echo =======================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL
 	TIMEOUT 1 >nul
 )
