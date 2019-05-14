@@ -61,6 +61,7 @@ set TEST_UPDATE_ALL=undetected
 set PASSWORD=undetected
 set PID_BRAINIACS=undetected
 set EMAIL_SEND=undetected
+set ROGUE_QUICKSCAN=undetected
 
 REM Menu variables
 set RKill_choice=,Yes,No,
@@ -654,7 +655,57 @@ GOTO:EOF
 REM Start Rogue Killer service
 :menu_4   Run Rogue Killer?                         : '!Rogue!' [!Rogue_choice:~1,-1!]
 call:getNextInList Rogue "!Rogue_choice!"
-cls
+if "!Rogue!"=="Yes" (
+  CLS
+  echo.
+  echo  ^! ALERT
+  echo ================================================================
+  echo.
+  echo    RogueKiller is able to perform a full scan or a quick scan.
+  echo.
+  echo    Which scan would you like to perform?
+  echo.
+  echo ================================================================
+  choice /C FQ /T 20 /D Q /M "[F]ull or [Q]uick"
+  IF errorlevel 2 goto RogueKiller_Quickscan
+  IF errorlevel 1 goto RogueKiller_Fullscan
+  :RogueKiller_Quickscan
+  CLS
+  echo.
+  echo  ^! ALERT
+  echo =========================
+  echo.
+  echo    Quick scan selected!
+  echo.
+  echo =========================
+  set ROGUE_QUICKSCAN=Yes
+  REM DEBUG
+  echo ROGUE_QUICKSCAN
+  echo %ROGUE_QUICKSCAN%
+  pause
+  REM DEBUG
+  cls
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  GOTO:EOF
+  :RogueKiller_Fullscan
+  CLS
+  echo.
+  echo  ^! ALERT
+  echo ========================
+  echo.
+  echo    Full scan selected!
+  echo.
+  echo ========================
+  set ROGUE_QUICKSCAN=No
+  REM DEBUG
+  echo ROGUE_QUICKSCAN
+  echo %ROGUE_QUICKSCAN%
+  pause
+  REM DEBUG
+  cls
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+  GOTO:EOF
+)
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 

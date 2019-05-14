@@ -9,17 +9,31 @@ title [RogueKiller] Brainiacs Cleanup Tool v%TOOL_VERSION%
 REM Start RogueKiller service.
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Starting RougueKiller...
-	echo.
-	echo =================================
-  TIMEOUT 2 >nul
-	CLS
-	"%Output%\Tools\RogueKiller\RogueKillerCMD.exe" -scan -debuglog "%Output%\Logs\rogue.log"
+	if "%ROGUE_QUICKSCAN%"=="Yes" (
+		CLS
+		echo.
+		echo  ^! ALERT
+		echo =======================================
+		echo.
+		echo   Starting RougueKiller Quick scan...
+		echo.
+		echo =======================================
+	  TIMEOUT 2 >nul
+		CLS
+		"%Output%\Tools\RogueKiller\RogueKillerCMD.exe" -quickscan -debuglog "%Output%\Logs\rogue.log"
+	) else (
+		CLS
+		echo.
+		echo  ^! ALERT
+		echo ======================================
+		echo.
+		echo   Starting RougueKiller Full scan...
+		echo.
+		echo ======================================
+	  TIMEOUT 2 >nul
+		CLS
+		"%Output%\Tools\RogueKiller\RogueKillerCMD.exe" -scan -debuglog "%Output%\Logs\rogue.log"
+	)
 	echo -Ran RougueKiller >> %Output%\Notes\Comments.txt
 	CLS
 	echo.

@@ -1,4 +1,4 @@
-1.5
+1.5.1
 2019-05-11
 
 Functions Legend
@@ -8,7 +8,7 @@ Version
 Changelog
 
 1.5
-1.5
+1.5.1
 1.5
 
 Functions Legend
@@ -40,6 +40,7 @@ Functions Legend
 1.5
 1.5
 1.5
+1.5.1
 1.5
 1.5
 1.5
@@ -55,8 +56,7 @@ Functions Legend
 1.5
 1.5
 1.5
-1.5
-1.5
+1.5.1
 1.5
 1.5
 1.5
