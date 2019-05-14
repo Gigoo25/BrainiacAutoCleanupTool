@@ -3,6 +3,7 @@
 REM Set repo variables
 set REPO_URL=https://raw.githubusercontent.com/Gigoo25/BrainiacAutoCleanupTool
 set REPO_BRANCH=master
+set REPO_BRANCH_TEST=experimental
 
 REM Set tool verison check variables
 set CURRENT_VERSION=unidentified
@@ -124,7 +125,7 @@ set Geek_Url=https://geekuninstaller.com/geek.zip
 set Blat_Url=unidentified
 
 REM Update all functions if ran in test mode
-if %Test_Update_All%==yes (
+if %TEST_UPDATE_MASTER%==yes (
 	goto Test_Upgrade_All
 )
 
@@ -435,7 +436,7 @@ REM Set variables for Tools_Online
 
 REM Update if ran in test mode
 :Test_Upgrade_All
-if %Test_Update_All%==yes (
+if %TEST_UPDATE_ALL%==yes (
 	CLS
 	echo.
 	echo  ^! ALERT
@@ -444,6 +445,32 @@ if %Test_Update_All%==yes (
 	echo   Upgrading all functions from source...
 	echo.
 	echo ==========================================
+	TIMEOUT 2
+	CLS
+	if %TEST_UPDATE_MASTER%==yes (
+		CLS
+		echo.
+		echo  ^! ALERT
+		echo ================================
+		echo.
+		echo   Upgrading from master branch
+		echo.
+		echo ================================
+		TIMEOUT 2
+		CLS
+	)
+	if %TEST_UPDATE_EXPERIMENTAL%==yes (
+		CLS
+		echo.
+		echo  ^! ALERT
+		echo ======================================
+		echo.
+		echo   Upgrading from experimental branch
+		echo.
+		echo ======================================
+		TIMEOUT 2
+		CLS
+	)
 )
 
 REM --------------------------------------
@@ -463,9 +490,12 @@ if "%Update_Function_Online%" GTR "%Update_Function_Local%" (
 	echo.
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Update_function.bat" (
 	REM Download if not present
 	CLS
@@ -494,9 +524,12 @@ if "%RKill_Update_Function_Online%" GTR "%RKill_Update_Function_Local%" (
 	echo ==============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Rkill_function.bat" -O "%Output%\Functions\Rkill_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Rkill_function.bat" -O "%Output%\Functions\Rkill_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Rkill_function.bat" -O "%Output%\Functions\Rkill_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Rkill_function.bat" (
 	REM Download if not present
 	CLS
@@ -525,9 +558,12 @@ if "%JRT_Update_Function_Online%" GTR "%JRT_Update_Function_Local%" (
 	echo ============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/JRT_function.bat" -O "%Output%\Functions\JRT_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/JRT_function.bat" -O "%Output%\Functions\JRT_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/JRT_function.bat" -O "%Output%\Functions\JRT_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\JRT_function.bat" (
 	REM Download if not present
 	CLS
@@ -556,9 +592,12 @@ if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 	echo =============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/TDSS_Killer_function.bat" -O "%Output%\Functions\TDSS_Killer_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\TDSS_Killer_function.bat" (
 	REM Download if not present
 	CLS
@@ -587,9 +626,12 @@ if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 	echo ==============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/RogueKiller_function.bat" -O "%Output%\Functions\RogueKiller_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/RogueKiller_function.bat" -O "%Output%\Functions\RogueKiller_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/RogueKiller_function.bat" -O "%Output%\Functions\RogueKiller_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Rogue_Function.bat" (
 	REM Download if not present
 	CLS
@@ -618,9 +660,12 @@ if "%ADW_Update_Function_Online%" GTR "%ADW_Update_Function_Local%" (
 	echo ============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/ADW_function.bat" -O "%Output%\Functions\ADW_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/ADW_function.bat" -O "%Output%\Functions\ADW_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/ADW_function.bat" -O "%Output%\Functions\ADW_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\ADW_Function.bat" (
 	REM Download if not present
 	CLS
@@ -649,9 +694,12 @@ if "%HitmanPro_Update_Function_Online%" GTR "%HitmanPro_Update_Function_Local%" 
 	echo ==================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/HitmanPro_function.bat" -O "%Output%\Functions\HitmanPro_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/HitmanPro_function.bat" -O "%Output%\Functions\HitmanPro_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/HitmanPro_function.bat" -O "%Output%\Functions\HitmanPro_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\HitmanPro_function.bat" (
 	REM Download if not present
 	CLS
@@ -680,9 +728,12 @@ if "%Zemana_Update_Function_Online%" GTR "%Zemana_Update_Function_Local%" (
 	echo ===============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Zemana_function.bat" -O "%Output%\Functions\Zemana_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Zemana_function.bat" -O "%Output%\Functions\Zemana_function.bat" 2>NUL
+)  else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Zemana_function.bat" -O "%Output%\Functions\Zemana_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Zemana_Function.bat" (
 	REM Download if not present
 	CLS
@@ -711,9 +762,12 @@ if "%MBAR_Update_Function_Online%" GTR "%MBAR_Update_Function_Local%" (
 	echo =============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/MBAR_function.bat" -O "%Output%\Functions\MBAR_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/MBAR_function.bat" -O "%Output%\Functions\MBAR_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/MBAR_function.bat" -O "%Output%\Functions\MBAR_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\MBAR_Function.bat" (
 	REM Download if not present
 	CLS
@@ -742,9 +796,12 @@ if "%Malwarebytes_Update_Function_Online%" GTR "%Malwarebytes_Update_Function_Lo
 	echo =====================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Malwarebytes_function.bat" -O "%Output%\Functions\Malwarebytes_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Malwarebytes_function.bat" -O "%Output%\Functions\Malwarebytes_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Malwarebytes_function.bat" -O "%Output%\Functions\Malwarebytes_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Malwarebytes_function.bat" (
 	REM Download if not present
 	CLS
@@ -773,9 +830,12 @@ if "%Spybot_Update_Function_Online%" GTR "%Spybot_Update_Function_Local%" (
 	echo ===============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Spybot_Function.bat" (
 	REM Download if not present
 	CLS
@@ -804,9 +864,12 @@ if "%CCleaner_Update_Function_Online%" GTR "%CCleaner_Update_Function_Local%" (
 	echo =================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CCleaner_function.bat" -O "%Output%\Functions\CCleaner_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CCleaner_function.bat" -O "%Output%\Functions\CCleaner_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/CCleaner_function.bat" -O "%Output%\Functions\CCleaner_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\CCleaner_Function.bat" (
 	REM Download if not present
 	CLS
@@ -835,9 +898,12 @@ if "%DefragSystem_A_Update_Function_Online%" GTR "%DefragSystem_A_Update_Functio
 	echo ====================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Aus_Defrag_function.bat" (
 	REM Download if not present
 	CLS
@@ -866,9 +932,12 @@ if "%DefragSystem_D_Update_Function_Online%" GTR "%DefragSystem_D_Update_Functio
 	echo ==========================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Defraggler_Defrag_function.bat" (
 	REM Download if not present
 	CLS
@@ -897,9 +966,12 @@ if "%ImageChecker_Update_Function_Online%" GTR "%ImageChecker_Update_Function_Lo
 	echo =====================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Image_Checker_function.bat" -O "%Output%\Functions\Image_Checker_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Image_Checker_function.bat" -O "%Output%\Functions\Image_Checker_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Image_Checker_function.bat" -O "%Output%\Functions\Image_Checker_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Image_Checker_function.bat" (
 	REM Download if not present
 	CLS
@@ -928,9 +1000,12 @@ if "%CHKDSK_Update_Function_Online%" GTR "%CHKDSK_Update_Function_Local%" (
 	echo ===============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CHKDSK_function.bat" -O "%Output%\Functions\CHKDSK_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CHKDSK_function.bat" -O "%Output%\Functions\CHKDSK_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/CHKDSK_function.bat" -O "%Output%\Functions\CHKDSK_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\CHKDSK_function.bat" (
 	REM Download if not present
 	CLS
@@ -959,9 +1034,12 @@ if "%SystemRestore_Update_Function_Online%" GTR "%SystemRestore_Update_Function_
 	echo ================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Restore_function.bat" -O "%Output%\Functions\Restore_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Restore_function.bat" -O "%Output%\Functions\Restore_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Restore_function.bat" -O "%Output%\Functions\Restore_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Restore_function.bat" (
 	REM Download if not present
 	CLS
@@ -990,9 +1068,12 @@ if "%DeleteNotes_Update_Function_Online%" GTR "%DeleteNotes_Update_Function_Loca
 	echo ====================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteNotes_function.bat" -O "%Output%\Functions\DeleteNotes_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteNotes_function.bat" -O "%Output%\Functions\DeleteNotes_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/DeleteNotes_function.bat" -O "%Output%\Functions\DeleteNotes_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\DeleteNotes_function.bat" (
 	REM Download if not present
 	CLS
@@ -1021,9 +1102,12 @@ if "%DeleteLogs_Update_Function_Online%" GTR "%DeleteLogs_Update_Function_Local%
 	echo ===================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteLogs_function.bat" -O "%Output%\Functions\DeleteLogs_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteLogs_function.bat" -O "%Output%\Functions\DeleteLogs_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/DeleteLogs_function.bat" -O "%Output%\Functions\DeleteLogs_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\DeleteLogs_function.bat" (
 	REM Download if not present
 	CLS
@@ -1052,9 +1136,12 @@ if "%DeleteTools_Update_Function_Online%" GTR "%DeleteTools_Update_Function_Loca
 	echo ====================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteTools_function.bat" -O "%Output%\Functions\DeleteTools_function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/DeleteTools_function.bat" -O "%Output%\Functions\DeleteTools_function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/DeleteTools_function.bat" -O "%Output%\Functions\DeleteTools_function.bat" 2>NUL
 ) else if not exist "%Output%\Functions\DeleteTools_Function.bat" (
 	REM Download if not present
 	CLS
@@ -1083,9 +1170,12 @@ if "%Brainiacs_Update_Function_Online%" GTR "%Brainiacs_Update_Function_Local%" 
 	echo ==================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Brainiacs.bat" -O "%Output%\Brainiacs.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Brainiacs.bat" -O "%Output%\Brainiacs.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Brainiacs.bat" -O "%Output%\Brainiacs.bat" 2>NUL
 ) else if not exist "%Output%\Functions\Brainiacs.bat" (
 	REM Download if not present
 	CLS
@@ -1114,9 +1204,12 @@ if "%Windows_Defrag_Function_Online%" GTR "%Windows_Defrag_Function_Local%" (
 	echo =======================================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Windows_Defrag_Function.bat" -O "%Output%/Functions/Windows_Defrag_Function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Windows_Defrag_Function.bat" -O "%Output%/Functions/Windows_Defrag_Function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Windows_Defrag_Function.bat" -O "%Output%/Functions/Windows_Defrag_Function.bat" 2>NUL
 ) else if not exist "%Output%/Functions/Windows_Defrag_Function.bat" (
 	REM Download if not present
 	CLS
@@ -1145,9 +1238,12 @@ if "%Email_Function_Online%" GTR "%Email_Function_Local%" (
 	echo ==============================
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
 	TIMEOUT 1 >nul
-) else if %Test_Update_All%==yes (
-	REM Download if debug mode is enabled
+) else if %TEST_UPDATE_MASTER%==yes (
+	REM Update from master branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
+) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+	REM Update from experimental branch if debug mode is enabled
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
 ) else if not exist "%Output%/Functions/Email_Function.bat" (
 	REM Download if not present
 	CLS
@@ -1165,7 +1261,7 @@ if "%Email_Function_Online%" GTR "%Email_Function_Local%" (
 )
 
 REM End file if updated due to testing
-if %Test_Update_All%==yes (
+if %TEST_UPDATE_MASTER%==yes (
 	  goto:Backtotool
 )
 

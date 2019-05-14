@@ -57,7 +57,7 @@ set VAR_ADDT_NOTES=None
 set SKIP_DEFRAG=no
 set SKIP_COMMENTS=unidentified
 set VAR_GEEK=None
-set TEST_UPDATE_ALL=undetected
+set TEST_UPDATE_MASTER=undetected
 set PASSWORD=undetected
 set PID_BRAINIACS=undetected
 set EMAIL_SEND=undetected
@@ -256,10 +256,36 @@ echo ================================
 choice /M "Do you want to update from the latest commits?" /c YN
 IF errorlevel 2 goto :Test_Upgrade_All_Decline
 IF errorlevel 1 goto :Test_Upgrade_All_Accept
+
+REM Ask which branch to upgrade from
 :Test_Upgrade_All_Accept
+CLS
+echo.
+echo  ^! WARNING
+echo ==============================================
+echo.
+echo    Which branch do you want to update from?
+echo.
+echo ==============================================
+choice /M "[M]aster or [E]xperimental" /c ME
+IF errorlevel 2 goto :Test_Upgrade_Experimental
+IF errorlevel 1 goto :Test_Upgrade_Master
+REM Upgrade from master branch
+:Test_Upgrade_Master
 set TEST_UPDATE_ALL=yes
+set TEST_UPDATE_MASTER=yes
 call functions\Update_function
+set TEST_UPDATE_MASTER=no
 set TEST_UPDATE_ALL=no
+goto Test_Upgrade_All_Decline
+REM Upgrade from experimenal branch
+:Test_Upgrade_Experimental
+set TEST_UPDATE_ALL=yes
+set TEST_UPDATE_EXPERIMENTAL=yes
+call functions\Update_function
+set TEST_UPDATE_EXPERIMENTAL=no
+set TEST_UPDATE_ALL=no
+goto Test_Upgrade_All_Decline
 
 REM Ask to enable debugging
 :Test_Upgrade_All_Decline
