@@ -679,11 +679,6 @@ if "!Rogue!"=="Yes" (
   echo.
   echo =========================
   set ROGUE_QUICKSCAN=Yes
-  REM DEBUG
-  echo ROGUE_QUICKSCAN
-  echo %ROGUE_QUICKSCAN%
-  pause
-  REM DEBUG
   cls
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   GOTO:EOF
@@ -697,11 +692,6 @@ if "!Rogue!"=="Yes" (
   echo.
   echo ========================
   set ROGUE_QUICKSCAN=No
-  REM DEBUG
-  echo ROGUE_QUICKSCAN
-  echo %ROGUE_QUICKSCAN%
-  pause
-  REM DEBUG
   cls
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   GOTO:EOF
