@@ -1,7 +1,7 @@
 @echo off
 
 REM Variables
-set "VarRougueKiller=0"
+set VarRougueKiller=0
 
 REM Set title
 title [RogueKiller] Brainiacs Cleanup Tool v%TOOL_VERSION%

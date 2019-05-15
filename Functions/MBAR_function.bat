@@ -1,7 +1,7 @@
 @echo off
 
 REM Variables
-set "VarMBAR=0"
+set VarMBAR=0
 
 REM Set title
 title [MBAR] Brainiacs Cleanup Tool v%TOOL_VERSION%

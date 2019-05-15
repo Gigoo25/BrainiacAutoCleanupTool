@@ -1,7 +1,7 @@
 @echo off
 
 REM Variables
-set "VarHitman=0"
+set VarHitman=0
 
 REM Set title
 title [HitmanPro] Brainiacs Cleanup Tool v%TOOL_VERSION%

@@ -1,7 +1,7 @@
 @echo off
 
 REM Variables
-set "VarZemana=0"
+set VarZemana=0
 
 REM Set title
 title [Zemana] Brainiacs Cleanup Tool v%TOOL_VERSION%

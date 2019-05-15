@@ -1,7 +1,7 @@
 @echo off
 
 REM Variables
-set "VarADW=0"
+set VarADW=0
 
 REM Set title
 title [AdwCleaner] Brainiacs Cleanup Tool v%TOOL_VERSION%

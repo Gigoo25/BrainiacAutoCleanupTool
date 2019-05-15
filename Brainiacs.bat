@@ -642,7 +642,6 @@ GOTO:menuLOOP
 
 REM Display notes
 :menu_CSG ID: !VARID!
-:menu_Account#: !VarACC!
 :menu_Phone#: !VARPHN!
 
 REM Display additional notes

@@ -1,7 +1,7 @@
 @echo off
 
 REM Variables
-set "VarTDSSKiller=0"
+set VarTDSSKiller=0
 
 REM Set title
 title [TDSS Killer] Brainiacs Cleanup Tool v%TOOL_VERSION%

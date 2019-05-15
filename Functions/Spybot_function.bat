@@ -52,7 +52,7 @@ title [Spybot] Brainiacs Cleanup Tool v%TOOL_VERSION%
 REM Set variables
 set Restore_State_Spybot=unidentified
 set Skip_Install_Spybot=no
-set "VarSpybot=0"
+set VarSpybot=0
 
 REM If unsupported os then set variable to skip install.
 if %WIN_VER_NUM% LSS 6.1 set Skip_Install_Spybot=yes

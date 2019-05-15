@@ -22,7 +22,7 @@ if /i "%SKIP_DEFRAG%"=="yes_ssd" (
 	echo ===================================================================================
 	TIMEOUT 10
 	color 07
-	goto Defrag_Done
+	GOTO :EOF
 )
 
 REM Skip defrag due to Virtual machine detected
@@ -42,7 +42,7 @@ if /i "%SKIP_DEFRAG%"=="yes_vm" (
 	echo ===================================================================================
 	TIMEOUT 10
 	color 07
-	goto Defrag_Done
+	GOTO :EOF
 )
 
 REM Skip defrag due to error reading disk stats detected
@@ -62,7 +62,7 @@ if /i "%SKIP_DEFRAG%"=="yes_disk_smart_read_error" (
 	echo ===================================================================================
 	TIMEOUT 10
 	color 07
-	goto Defrag_Done
+	GOTO :EOF
 )
 
 REM Display disclaimer on checking for SSD.
