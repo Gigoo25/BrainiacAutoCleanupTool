@@ -646,13 +646,12 @@ echo.&call:menu_%choice%
 GOTO:menuLOOP
 
 REM Display notes
-:menu_CSG ID: !VARID!
-:menu_Phone#: !VARPHN!
+:menu_CSG_ID: !VARID!
+:menu_Phone_Number: !VARPHN!
 
 REM Display additional notes
 :menu_
-:menu_Additional Notes:
-:menu_!VAR_ADDT_NOTES!
+:menu_Additional_Notes: !VAR_ADDT_NOTES!
 
 REM Display menu tools
 :menu_
