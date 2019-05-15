@@ -1619,7 +1619,6 @@ if /i "%Reboot:~0,1%"=="Y" (
     exit
   )
 )
-
 GOTO:EOF
 
 :menu_VR   View Readme
