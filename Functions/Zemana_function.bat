@@ -13,11 +13,11 @@ if %WIN_VER_NUM% geq 6.1 (
 		CLS
 		echo.
 		echo  ^! ALERT
-		echo =================================
+		echo =====================
 		echo.
 		echo   Running Zemana...
 		echo.
-		echo =================================
+		echo =====================
 		start /WAIT "ZMN" "%Output%\Tools\Zemana\Zemana.AntiMalware.Portable.exe" /scan SmartScan /clean
 		echo -Ran Zemana >> %Output%\Notes\Comments.txt
 		CLS
@@ -30,11 +30,11 @@ if %WIN_VER_NUM% geq 6.1 (
 		CLS
 		echo.
 		echo  ^! ALERT
-		echo =================================
+		echo ========================
 		echo.
 		echo   Done running Zemana!
 		echo.
-		echo =================================
+		echo ========================
   	TIMEOUT 2 >nul
   	GOTO :EOF
 	) else (
@@ -42,7 +42,7 @@ if %WIN_VER_NUM% geq 6.1 (
 		CLS
   	echo.
   	echo  ^! ERROR
-  	echo ===================================================================================
+  	echo ============================================================================
   	echo.
   	echo    Zemana not found.
   	echo.
@@ -50,7 +50,7 @@ if %WIN_VER_NUM% geq 6.1 (
   	echo.
   	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
   	echo.
-  	echo ===================================================================================
+  	echo ============================================================================
   	TIMEOUT 10
   	color 07
   	GOTO :EOF
@@ -60,13 +60,13 @@ if %WIN_VER_NUM% geq 6.1 (
 	CLS
 	echo.
 	echo  ^! ERROR
-	echo ======================================
+	echo ================================================
 	echo.
-	echo    Zemana does not support "%WIN_VER%".
+	echo    Zemana does not support "%WIN_VER%" "%OS%".
 	echo.
 	echo    Skipping...
 	echo.
-	echo ======================================
+	echo ================================================
 	TIMEOUT 10
 	color 07
 	GOTO :EOF
