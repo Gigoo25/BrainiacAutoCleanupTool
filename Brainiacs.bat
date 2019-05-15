@@ -65,6 +65,7 @@ set ROGUE_QUICKSCAN=undetected
 set TEST_UPDATE_ALL=undetected
 set TEST_UPDATE_MASTER=undetected
 set TEST_UPDATE_EXPERIMENTAL=undetected
+set PREVIOUS_USER=undetected
 
 REM Menu variables
 set RKill_choice=,Yes,No,
@@ -526,6 +527,50 @@ IF errorlevel 1 goto :Session_Pickup
 REM Restore variables from last session if present
 if exist "%FilePersist%" (
   call:restorePersistentVars "%FilePersist%"
+)
+
+REM Show comments made so far.
+if exist "%Output%\Notes\Comments.txt" (
+  REM Pull previous user of session from notes
+  set /p PREVIOUS_USER=<!Output!\Notes\Comments.txt
+  REM Display message
+  cls
+  echo.
+  echo  ^! ALERT
+  echo =======================================================
+  echo.
+  echo    Session was started by %PREVIOUS_USER%
+  echo.
+  echo    Press any key to show the comments created so far.
+  echo.
+  echo =======================================================
+  pause
+  CLS
+	type  %Output%\Notes\Comments.txt
+	echo.
+  echo.
+  echo.
+  echo  ^! NOTICE
+  echo =============================================================
+  echo.
+  echo    When done press any button to continue with the session.
+  echo.
+  echo =============================================================
+	pause
+) else (
+  CLS
+  color 0c
+  echo.
+  echo  ^! WARNING
+  echo =========================
+  echo.
+  echo    Comments not found.
+  echo.
+  echo    Continuing...
+  echo.
+  echo =========================
+  TIMEOUT 5
+  color 07
 )
 
 REM Ask & enter CSG user ID into notes
