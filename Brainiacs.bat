@@ -353,14 +353,15 @@ echo =========================================================================
 echo.
 echo    I am not responsible if this program ends up causing any harm, blows
 echo    up a computer or causes a nuclear war.
+echo.
 echo    You have been warned.
 echo.
 echo    All logs will be placed in the folder "%cd%\Logs".
 echo    This tools also generates notes for the account. These will be
 echo    placed in the folder "%cd%\Notes".
 echo.
-echo    Please run the program as administrator. Otherwise you'll have to
-echo    you'll have to accept UAC for each program that tries to run.
+echo    The program should already run as Administrator, however if it does
+echo    not you'll have to run the program as Administrator manually.
 echo.
 echo =========================================================================
 choice /M "Do you accept responsibility for running this tool" /c YN
@@ -441,6 +442,7 @@ if exist "%Output%\Tools" (
 	echo =========================================================================
   echo.
   echo    Tools folder not found.
+  echo.
   echo    You MUST have tools folder under %Output%
   echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
@@ -464,6 +466,7 @@ if exist "%Output%\Functions" (
 	echo =========================================================================
   echo.
   echo    Functions folder not found.
+  echo.
   echo    You MUST have functions folder under %Output%
   echo.
   echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
@@ -498,6 +501,8 @@ if "%ABRUPTCLOSE%"=="yes" (
 	  REM Start cleanup
 	  goto :menu_SC
     :restore_no
+    REM Set Color
+    color 07
     REM Set var to delete restore point on start
     set DELETE_RESTORE=Yes
     del "!Output!\Functions\Variables\ABRUPTCLOSE.txt"
