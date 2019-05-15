@@ -107,7 +107,8 @@ REM Tool download location variables
 set RKill_Url=unidentified
 set JRT_Url=unidentified
 set TDSS_Url=http://media.kaspersky.com/utilities/VirusUtilities/EN/tdsskiller.zip
-set Rogue_Url=unidentified
+set Rogue_32_Url=unidentified
+set Rogue_64_Url=unidentified
 set ADW_Url=https://downloads.malwarebytes.com/file/adwcleaner/adwcleaner_7.3.exe
 set HitmanPro_Url=https://dl.surfright.nl/HitmanPro.exe
 set HitmanPro_64_Url=https://dl.surfright.nl/HitmanPro_x64.exe
@@ -1331,7 +1332,8 @@ if "%Rogue_Update_Tool_Online%" GTR "%Rogue_Update_Tool_Local%" (
 	echo   Updating Rogue_Tool...
 	echo.
 	echo ==========================
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Rogue_Url%" -O "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" 2>NUL
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Rogue_32_Url%" -O "%Output%\Tools\RogueKiller\RogueKillerCMD_portable32.exe" 2>NUL
+	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Rogue_64_Url%" -O "%Output%\Tools\RogueKiller\RogueKillerCMD_portable64.exe" 2>NUL
 	TIMEOUT 1 >nul
 )
 

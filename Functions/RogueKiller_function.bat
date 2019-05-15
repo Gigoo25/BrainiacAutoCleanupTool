@@ -2,13 +2,21 @@
 
 REM Variables
 set VarRougueKiller=0
+set RougueKiller_Exists=undetected
 
 REM Set title
 title [RogueKiller] Brainiacs Cleanup Tool v%TOOL_VERSION%
 
+REM Check if roguekiller is avalible before executing
+if exist "%Output%\Tools\RogueKiller\RogueKillerCMD_portable32.exe" (
+	set RougueKiller_Exists=Yes
+) else if exist "%Output%\Tools\RogueKiller\RogueKillerCMD_portable64.exe" (
+	set RougueKiller_Exists=Yes
+)
+
 REM Start RogueKiller service.
 SETLOCAL ENABLEDELAYEDEXPANSION
-if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
+if "%RougueKiller_Exists%"=="Yes" (
 	if "%ROGUE_QUICKSCAN%"=="Yes" (
 		CLS
 		echo.
@@ -20,7 +28,11 @@ if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
 		echo =======================================
 	  TIMEOUT 2 >nul
 		CLS
-		"%Output%\Tools\RogueKiller\RogueKillerCMD.exe" -quickscan -debuglog "%Output%\Logs\rogue.log"
+		if %OS%==32BIT (
+			"%Output%\Tools\RogueKiller\RogueKillerCMD_portable32.exe" -quickscan -no_interact -debuglog "%Output%\Logs\rogue.log"
+		) else (
+			"%Output%\Tools\RogueKiller\RogueKillerCMD_portable64.exe" -quickscan -no_interact -debuglog "%Output%\Logs\rogue.log"
+		)
 	) else (
 		CLS
 		echo.
@@ -32,7 +44,11 @@ if exist "%Output%\Tools\RogueKiller\RogueKillerCMD.exe" (
 		echo ======================================
 	  TIMEOUT 2 >nul
 		CLS
-		"%Output%\Tools\RogueKiller\RogueKillerCMD.exe" -scan -debuglog "%Output%\Logs\rogue.log"
+		if %OS%==32BIT (
+			"%Output%\Tools\RogueKiller\RogueKillerCMD_portable32.exe" -scan -no_interact -debuglog "%Output%\Logs\rogue.log"
+		) else (
+			"%Output%\Tools\RogueKiller\RogueKillerCMD_portable64.exe" -scan -no_interact -debuglog "%Output%\Logs\rogue.log"
+		)
 	)
 	echo -Ran RougueKiller >> %Output%\Notes\Comments.txt
 	CLS
