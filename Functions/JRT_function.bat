@@ -39,11 +39,6 @@ if exist "%Output%\Tools\JRT\JRT.exe" (
 	echo.
 	echo =================================
   TIMEOUT 2 >nul
-	REM  Run Caffeine if killed by JRT.
-	tasklist | find /i "caffeine.exe" >nul
-	if "%ERRORLEVEL%"=="1" (
-	  start "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
-	)
   GOTO :EOF
 ) else (
 	CLS

@@ -83,7 +83,6 @@ set Spybot_Update_Tool_Local=unidentified
 set CCleaner_Update_Tool_Local=unidentified
 set DefragSystem_A_Update_Tool_Local=unidentified
 set DefragSystem_D_Update_Tool_Local=unidentified
-set Caffeine_Update_Tool_Local=unidentified
 set Geek_Update_Tool_Local=unidentified
 set Blat_Update_Tool_Local=unidentified
 
@@ -101,7 +100,6 @@ set Spybot_Update_Tool_Online=unidentified
 set CCleaner_Update_Tool_Online=unidentified
 set DefragSystem_A_Update_Tool_Online=unidentified
 set DefragSystem_D_Update_Tool_Online=unidentified
-set Caffeine_Update_Tool_Online=unidentified
 set Geek_Update_Tool_Online=unidentified
 set Blat_Update_Tool_Online=unidentified
 
@@ -120,12 +118,11 @@ set Spybot_Url=unidentified
 set CCleaner_Url=https://download.ccleaner.com/portable/ccsetup556.zip
 set DefragSystem_A_Url=http://downloads.auslogics.com/en/disk-defrag/ausdiskdefragportable.exe
 set DefragSystem_D_Url=https://softpedia-secure-download.com/dl/43f41169943fef85b1fcc5f7e22ac9bf/5c9b623b/100100698/software/portable/system/dfsetup222.zip
-set Caffeine_Url=unidentified
 set Geek_Url=https://geekuninstaller.com/geek.zip
 set Blat_Url=unidentified
 
 REM Update all functions if ran in test mode
-if %TEST_UPDATE_MASTER%==yes (
+if %TEST_UPDATE_ALL%==yes (
 	goto Test_Upgrade_All
 )
 
@@ -312,11 +309,6 @@ if "%CURRENT_VERSION%" LSS "1.5" (
   echo ===========================================================================================
 	start "" "https://github.com/Gigoo25/BrainiacAutoCleanupTool/releases"
   TIMEOUT 30
-  REM Kill off any running Caffeine instances.
-	tasklist | find /i "caffeine.exe" >nul
-  if "%ERRORLEVEL%"=="0" (
-    taskkill /IM caffeine.exe /f /t >nul
-  )
 	(goto) 2>nul & del "%~f0" & rmdir "%Output%" /s /q
 )
 
@@ -366,7 +358,7 @@ REM Set variables for Functions_Local
 
 REM Set variables for Tools_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,82) do set /p =
+	for /l %%i in (1,1,81) do set /p =
 	set /p RKill_Update_Tool_Local=
 	set /p JRT_Update_Tool_Local=
 	set /p TDSS_Update_Tool_Local=
@@ -380,7 +372,6 @@ REM Set variables for Tools_Local
 	set /p CCleaner_Update_Tool_Local=
 	set /p DefragSystem_A_Update_Tool_Local=
 	set /p DefragSystem_D_Update_Tool_Local=
-	set /p Caffeine_Update_Tool_Local=
 	set /p Geek_Update_Tool_Local=
 	set /p Blat_Update_Tool_Local=
 )
@@ -415,7 +406,7 @@ REM Set variables for Functions_Online
 
 REM Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,82) do set /p =
+	for /l %%i in (1,1,81) do set /p =
 	set /p RKill_Update_Tool_Online=
 	set /p JRT_Update_Tool_Online=
 	set /p TDSS_Update_Tool_Online=
@@ -429,7 +420,6 @@ REM Set variables for Tools_Online
 	set /p CCleaner_Update_Tool_Online=
 	set /p DefragSystem_A_Update_Tool_Online=
 	set /p DefragSystem_D_Update_Tool_Online=
-	set /p Caffeine_Update_Tool_Online=
 	set /p Geek_Update_Tool_Online=
 	set /p Blat_Update_Tool_Online=
 )
@@ -1461,20 +1451,6 @@ if "%DefragSystem_D_Update_Tool_Online%" GTR "%DefragSystem_D_Update_Tool_Local%
 	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Defraggler'); $zip = $shell.NameSpace('%Output%\dfsetup.zip'); $target.CopyHere($zip.Items(), 16); }"
 	REM Delete zip file
 	del "%Output%\dfsetup.zip"
-	TIMEOUT 1 >nul
-)
-
-REM Caffeine_Update_Tool
-if "%Caffeine_Update_Tool_Online%" GTR "%Caffeine_Update_Tool_Local%" (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =============================
-	echo.
-	echo   Updating Caffeine_Tool...
-	echo.
-	echo =============================
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Caffeine_Url%" -O "%Output%\Tools\Caffeine\caffeine.exe" 2>NUL
 	TIMEOUT 1 >nul
 )
 

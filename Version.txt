@@ -76,9 +76,8 @@ Tools Legend
 11 - CCleaner_Tool
 12 - DefragSystem_A_Tool
 13 - DefragSystem_D_Tool
-14 - Caffeine_Tool
-15 - Geek_Tool
-16 - Blat_Tool
+14 - Geek_Tool
+15 - Blat_Tool
 
 2.9.1.0
 8.1.4.0
@@ -93,6 +92,5 @@ Tools Legend
 5.56
 8.0.24.0
 2.22.995
-1.0
 1.4.5.135
 2.5.0

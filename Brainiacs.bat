@@ -62,6 +62,9 @@ set PASSWORD=undetected
 set PID_BRAINIACS=undetected
 set EMAIL_SEND=undetected
 set ROGUE_QUICKSCAN=undetected
+set TEST_UPDATE_ALL=undetected
+set TEST_UPDATE_MASTER=undetected
+set TEST_UPDATE_EXPERIMENTAL=undetected
 
 REM Menu variables
 set RKill_choice=,Yes,No,
@@ -341,12 +344,6 @@ if %WIN_VER_NUM% LSS 6.0 set ABORT_CLEANUP=yes
 
 REM If 32 bit os then set variable to abort
 if %OS%==32BIT set ABORT_CLEANUP=yes
-
-REM  Run caffeine
-tasklist | find /i "caffeine.exe" >nul
-if "%ERRORLEVEL%"=="1" (
-  start "Caffeine" %Output%\Tools\Caffeine\caffeine.exe -noicon -exitafter:180
-)
 
 REM Start interface
 CLS
@@ -1568,11 +1565,6 @@ if /i "%AutoClose:~0,1%"=="Y" (
 	echo.
 	echo =========================================================================
   TIMEOUT 15
-  REM Kill off any running Caffeine instances.
-	tasklist | find /i "caffeine.exe" >nul
-  if "%ERRORLEVEL%"=="0" (
-    taskkill /IM caffeine.exe /f /t >nul
-  )
   REM Delete notes
   if /i "%DeleteNotes:~0,1%"=="Y" (
     CLS
@@ -1609,11 +1601,6 @@ if /i "%Reboot:~0,1%"=="Y" (
 	echo =================================================================================
   TIMEOUT 10
   echo -Rebooted PC >> %Output%\Notes\Comments.txt
-  REM Kill off any running Caffeine instances.
-	tasklist | find /i "caffeine.exe" >nul
-  if "%ERRORLEVEL%"=="0" (
-    taskkill /IM caffeine.exe /f /t >nul
-  )
   REM Delete notes
   if /i "%DeleteNotes:~0,1%"=="Y" (
     REM Call function
