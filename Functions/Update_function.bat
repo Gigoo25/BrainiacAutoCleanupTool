@@ -126,6 +126,14 @@ if %TEST_UPDATE_ALL%==yes (
 	goto Test_Upgrade_All
 )
 
+REM Skip checks if reopening from updating update_function
+if not "%SKIP_UPDATE_FUNCTION%"=="Yes" (
+	goto Continue_Without_Skipping
+) else (
+	goto update_yes
+)
+:Continue_Without_Skipping
+
 REM Set the window title
 title [Update] Brainiacs Cleanup Tool v%TOOL_VERSION%
 
@@ -208,27 +216,23 @@ if /i %ERRORLEVEL%==0 (
 )
 
 REM Check if downloaded version is greater
-if not DEFINED Skip_Update (
-	if "%CHECK_UPDATE_VERSION%" GTR "%CURRENT_VERSION%" (
-		REM Set red Color
-		color 0c
-		cls
-		echo.
-		echo  ^! ALERT
-		echo ===================================================================================
-		echo.
-		echo    Update found!
-		echo.
-		echo ===================================================================================
-		REM Ask if the user wants to update
-		choice /M "Do you want to update the tool" /c YN
-		IF errorlevel 2 goto :update_no
-		IF errorlevel 1 goto :update_yes
-	) else (
-		goto :EOF
-	)
+if "%CHECK_UPDATE_VERSION%" GTR "%CURRENT_VERSION%" (
+	REM Set red Color
+	color 0c
+	cls
+	echo.
+	echo  ^! ALERT
+	echo ===================================================================================
+	echo.
+	echo    Update found!
+	echo.
+	echo ===================================================================================
+	REM Ask if the user wants to update
+	choice /M "Do you want to update the tool" /c YN
+	IF errorlevel 2 goto :update_no
+	IF errorlevel 1 goto :update_yes
 ) else (
-	goto update_yes
+	GOTO :EOF
 )
 
 :update_no
@@ -468,38 +472,53 @@ REM Update functions based on version file
 REM --------------------------------------
 
 REM Update_Function
-if "%Update_Function_Online%" GTR "%Update_Function_Local%" (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ======================================
-	echo.
-	echo   Updating Update_Function...
-	echo.
-	echo ======================================
-	echo.
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
-	TIMEOUT 1 >nul
-) else if %TEST_UPDATE_MASTER%==yes (
-	REM Update from master branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
-) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
-	REM Update from experimental branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
-) else if not exist "%Output%\Functions\Update_function.bat" (
-	REM Download if not present
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ==================================
-	echo.
-	echo   Update_function not present.
-	echo.
-	echo   Downloading Update_function...
-	echo.
-	echo ==================================
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
-	TIMEOUT 1 >nul
+if not "%SKIP_UPDATE_FUNCTION%"=="Yes" (
+	if "%Update_Function_Online%" GTR "%Update_Function_Local%" (
+		CLS
+		echo.
+		echo  ^! ALERT
+		echo ======================================
+		echo.
+		echo   Updating Update_Function...
+		echo.
+		echo ======================================
+		"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
+		CLS
+		echo.
+		echo  ^! ALERT
+		echo ======================================================
+		echo.
+		echo   Done updating Update_Function.
+		echo.
+		echo   Re-opening and re-running to benefit from updates.
+		echo.
+		echo ======================================================
+		TIMEOUT 5
+		set SKIP_UPDATE_FUNCTION=Yes
+		REM Kill Brainiacs tool and restart update function after update.
+		(goto) 2>nul & start /MAX cmd /c %0 max & exit/b
+		TIMEOUT 1 >nul
+	) else if %TEST_UPDATE_MASTER%==yes (
+		REM Update from master branch if debug mode is enabled
+		"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
+	) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
+		REM Update from experimental branch if debug mode is enabled
+		"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
+	) else if not exist "%Output%\Functions\Update_function.bat" (
+		REM Download if not present
+		CLS
+		echo.
+		echo  ^! ALERT
+		echo ==================================
+		echo.
+		echo   Update_function not present.
+		echo.
+		echo   Downloading Update_function...
+		echo.
+		echo ==================================
+		"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Update_function.bat" -O "%TEMP%\Update_function.bat" 2>NUL
+		TIMEOUT 1 >nul
+	)
 )
 
 REM Rkill_Function
@@ -605,7 +624,7 @@ if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
 )
 
 REM Rogue_Function
-if "%TDSS_Update_Function_Online%" GTR "%TDSS_Update_Function_Local%" (
+if "%Rogue_Update_Function_Online%" GTR "%Rogue_Update_Function_Local%" (
 	CLS
 	echo.
 	echo  ^! ALERT
@@ -1166,7 +1185,7 @@ if "%Brainiacs_Update_Function_Online%" GTR "%Brainiacs_Update_Function_Local%" 
 ) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
 	REM Update from experimental branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Brainiacs.bat" -O "%Output%\Brainiacs.bat" 2>NUL
-) else if not exist "%Output%\Functions\Brainiacs.bat" (
+) else if not exist "%Output%\Brainiacs.bat" (
 	REM Download if not present
 	CLS
 	echo.
@@ -1251,8 +1270,8 @@ if "%Email_Function_Online%" GTR "%Email_Function_Local%" (
 )
 
 REM End file if updated due to testing
-if %TEST_UPDATE_MASTER%==yes (
-	  goto:Backtotool
+if %TEST_UPDATE_ALL%==yes (
+	  GOTO:EOF
 )
 
 REM Updated tools based on variables
@@ -1577,13 +1596,7 @@ echo    Re-open the tool to load the new version.
 echo.
 echo ===================================================================================
 TIMEOUT 10
-REM Start Brainiacs tool
-set Skip_Update=yes
 exit
 
 REM Set default Color
 color 07
-
-REM Re-Open main file
-:Backtotool
-CLS
