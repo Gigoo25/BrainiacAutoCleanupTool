@@ -240,21 +240,15 @@ goto Test_Upgrade_All_Decline
 
 REM Ask to enable debugging
 :Test_Upgrade_All_Decline
-CLS
-echo.
-echo  ^! WARNING
-echo ====================================
-echo.
-echo    The output will be really long.
-echo.
-echo ====================================
-choice /M "Do you want to enable debugging?" /c YN
-IF errorlevel 2 goto :menuLOOP
-IF errorlevel 1 goto :Enable_Debugging
-:Enable_Debugging
-echo. >> "%Output%\Debug"
-start Brainiacs.bat
-exit /b
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to enable debugging?\n\nThe output will be really long." "[NOTICE] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:I /O:N`) DO (
+  IF /I "%%G"=="Yes" (
+    echo. >> "%Output%\Debug"
+    start Brainiacs.bat
+    exit /b
+  ) else (
+    goto :menuLOOP
+  )
+)
 
 REM Skip testing mode stuff if denied previously
 :No_Test_Continue
@@ -294,46 +288,23 @@ REM If 32 bit os then set variable to abort
 if %OS%==32BIT set ABORT_CLEANUP=yes
 
 REM Start interface
-CLS
-echo.
-echo  ^! DISCLAIMER
-echo =========================================================================
-echo.
-echo    I am not responsible if this program ends up causing any harm, blows
-echo    up a computer or causes a nuclear war.
-echo.
-echo    You have been warned.
-echo.
-echo    All logs will be placed in the folder "%cd%\Logs".
-echo    This tools also generates notes for the account. These will be
-echo    placed in the folder "%cd%\Notes".
-echo.
-echo    The program should already run as Administrator, however if it does
-echo    not you'll have to run the program as Administrator manually.
-echo.
-echo =========================================================================
-choice /M "Do you accept responsibility for running this tool" /c YN
-IF errorlevel 2 goto :accept_no
-IF errorlevel 1 goto :accept_yes
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "I am not responsible if this program ends up causing any harm, blows up a computer or causes a nuclear war.\n\nYou have been warned.\n\nAll logs will be placed in the folder: \"%cd%\Logs.\"\n\nThis tools also generates notes for the account. These will be\nplaced in the folder: \"%cd%\Notes.\"\n\nThe program should already run as Administrator, however if it does not you'll have to run the program as Administrator manually.\n\nDo you accept responsibility for running this tool\u003F" "[DISCLAIMER] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:I /O:N`) DO (
+  IF /I "%%G"=="Yes" (
+    goto :accept_yes
+  ) else (
+    goto :accept_no
+  )
+)
 
 REM Display message if they do not accept the disclaimer
 :accept_no
-cls
-color 0c
-echo.
-echo  ^! ERROR
-echo =========================================================================
-echo.
-echo    You did not accept responsibility for running this tool.
-echo.
-echo    If you decide to grow up and accept responsibility re-run the tool
-echo    and accept the disclaimer.
-echo.
-echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 60 seconds.
-echo.
-echo =========================================================================
-TIMEOUT 60
-exit 1
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "You did not accept responsibility for running this tool.\n\nIf you decide to grow up and accept responsibility re-run the tool and accept the disclaimer." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:R /I:E /O:N`) DO (
+  IF /I "%%G"=="Retry" (
+    goto :No_Test_Continue
+  ) else (
+    exit /b
+  )
+)
 
 REM If disclaimer was accepted check for administrator privilage
 :accept_yes
@@ -521,14 +492,10 @@ if exist "%Output%\Notes\Comments.txt" (
 )
 
 REM Ask & enter CSG user ID into notes
-CLS
-echo.
-echo  ^! USER INPUT
-echo =================================
-echo.
-set /p VARID=Enter your CSG user ID:
-echo "%VARID%" >> "%Output%\Notes\Comments.txt"
-echo. >> "%Output%\Notes\Comments.txt"
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
+  echo "%%G" >> "%Output%\Notes\Comments.txt"
+  echo. >> "%Output%\Notes\Comments.txt"
+)
 
 REM Enter general cleanup as the reason
 echo General Cleanup. >> "%Output%\Notes\Comments.txt"
@@ -572,36 +539,25 @@ if not exist "%Output%\Logs\" (
 )
 
 REM Ask & enter CSG user ID into notes
-CLS
-echo.
-echo  ^! USER INPUT
-echo =================================
-echo.
-set /p VARID=Enter your CSG user ID:
-echo "%VARID%" >> "%Output%\Notes\Comments.txt"
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:">L00" /R:"(.)*[a-zA-Z]{1}\d{2}" /F:"(.)*[a-zA-Z]{1}\d{2}"/U /I`) DO (
+  echo CSG User ID: "%%G" >> "%Output%\Notes\Comments.txt"
+)
 
 REM Ask & enter Phone number into notes
-CLS
-echo.
-echo  ^! USER INPUT
-echo =================================
-echo.
-set /p VARPHN=Enter the subscribers Phone number:
-echo PHN#"%VARPHN%" >> "%Output%\Notes\Comments.txt"
-echo. >> "%Output%\Notes\Comments.txt"
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the subscribers Phone number:" "[PHN #] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:">000\-000\-0000" /R:"[\d0-9]{10}" /F:"[\d0-9]{0,10}" /U /I`) DO (
+  echo Phone Number: "%%G" >> "%Output%\Notes\Comments.txt"
+  echo. >> "%Output%\Notes\Comments.txt"
+)
 
 REM Enter general cleanup reason
 echo General Cleanup. >> "%Output%\Notes\Comments.txt"
 
 REM Ask & enter any additional notes
-CLS
-echo.
-echo  ^! USER INPUT
-echo =================================
-echo.
-set /p VAR_ADDT_NOTES=Enter any additional notes:
-echo Additional Notes: "%VAR_ADDT_NOTES%" >> "%Output%\Notes\Comments.txt"
-echo --- >> "%Output%\Notes\Comments.txt"
+FOR /F "usebackq delims=?" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any additional notes:" "[ADDT NOTES] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
+  echo. >> "%Output%\Notes\Comments.txt"
+  echo Additional Notes: "%%G" >> "%Output%\Notes\Comments.txt"
+  echo --- >> "%Output%\Notes\Comments.txt"
+)
 
 REM Add check for restore deletion
 if /i "!DELETE_RESTORE!"=="Yes" (
