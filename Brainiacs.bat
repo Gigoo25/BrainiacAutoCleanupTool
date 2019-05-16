@@ -177,103 +177,50 @@ color 07
 
 REM Skip to menu if verbose is enabled
 if exist "%Output%\Debug" (
-  title [Entering Testing Mode] Brainiacs Cleanup Tool v%TOOL_VERSION%
-  CLS
-  color 0c
-  echo.
-  echo  ^! WARNING
-  echo =========================
-  echo.
-  echo    Debug file detected.
-  echo.
-  echo =========================
-  TIMEOUT 2
-  CLS
-  echo.
-  echo  ^! WARNING
-  echo =============================
-  echo.
-  echo    Entering Debugging mode.
-  echo.
-  echo =============================
-  TIMEOUT 3
+  %Output%\Functions\Menu\MessageBox "Debug file detected." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N
+  %Output%\Functions\Menu\MessageBox "Entering Debugging mode." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N
   @echo on
   goto :menuLOOP
 )
 
 REM Ask for password for beta testing purposes
-title Brainiacs Cleanup Tool v%TOOL_VERSION%
-CLS
-echo.
-echo  ^! PASSWORD
-echo ===================================================================
-echo.
-echo    Enter the password in order to access the tool.
-echo.
-echo    If you do not have the password please close out of this tool.
-echo.
-echo ===================================================================
-set /p PASSWORD="Enter password: "
-if "%PASSWORD%"=="RedRuby" (
-  title [Entering Testing Mode] Brainiacs Cleanup Tool v%TOOL_VERSION%
-  cls
-  color 0c
-  echo.
-  echo  ^! WARNING
-  echo ==================================
-  echo.
-  echo    Entering hidden testing mode.
-  echo.
-  echo ==================================
-  TIMEOUT 2
-  goto Choice_Test_Upgrade_All
-) else if /I "%PASSWORD%"=="Bluemoon" (
-  goto No_Test_Continue
-) else (
-  cls
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo =========================================================================
-  echo.
-  echo    Password is incorrect.
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 30 seconds.
-  echo.
-  echo =========================================================================
-  TIMEOUT 30
-  exit /b
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the password in order to access the tool:" "[PASSWORD] Brainiacs Cleanup Tool v%TOOL_VERSION%" "password" /S /H:150 /W:280`) DO (
+  IF /I "%%G"=="Bluemoon" (
+    goto No_Test_Continue
+  ) else if "%%G"=="RedRuby" (
+    %Output%\Functions\Menu\MessageBox "Entering hidden testing mode." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N >nul
+    goto Choice_Test_Upgrade_All
+  ) else (
+    %Output%\Functions\Menu\MessageBox "Password is incorrect.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /T:30 /O:N >nul
+    exit /b
+  )
 )
+exit /b
 
 REM Ask to upgrade all functions if in testing mode
 :Choice_Test_Upgrade_All
 
 REM Ask to upgrade from latest commits
-CLS
-echo.
-echo  ^! WARNING
-echo ================================
-echo.
-echo    This may break some things.
-echo.
-echo ================================
-choice /M "Do you want to update from the latest commits?" /c YN
-IF errorlevel 2 goto :Test_Upgrade_All_Decline
-IF errorlevel 1 goto :Test_Upgrade_All_Accept
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to update from the latest commits?\n\nThis may break some things." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+  IF /I "%%G"=="Yes" (
+    goto :Test_Upgrade_All_Accept
+  ) else (
+    goto :Test_Upgrade_All_Decline
+  )
+)
 
 REM Ask which branch to upgrade from
 :Test_Upgrade_All_Accept
-CLS
-echo.
-echo  ^! WARNING
-echo ==============================================
-echo.
-echo    Which branch do you want to update from?
-echo.
-echo ==============================================
-choice /M "[M]aster or [E]xperimental" /c ME
-IF errorlevel 2 goto :Test_Upgrade_Experimental
-IF errorlevel 1 goto :Test_Upgrade_Master
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\RADIOBUTTONBOX  "Master;Experimental" "Which branch do you want to update from?" "[NOTICE] Brainiacs Cleanup Tool v%TOOL_VERSION%" /W:280 /C:2`) DO (
+  IF /I "%%G"=="Master" (
+    goto :Test_Upgrade_Master
+  ) else (
+    goto :Test_Upgrade_Experimental
+  )
+)
+%Output%\Functions\Menu\MessageBox "Error\u0021\n\nUser canceled update." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N >nul
+goto :Choice_Test_Upgrade_All
+
 REM Upgrade from master branch
 :Test_Upgrade_Master
 set TEST_UPDATE_ALL=yes
