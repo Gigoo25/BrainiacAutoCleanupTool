@@ -380,67 +380,40 @@ if exist "%Output%\Notes\Comments.txt" (
   REM Pull previous user of session from notes
   set /p PREVIOUS_USER=<!Output!\Notes\Comments.txt
   REM Display message
-  cls
-  echo.
-  echo  ^! ALERT
-  echo =======================================================
-  echo.
-  echo    Session was started by %PREVIOUS_USER%
-  echo.
-  echo    Press any key to show the comments created so far.
-  echo.
-  echo =======================================================
-  pause
-  CLS
-	type  %Output%\Notes\Comments.txt
-	echo.
-  echo.
-  echo.
-  echo  ^! NOTICE
-  echo =============================================================
-  echo.
-  echo    When done press any button to continue with the session.
-  echo.
-  echo =============================================================
-	pause
+  FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to see the comments created so far\u003F" "[QUESTION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:Q /O:N`) DO (
+    IF /I "%%G"=="Yes" (
+      %Output%\Functions\Menu\MessageBox "Session was started by '%PREVIOUS_USER%'\n\nPress 'OK' to show the comments created so far." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N >nul
+      REM Type comments out if user wants
+      CLS
+    	type  %Output%\Notes\Comments.txt
+      pause
+      CLS
+    )
+  )
 ) else (
-  CLS
-  color 0c
-  echo.
-  echo  ^! WARNING
-  echo =========================
-  echo.
-  echo    Comments not found.
-  echo.
-  echo    Continuing...
-  echo.
-  echo =========================
-  TIMEOUT 5
-  color 07
+  REM Error out is comments are not found
+  %Output%\Functions\Menu\MessageBox "Comments not found.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 15 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:15 >nul
 )
 
-REM Ask & enter CSG user ID into notes
-FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
+REM Ask & enter new CSG user ID into notes
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID for session pickup:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
   echo "%%G" >> "%Output%\Notes\Comments.txt"
   echo. >> "%Output%\Notes\Comments.txt"
 )
 
 REM Enter general cleanup as the reason
-echo General Cleanup. >> "%Output%\Notes\Comments.txt"
+echo Continuing general cleanup. >> "%Output%\Notes\Comments.txt"
 echo. >> "%Output%\Notes\Comments.txt"
 
 REM Ask & enter any additional notes
-CLS
-echo.
-echo  ^! USER INPUT
-echo =================================
-echo.
-set /p VAR_ADDT_NOTES=Enter any additional notes:
-echo Additional notes: "%VAR_ADDT_NOTES%" >> "%Output%\Notes\Comments.txt"
-echo --- >> "%Output%\Notes\Comments.txt"
-echo -Picked up session >> "%Output%\Notes\Comments.txt"
+FOR /F "usebackq delims=?" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any additional notes:" "[ADDT NOTES] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
+  echo. >> "%Output%\Notes\Comments.txt"
+  echo Additional Notes: "%%G" >> "%Output%\Notes\Comments.txt"
+  echo --- >> "%Output%\Notes\Comments.txt"
+  echo -Picked up session from "%PREVIOUS_USER%" >> "%Output%\Notes\Comments.txt"
+)
 
-REM Goto menu
+REM Start menu
 goto menuLOOP
 
 REM Start new session if user did not pick up session
@@ -487,16 +460,20 @@ FOR /F "usebackq delims=?" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any 
   echo --- >> "%Output%\Notes\Comments.txt"
 )
 
-REM Add check for restore deletion
+REM Add check for restore deletion to prevent any remnants from messing with the new session.
 if /i "!DELETE_RESTORE!"=="Yes" (
-  del /Q "%FilePersist%"  >nul
-  del "!Output!\Functions\Variables\ABRUPTCLOSE.txt"
+  del /Q "%FilePersist%" >nul
+  del "!Output!\Functions\Variables\ABRUPTCLOSE.txt" >nul
 )
 
 REM Goto menu
 goto menuLOOP
 
 REM Start Menu
+  %Output%\Functions\Menu\MultipleChoiceBox /F:"listfile" "Select a tool, option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
+
+MULTIPLECHOICEBOX  "list"  [ "prompt" [ "title" ] ] [ options ]
+
 :menuLOOP
 CLS
 REM Set title
