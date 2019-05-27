@@ -307,124 +307,51 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "You did 
 )
 
 REM If disclaimer was accepted check for administrator privilage
-:accept_yes
-if /i not "%SAFE_MODE%"=="yes" (
-  fsutil dirty query %systemdrive% >nul
-  if /i not !ERRORLEVEL!==0 (
-    cls
-    color 0c
-    echo.
-    echo  ^! ERROR
-    echo ================================================================================================
-    echo.
-    echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% doesn't think it is running as an Administrator.
-    echo    You MUST run with full Administrator rights to function correctly.
-    echo.
-    echo    Close this window and re-run the cleanup tool as an Administrator.
-    echo    ^(right-click Brainiacs.bat and click "Run as Administrator"^)
-    echo.
-    echo ================================================================================================
-    pause
-    exit
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "The Brainiacs Cleanup Tool v%TOOL_VERSION% doesn't think it is running as an Administrator.\nYou MUST run with full Administrator rights to function correctly.\n\nClose this window and re-run the cleanup tool as an Administrator.\n(right-click Brainiacs.bat and click 'Run as Administrator')" "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:R /I:E /O:N`) DO (
+  IF /I "%%G"=="Retry" (
+    goto :init
+  ) else (
+    exit /b
   )
 )
 
-REM Quit if windows version is unsupported
+REM Quit if OS version is unsupported
 if %ABORT_CLEANUP%==yes (
-  CLS
-	color 0c
-	echo.
-	echo  ^! ERROR
-	echo ====================================================================================
-	echo.
-	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% does not support "%WIN_VER%" "%OS%".
-	echo.
-	echo    You will have to run your tools manually.
-	echo.
-	echo    Sorry.
-	echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
-	echo.
-	echo ====================================================================================
-  TIMEOUT 15
-	exit 1
+  %Output%\Functions\Menu\MessageBox "The Brainiacs Cleanup Tool v%TOOL_VERSION% does not support '%WIN_VER%' '%OS%.'\n\nYou will have to run your tools manually.\n\nSorry.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:15 >nul
+  exit /b
 )
 
 REM Check if tools folder exists
-if exist "%Output%\Tools" (
-  goto ToolsContinue
-) else (
-  cls
-  color 0c
-  echo.
-	echo  ^! ERROR
-	echo =========================================================================
-  echo.
-  echo    Tools folder not found.
-  echo.
-  echo    You MUST have tools folder under %Output%
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
-	echo.
-	echo =========================================================================
-  TIMEOUT 15
-	exit 1
+if not exist "%Output%\Tools" (
+  %Output%\Functions\Menu\MessageBox "Tools folder not found.\n\nYou MUST have tools folder under '%Output%'\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:15 >nul
+  exit /b
 )
-
-REM Continue if tools folder was found
-:ToolsContinue
 
 REM Check for functions folder
-if exist "%Output%\Functions" (
-  goto FunctionsContinue
-) else (
-  cls
-  color 0c
-  echo.
-	echo  ^! ERROR
-	echo =========================================================================
-  echo.
-  echo    Functions folder not found.
-  echo.
-  echo    You MUST have functions folder under %Output%
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds.
-	echo.
-	echo =========================================================================
-  TIMEOUT 15
-	exit 1
+if not exist "%Output%\Functions" (
+  %Output%\Functions\Menu\MessageBox "Functions folder not found.\n\nYou MUST have functions folder under %Output%\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 15 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:15 >nul
+  exit /b
 )
-
-REM Continue if functions folder was found
-:FunctionsContinue
 
 REM Setup resume state if not found, if found ask if you want to resume the last state
 if "%ABRUPTCLOSE%"=="yes" (
   if exist "!Output!\Functions\Variables\ABRUPTCLOSE.txt" (
-    cls
-    color 0c
-    echo.
-    echo  ^! WARNING
-    echo ==========================
-    echo.
-    echo    Abrupt stop detected!
-    echo.
-    echo ==========================
-	  choice /M "Do you want to restore the session?" /c YN
-	  IF errorlevel 2 goto :restore_no
-	  IF errorlevel 1 goto :restore_yes
-	  :restore_yes
-	  call:restorePersistentVars "%FilePersist%"
-    REM Set Color
-    color 07
-	  REM Start cleanup
-	  goto :menu_SC
-    :restore_no
-    REM Set Color
-    color 07
-    REM Set var to delete restore point on start
-    set DELETE_RESTORE=Yes
-    del "!Output!\Functions\Variables\ABRUPTCLOSE.txt"
+    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Abrupt stop detected!\n\nDo you want to restore the session\u003F" "[QUESTION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:Q /O:N`) DO (
+      IF /I "%%G"=="Yes" (
+    	  call:restorePersistentVars "%FilePersist%"
+        REM Set Color
+        color 07
+    	  REM Start menu interface
+    	  goto :menu_SC
+      ) else (
+        REM Set Color
+        color 07
+        REM Set var to delete restore point on start
+        set DELETE_RESTORE=Yes
+        REM Delete ABRUTCLOSE file
+        del "!Output!\Functions\Variables\ABRUPTCLOSE.txt"
+      )
+    )
   )
 )
 
@@ -432,14 +359,15 @@ REM Start notes template
 echo ----------------------------------------- >> %Output%\Notes\Comments.txt
 
 REM Ask if the session was picked up
-CLS
-echo.
-echo  ^! USER INPUT
-echo =================================
-echo.
-choice /T 20 /D N /M "Did you pickup this session" /c YN
-IF errorlevel 2 goto :Session_New
-IF errorlevel 1 goto :Session_Pickup
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Did you pickup this session\u003F" "[QUESTION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:Q /O:N`) DO (
+  IF /I "%%G"=="Yes" (
+    goto :Session_Pickup
+  ) else (
+    goto :Session_New
+  )
+)
+
+REM Start session pickup if selected by the user.
 :Session_Pickup
 
 REM Restore variables from last session if present
