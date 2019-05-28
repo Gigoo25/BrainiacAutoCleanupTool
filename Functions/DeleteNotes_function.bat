@@ -1,42 +1,14 @@
 @echo off
 
-REM Check for missing comments
-if /i "!SAFE_MODE!"=="yes" (
-  GOTO :EOF
-)
-
-REM Set title
-title [Deleting Comments] Brainiacs Cleanup Tool v%TOOL_VERSION%
-
 REM Delete Comments service.
 if exist "%Output%\Notes\Comments.txt" (
-  CLS
-	echo.
-	echo  ^! ALERT
-	echo =====================
-	echo.
-	echo   Deleting Notes...
-	echo.
-	echo =====================
+  REM Display deletion of notes message
+  %Output%\Functions\Menu\MessageBox  "Deleting Notes..." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:X /O:N /T:5 >nul
+  REM Delete notes
 	rmdir /s /q "%Output%\Notes" >nul
-	TIMEOUT 1 >nul
   GOTO :EOF
 ) else (
-	CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    Comments not found.
-  echo.
-  echo    Skipping...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
-  color 07
+	REM Display message that notes were not found
+	%Output%\Functions\Menu\MessageBox "Notes not found!\n\nSkipping...\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 10 seconds" "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10 >nul
 	GOTO :EOF
-  set SKIP_COMMENTS=yes
 )

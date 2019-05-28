@@ -3,96 +3,30 @@
 REM Variables
 set VarADW=0
 
-REM Set title
-title [AdwCleaner] Brainiacs Cleanup Tool v%TOOL_VERSION%
-
 REM Start ADW service.
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\ADW\adwcleaner.exe" (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Starting ADW Cleaner
-	echo.
-	echo =================================
+	REM Display start message.
+	%Output%\Functions\Menu\MessageBox "Starting ADW Cleaner..." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:X /O:N /T:5 >nul
+	REM Start ADW & loop
 	start "ADW" "%Output%\Tools\ADW\adwcleaner.exe"
 	:ADW_RUN_LOOP
 	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Running ADW Cleaner
-	echo.
-	echo =================================
 	tasklist | find /i "Adwcleaner.exe" >nul
 	IF ERRORLEVEL 1 (
-		CLS
 		echo -Ran ADWCleaner >> %Output%\Notes\Comments.txt
-		echo.
-		echo  ^! USER INPUT
-		echo =================================
-		echo.
-		set /p VarADW=Enter the amount of infections found:
-		echo Infections-!!VarADW!! >> %Output%\Notes\Comments.txt
-		CLS
-		echo.
-		echo  ^! ALERT
-		echo =================================
-		echo.
-		echo   Done running ADWCleaner!
-		echo.
-		echo =================================
-  	TIMEOUT 2 >nul
+		REM Ask for number of infections & add to notes
+		FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INF #] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:">00" /R:"[\d0-9]{10}" /F:"[\d0-9]{0,10}" /U /I`) DO (
+		  echo Infections-"%%G" >> "%Output%\Notes\Comments.txt"
+		)
   	GOTO :EOF
 	) ELSE (
-		CLS
-		echo.
-		echo  ^! ALERT
-		echo =================================
-		echo.
-		echo   Running ADW Cleaner.
-		echo.
-		echo =================================
-  	TIMEOUT 1 >nul
-		CLS
-		echo.
-		echo  ^! ALERT
-		echo =================================
-		echo.
-		echo   Running ADW Cleaner..
-		echo.
-		echo =================================
-	  TIMEOUT 1 >nul
-		CLS
-		echo.
-		echo  ^! ALERT
-		echo =================================
-		echo.
-		echo   Running ADW Cleaner...
-		echo.
-		echo =================================
-		TIMEOUT 1 >nul
+  	TIMEOUT 3 >nul
   	GOTO ADW_RUN_LOOP
 	)
 ) else (
-	CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    Adw Cleaner not found.
-  echo.
-  echo    Skipping...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
-  color 07
+	REM Display message that ADW was not found & skip
+	%Output%\Functions\Menu\MessageBox "Adw Cleaner not found.\n\nSkipping...\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10 >nul
   GOTO :EOF
 )
 ENDLOCAL DISABLEDELAYEDEXPANSION

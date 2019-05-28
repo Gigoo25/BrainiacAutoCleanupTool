@@ -1,46 +1,17 @@
 @echo off
 
-REM Set title
-title [Defraggler] Brainiacs Cleanup Tool v%TOOL_VERSION%
-
 REM Start Defraggler service.
 if exist "%Output%\Tools\Defraggle*" (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Running Defraggler...
-	echo.
-	echo =================================
+	REM Display message that CCleaner is installed & run
+	%Output%\Functions\Menu\MessageBox "Starting Defraggler." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:X /O:N /T:5 >nul
+	REM Run appropriate version of defraggler
 	if %OS%==32BIT start /WAIT "DFR" "%Output%\Tools\Defraggler\Defraggler.exe"
 	if %OS%==64BIT start /WAIT "DFR" "%Output%\Tools\Defraggler\Defraggler64.exe"
+	REM Add notes that finished
 	echo -Ran Defraggler >> %Output%\Notes\Comments.txt
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Done running Defraggler!
-	echo.
-	echo =================================
-  TIMEOUT 2 >nul
   GOTO :EOF
 ) else (
-	CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    Defraggler not found.
-  echo.
-  echo    Skipping...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
-	color 07
+	REM Display message that Defraggler was not found
+	%Output%\Functions\Menu\MessageBox "Defraggler was not found!\n\nSkipping...\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 10 seconds" "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10 >nul
 	GOTO :EOF
 )
