@@ -1,83 +1,72 @@
 @echo off
 
 REM Variables
-set LOG_REMNANTS=no
+set LOG_REMNANTS=yes
 
-REM Scan for random past logs and delete them if found.
+REM Start DeleteLogs service.
+%Output%\Functions\Menu\MessageBox "Deleting known logs/temp files..." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:X /O:N /T:5 >nul
+
+REM Scan for known logs/temp files in known directories and delete them if found.
 if exist "%userprofile%\desktop\Rkill.txt" (
+	REM Delete logs
 	del "%userprofile%\desktop\Rkill.txt" >nul
-	set LOG_REMNANTS=yes
-)
-if exist "%userprofile%\desktop\JRT.txt" (
-	del "%userprofile%\desktop\JRT.txt" >nul
-	set LOG_REMNANTS=yes
+	REM Set variable that shows that logs were deleted
+	set LOG_REMNANTS=no
 )
 if exist "%systemdrive%\Rkill.txt" (
+	REM Delete logs
 	del "%systemdrive%\Rkill.txt" >nul
-	set LOG_REMNANTS=yes
+	REM Set variable that shows that logs were deleted
+	set LOG_REMNANTS=no
+)
+if exist "%userprofile%\desktop\JRT.txt" (
+	REM Delete logs
+	del "%userprofile%\desktop\JRT.txt" >nul
+	REM Set variable that shows that logs were deleted
+	set LOG_REMNANTS=no
 )
 if exist "%systemdrive%\JRT.txt" (
+	REM Delete logs
 	del "%systemdrive%\JRT.txt" >nul
-	set LOG_REMNANTS=yes
+	REM Set variable that shows that logs were deleted
+	set LOG_REMNANTS=no
 )
 if exist "%SystemRoot%\logs\cbs\cbs.log" (
+	REM Delete logs
 	del "%SystemRoot%\logs\cbs\cbs.log" >nul
-	set LOG_REMNANTS=yes
+	REM Set variable that shows that logs were deleted
+	set LOG_REMNANTS=no
 )
 if exist "%systemdrive%\TDSSKiller*" (
+	REM Delete logs
 	del "%systemdrive%\TDSSKiller*" >nul
-	set LOG_REMNANTS=yes
+	REM Set variable that shows that logs were deleted
+	set LOG_REMNANTS=no
 )
 if exist "%userprofile%\desktop\TDSSKiller*" (
+	REM Delete logs
 	del "%userprofile%\desktop\TDSSKiller*" >nul
-	set LOG_REMNANTS=yes
+	REM Set variable that shows that logs were deleted
+	set LOG_REMNANTS=no
+)
+if exist "%Output%\Logs" (
+	REM Delete logs
+	rmdir /s /q "%Output%\Logs" >nul
+	REM Set variable that shows that logs were deleted
+	set LOG_REMNANTS=no
 )
 
 REM Output notes that logs were cleared.
-if %LOG_REMNANTS%==yes (
-	echo -Deleted tool remnants >> %Output%\Notes\Comments.txt
-)
-
-REM Set title
-title [Deleting Logs] Brainiacs Cleanup Tool v%TOOL_VERSION%
-
-REM Start DeleteLogs service.
-if exist "%Output%\Logs" (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo ===============================
-	echo.
-	echo   Deleting logs/temp files...
-	echo.
-	echo ===============================
-	rmdir /s /q "%Output%\Logs" >nul
-	echo -Deleted logs >> %Output%\Notes\Comments.txt
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =======================
-	echo.
-	echo   Done deleting logs!
-	echo.
-	echo =======================
-	TIMEOUT 3 >nul
+if %LOG_REMNANTS%==no (
+	REM Display message that logs were deleted succesfuly
+	%Output%\Functions\Menu\MessageBox "Done deleting known logs/temp files!\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 10 seconds" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:10 >nul
+	REM Add notes that finished
+	echo -Deleted known logs/temp files remnants left on drive >> %Output%\Notes\Comments.txt
 	GOTO :EOF
 ) else (
-	CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    Logs not found.
-  echo.
-  echo    Skipping...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
-  color 07
+	REM Display message that logs were not found
+	%Output%\Functions\Menu\MessageBox "No known logs found!\n\nSkipping...\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 10 seconds" "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10 >nul
+	REM Add notes that finished
+	echo -Skipped deleting known logs/temp files remnants left on drive >> %Output%\Notes\Comments.txt
 	GOTO :EOF
 )

@@ -12,7 +12,7 @@ set "vbsGetPrivileges=%temp%\OEgetPriv_%batchName%.vbs"
 setlocal EnableDelayedExpansion
 :checkPrivileges
 NET FILE 1>NUL 2>NUL
-if '%errorlevel%' == '0' ( goto gotPrivileges ) else ( goto getPrivileges )
+if '%ERRORLEVEL%' == '0' ( goto gotPrivileges ) ELSE ( goto getPrivileges )
 :getPrivileges
 if '%1'=='ELEV' (echo ELEV & shift /1 & goto gotPrivileges)
 ECHO Set UAC = CreateObject^("Shell.Application"^) > "%vbsGetPrivileges%"
@@ -55,7 +55,6 @@ set VARID=unidentified
 set VARPHN=unidentified
 set VAR_ADDT_NOTES=None
 set SKIP_DEFRAG=no
-set SKIP_COMMENTS=unidentified
 set VAR_GEEK=None
 set TEST_UPDATE_MASTER=undetected
 set PASSWORD=undetected
@@ -187,10 +186,10 @@ REM Ask for password for beta testing purposes
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the password in order to access the tool:" "[PASSWORD] Brainiacs Cleanup Tool v%TOOL_VERSION%" "password" /S /H:150 /W:280`) DO (
   IF /I "%%G"=="Bluemoon" (
     goto No_Test_Continue
-  ) else if "%%G"=="RedRuby" (
+  ) ELSE if "%%G"=="RedRuby" (
     %Output%\Functions\Menu\MessageBox "Entering hidden testing mode." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N >nul
     goto Choice_Test_Upgrade_All
-  ) else (
+  ) ELSE (
     %Output%\Functions\Menu\MessageBox "Password is incorrect.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /T:30 /O:N >nul
     exit /b
   )
@@ -204,7 +203,7 @@ REM Ask to upgrade from latest commits
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to update from the latest commits?\n\nThis may break some things." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
   IF /I "%%G"=="Yes" (
     goto :Test_Upgrade_All_Accept
-  ) else (
+  ) ELSE (
     goto :Test_Upgrade_All_Decline
   )
 )
@@ -214,7 +213,7 @@ REM Ask which branch to upgrade from
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\RADIOBUTTONBOX  "Master;Experimental" "Which branch do you want to update from?" "[NOTICE] Brainiacs Cleanup Tool v%TOOL_VERSION%" /W:280 /C:2`) DO (
   IF /I "%%G"=="Master" (
     goto :Test_Upgrade_Master
-  ) else (
+  ) ELSE (
     goto :Test_Upgrade_Experimental
   )
 )
@@ -245,7 +244,7 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you w
     echo. >> "%Output%\Debug"
     start Brainiacs.bat
     exit /b
-  ) else (
+  ) ELSE (
     goto :menuLOOP
   )
 )
@@ -287,11 +286,11 @@ if %WIN_VER_NUM% LSS 6.0 set ABORT_CLEANUP=yes
 REM If 32 bit os then set variable to abort
 if %OS%==32BIT set ABORT_CLEANUP=yes
 
-REM Start interface
+REM Display disclaimer
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "I am not responsible if this program ends up causing any harm, blows up a computer or causes a nuclear war.\n\nYou have been warned.\n\nAll logs will be placed in the folder: \"%cd%\Logs.\"\n\nThis tools also generates notes for the account. These will be\nplaced in the folder: \"%cd%\Notes.\"\n\nThe program should already run as Administrator, however if it does not you'll have to run the program as Administrator manually.\n\nDo you accept responsibility for running this tool\u003F" "[DISCLAIMER] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:I /O:N`) DO (
   IF /I "%%G"=="Yes" (
     goto :accept_yes
-  ) else (
+  ) ELSE (
     goto :accept_no
   )
 )
@@ -301,7 +300,7 @@ REM Display message if they do not accept the disclaimer
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "You did not accept responsibility for running this tool.\n\nIf you decide to grow up and accept responsibility re-run the tool and accept the disclaimer." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:R /I:E /O:N`) DO (
   IF /I "%%G"=="Retry" (
     goto :No_Test_Continue
-  ) else (
+  ) ELSE (
     exit /b
   )
 )
@@ -310,7 +309,7 @@ REM If disclaimer was accepted check for administrator privilage
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "The Brainiacs Cleanup Tool v%TOOL_VERSION% doesn't think it is running as an Administrator.\nYou MUST run with full Administrator rights to function correctly.\n\nClose this window and re-run the cleanup tool as an Administrator.\n(right-click Brainiacs.bat and click 'Run as Administrator')" "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:R /I:E /O:N`) DO (
   IF /I "%%G"=="Retry" (
     goto :init
-  ) else (
+  ) ELSE (
     exit /b
   )
 )
@@ -343,7 +342,7 @@ if "%ABRUPTCLOSE%"=="yes" (
         color 07
     	  REM Start menu interface
     	  goto :menu_SC
-      ) else (
+      ) ELSE (
         REM Set Color
         color 07
         REM Set var to delete restore point on start
@@ -362,7 +361,7 @@ REM Ask if the session was picked up
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Did you pickup this session\u003F" "[QUESTION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:Q /O:N`) DO (
   IF /I "%%G"=="Yes" (
     goto :Session_Pickup
-  ) else (
+  ) ELSE (
     goto :Session_New
   )
 )
@@ -390,14 +389,14 @@ if exist "%Output%\Notes\Comments.txt" (
       CLS
     )
   )
-) else (
+) ELSE (
   REM Error out is comments are not found
   %Output%\Functions\Menu\MessageBox "Comments not found.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 15 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:15 >nul
 )
 
 REM Ask & enter new CSG user ID into notes
-FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID for session pickup:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
-  echo "%%G" >> "%Output%\Notes\Comments.txt"
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:">L00" /R:"(.)*[a-zA-Z]{1}\d{2}" /F:"(.)*[a-zA-Z]{1}\d{2}"/U /I`) DO (
+  echo CSG User ID: "%%G" >> "%Output%\Notes\Comments.txt"
   echo. >> "%Output%\Notes\Comments.txt"
 )
 
@@ -469,10 +468,35 @@ if /i "!DELETE_RESTORE!"=="Yes" (
 REM Goto menu
 goto menuLOOP
 
-REM Start Menu
-  %Output%\Functions\Menu\MultipleChoiceBox /F:"listfile" "Select a tool, option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
+REM ----------------------------DEBUG---------------------------------------
+REM ----------------------------DEBUG---------------------------------------
+REM ----------------------------DEBUG---------------------------------------
+REM ----------------------------DEBUG---------------------------------------
+REM         REMOVE LATER. THIS IS JUST FOR KNOWING WHERE I AM
+REM ----------------------------DEBUG---------------------------------------
+REM ----------------------------DEBUG---------------------------------------
+REM ----------------------------DEBUG---------------------------------------
+REM ----------------------------DEBUG---------------------------------------
+:Menu_Debug
 
-MULTIPLECHOICEBOX  "list"  [ "prompt" [ "title" ] ] [ options ]
+REM Start Menu
+%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup;Cancel=Exit" "TEST;TEST1;TEST2" "Select a tool, option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
+echo ERROR LEVEL
+echo %ERRORLEVEL%
+pause
+CLS
+goto Menu_Debug
+IF ERRORLEVEL 0 (
+  REM OK BUTTON WAS PRESSED
+  )
+ELSE IF ERRORLEVEL 1 (
+  REM COMMAND LINE ERRORS
+  )
+ELSE IF ERRORLEVEL 2 (
+   REM CANCEL BUTTON WAS PRESSED
+  )
+
+
 
 :menuLOOP
 CLS
@@ -546,8 +570,8 @@ if "!Rogue!"=="Yes" (
   echo.
   echo ================================================================
   choice /C FQ /T 20 /D Q /M "[F]ull or [Q]uick"
-  IF errorlevel 2 goto RogueKiller_Quickscan
-  IF errorlevel 1 goto RogueKiller_Fullscan
+  IF ERRORLEVEL 2 goto RogueKiller_Quickscan
+  IF ERRORLEVEL 1 goto RogueKiller_Fullscan
   :RogueKiller_Quickscan
   CLS
   echo.
@@ -723,7 +747,7 @@ if exist "%Output%\Tools\Geek\geek.exe" (
   echo Uninstalled programs-!!VAR_GEEK!! >> %Output%\Notes\Comments.txt
   REM Set title
   title Brainiacs Cleanup Tool v%TOOL_VERSION%
-) else (
+) ELSE (
   CLS
   color 0c
   echo.
@@ -833,8 +857,8 @@ if /i "!DeleteNotes!"=="Yes" (
       echo.
       echo ============================================================================
       choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
-      IF errorlevel 2 goto Reboot_deletenotes_choice
-      IF errorlevel 1 goto AutoClose_deletenotes_choice
+      IF ERRORLEVEL 2 goto Reboot_deletenotes_choice
+      IF ERRORLEVEL 1 goto AutoClose_deletenotes_choice
       :AutoClose_deletenotes_choice
       set AutoClose=Yes
       set Reboot=No
@@ -876,8 +900,8 @@ if /i "!DeleteNotes!"=="Yes" (
   echo.
   echo ======================================================================================
   choice /C YN /T 20 /D N /M "Are you really sure you want to delete the notes after run?"
-  IF errorlevel 2 goto DontDeleteNotes_Prompt_choice
-  IF errorlevel 1 goto DeleteNotes_Prompt_Continue
+  IF ERRORLEVEL 2 goto DontDeleteNotes_Prompt_choice
+  IF ERRORLEVEL 1 goto DeleteNotes_Prompt_Continue
   :DontDeleteNotes_Prompt_choice
   set DeleteNotes=No
   GOTO DeleteNotes_Prompt_Continue
@@ -913,8 +937,8 @@ if /i "!DeleteTools!"=="Yes" (
       echo.
       echo ============================================================================
       choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
-      IF errorlevel 2 goto Reboot_deletetools_choice
-      IF errorlevel 1 goto AutoClose_deletetools_choice
+      IF ERRORLEVEL 2 goto Reboot_deletetools_choice
+      IF ERRORLEVEL 1 goto AutoClose_deletetools_choice
       :AutoClose_deletetools_choice
       set AutoClose=Yes
       set Reboot=No
@@ -947,8 +971,8 @@ if /i "!SelfDestruct!"=="Yes" (
       echo.
       echo =============================================================================
       choice /C AR /T 20 /D A /M "Select [A]utoClose or [R]eboot to continue."
-      IF errorlevel 2 goto Reboot_selfdestruct_choice
-      IF errorlevel 1 goto AutoClose_selfdestruct_choice
+      IF ERRORLEVEL 2 goto Reboot_selfdestruct_choice
+      IF ERRORLEVEL 1 goto AutoClose_selfdestruct_choice
       :AutoClose_selfdestruct_choice
       set AutoClose=Yes
       set Reboot=No
@@ -1244,9 +1268,9 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   echo =================================
   echo.
   choice /C ADW /T 20 /D W /M "Which program do you want to defrag with [A] AusDefrag, [D] Defraggler or [W] Windows Defrag"
-  IF errorlevel 3 goto Windows_Defrag_Function
-  IF errorlevel 2 goto Defraggler
-  IF errorlevel 1 goto AusDefrag
+  IF ERRORLEVEL 3 goto Windows_Defrag_Function
+  IF ERRORLEVEL 2 goto Defraggler
+  IF ERRORLEVEL 1 goto AusDefrag
 
   REM Windows_Defrag function.
   :Windows_Defrag_Function
@@ -1259,8 +1283,8 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   echo =================================
   echo.
   choice /C YN /T 20 /D N /M "Do you want to run defrag externally?"
-  IF errorlevel 2 goto Next_Boot_Defrag_Windows_Choice
-  IF errorlevel 1 goto Run_External_Defrag_Windows
+  IF ERRORLEVEL 2 goto Next_Boot_Defrag_Windows_Choice
+  IF ERRORLEVEL 1 goto Run_External_Defrag_Windows
 
   REM Initiate external run
   :Run_External_Defrag_Windows
@@ -1278,8 +1302,8 @@ if /i "%DefragSystem:~0,1%"=="Y" (
   echo =================================
   echo.
   choice /C YN /T 20 /D N /M "Do you want to run defrag on the next boot?"
-  IF errorlevel 2 goto Defrag_Windows
-  IF errorlevel 1 goto Next_Boot_Defrag_Windows
+  IF ERRORLEVEL 2 goto Defrag_Windows
+  IF ERRORLEVEL 1 goto Next_Boot_Defrag_Windows
 
   REM Schedule for next reboot/delete task after
   :Next_Boot_Defrag_Windows
@@ -1434,7 +1458,7 @@ if /i "%AutoClose:~0,1%"=="Y" (
       rmdir /s /q "%Output%\Functions" >nul
     )
     (goto) 2>nul & del "%~f0"
-  ) else (
+  ) ELSE (
     exit
 	)
 )
@@ -1471,7 +1495,7 @@ if /i "%Reboot:~0,1%"=="Y" (
       rmdir /s /q "%Output%\Functions" >nul
     )
     (goto) 2>nul & del "%~f0"
-  ) else (
+  ) ELSE (
     exit
   )
 )
@@ -1486,7 +1510,7 @@ if exist "%Output%\Readme.txt" (
 	echo.
   echo.
 	pause
-) else (
+) ELSE (
   CLS
   color 0c
   echo.
@@ -1512,7 +1536,7 @@ if exist "%Output%\Notes\Comments.txt" (
 	echo.
   echo.
 	pause
-) else (
+) ELSE (
   CLS
   color 0c
   echo.
@@ -1538,7 +1562,7 @@ if exist "%Output%\Changelog.txt" (
 	echo.
   echo.
 	pause
-) else (
+) ELSE (
   CLS
   color 0c
   echo.
