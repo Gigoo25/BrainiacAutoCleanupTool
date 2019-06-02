@@ -306,11 +306,17 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "You did 
 )
 
 REM If disclaimer was accepted check for administrator privilage
-FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "The Brainiacs Cleanup Tool v%TOOL_VERSION% doesn't think it is running as an Administrator.\nYou MUST run with full Administrator rights to function correctly.\n\nClose this window and re-run the cleanup tool as an Administrator.\n(right-click Brainiacs.bat and click 'Run as Administrator')" "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:R /I:E /O:N`) DO (
-  IF /I "%%G"=="Retry" (
-    goto :init
-  ) ELSE (
-    exit /b
+:accept_yes
+if /i not "%SAFE_MODE%"=="yes" (
+  fsutil dirty query %systemdrive% >nul
+  if /i not !ERRORLEVEL!==0 (
+    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "The Brainiacs Cleanup Tool v%TOOL_VERSION% doesn't think it is running as an Administrator.\nYou MUST run with full Administrator rights to function correctly.\n\nClose this window and re-run the cleanup tool as an Administrator.\n(right-click Brainiacs.bat and click 'Run as Administrator')" "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:R /I:E /O:N`) DO (
+      IF /I "%%G"=="Retry" (
+        goto :init
+      ) ELSE (
+        exit /b
+      )
+    )
   )
 )
 
