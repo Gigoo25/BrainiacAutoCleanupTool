@@ -419,7 +419,7 @@ FOR /F "usebackq delims=?" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any 
 )
 
 REM Start menu
-goto menuLOOP
+goto Menu_Debug
 
 REM Start new session if user did not pick up session
 :Session_New
@@ -472,7 +472,7 @@ if /i "!DELETE_RESTORE!"=="Yes" (
 )
 
 REM Goto menu
-goto menuLOOP
+goto Menu_Debug
 
 REM ----------------------------DEBUG---------------------------------------
 REM ----------------------------DEBUG---------------------------------------
@@ -486,7 +486,7 @@ REM ----------------------------DEBUG---------------------------------------
 :Menu_Debug
 
 REM Start Menu
-%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup;Cancel=Exit" "TEST;TEST1;TEST2" "Select a tool, option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
+%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup;Cancel=Options" "Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows drive for errors;Check Windows image for errors" "Select a tool, option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
 echo ERROR LEVEL
 echo %ERRORLEVEL%
 pause
