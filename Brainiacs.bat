@@ -397,7 +397,7 @@ if exist "%Output%\Notes\Comments.txt" (
   )
 ) ELSE (
   REM Error out is comments are not found
-  %Output%\Functions\Menu\MessageBox "Comments not found.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 15 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:15 >nul
+  %Output%\Functions\Menu\MessageBox "Previous comments not found.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 5 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:5 >nul
 )
 
 REM Ask & enter new CSG user ID into notes
@@ -419,7 +419,7 @@ FOR /F "usebackq delims=?" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any 
 )
 
 REM Start menu
-goto Menu_Debug
+goto Functions_Menu
 
 REM Start new session if user did not pick up session
 :Session_New
@@ -472,7 +472,7 @@ if /i "!DELETE_RESTORE!"=="Yes" (
 )
 
 REM Goto menu
-goto Menu_Debug
+goto Functions_Menu
 
 REM ----------------------------DEBUG---------------------------------------
 REM ----------------------------DEBUG---------------------------------------
@@ -483,24 +483,54 @@ REM ----------------------------DEBUG---------------------------------------
 REM ----------------------------DEBUG---------------------------------------
 REM ----------------------------DEBUG---------------------------------------
 REM ----------------------------DEBUG---------------------------------------
-:Menu_Debug
 
-REM Start Menu
-%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup;Cancel=Options" "Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows drive for errors;Check Windows image for errors" "Select a tool, option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
+REM Functions Menu
+:Functions_Menu
+%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup;Cancel=Options" "Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows drive for errors;Check Windows image for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
 echo ERROR LEVEL
 echo %ERRORLEVEL%
 pause
-CLS
-goto Menu_Debug
 IF ERRORLEVEL 0 (
   REM OK BUTTON WAS PRESSED
-  )
+  echo OK WAS PRESSED!
+  pause
+  goto Functions_Menu
+)
 ELSE IF ERRORLEVEL 1 (
   REM COMMAND LINE ERRORS
-  )
+  echo COMMAND LINE ERROR
+  pause
+  goto Functions_Menu
+)
 ELSE IF ERRORLEVEL 2 (
-   REM CANCEL BUTTON WAS PRESSED
-  )
+  goto Options_Menu
+)
+CLS
+goto Functions_Menu
+
+REM Options Menu
+:Options_Menu
+%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Select Options;Cancel=Go Back to menu" "Create system restore point;Email notes (Experimental);Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
+echo ERROR LEVEL
+echo %ERRORLEVEL%
+pause
+IF ERRORLEVEL 0 (
+  REM OK BUTTON WAS PRESSED
+  echo OK WAS PRESSED!
+  pause
+  goto Options_Menu
+)
+ELSE IF ERRORLEVEL 1 (
+  REM COMMAND LINE ERRORS
+  echo COMMAND LINE ERROR
+  pause
+  goto Options_Menu
+)
+ELSE IF ERRORLEVEL 2 (
+  goto Functions_Menu
+)
+CLS
+goto Options_Menu
 
 
 
