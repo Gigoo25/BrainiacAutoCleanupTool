@@ -66,55 +66,33 @@ set TEST_UPDATE_MASTER=undetected
 set TEST_UPDATE_EXPERIMENTAL=undetected
 set PREVIOUS_USER=undetected
 
-REM Menu variables
-set RKill_choice=,Yes,No,
-call:setPersist RKill=Yes
-set JRT_choice=,Yes,No,
-call:setPersist JRT=Yes
-set TDSS_choice=,Yes,No,
-call:setPersist TDSS=Yes
-set Rogue_choice=,Yes,No,
-call:setPersist Rogue=Yes
-set ADW_choice=,Yes,No,
-call:setPersist ADW=Yes
-set HitmanPro_choice=,Yes,No,
-call:setPersist HitmanPro=Yes
-set Zemana_choice=,Yes,No,
-call:setPersist Zemana=Yes
-set MBAR_choice=,Yes,No,
-call:setPersist MBAR=No
-set Malwarebytes_choice=,Yes,No,
-call:setPersist Malwarebytes=No
-set Spybot_choice=,Yes,No,
-call:setPersist Spybot=No
-set CCleaner_choice=,Yes,No,
-call:setPersist CCleaner=Yes
-set DefragSystem_choice=,Yes,No,
-call:setPersist DefragSystem=Yes
-set ImageChecker_choice=,Yes,No,
-call:setPersist ImageChecker=Yes
-set DriveChecker_choice=,Yes,No,
-call:setPersist DriveChecker=Yes
-set EmailNotes_choice=,Yes,No,
-call:setPersist EmailNotes=No
-set SystemRestore_choice=,Yes,No,
-call:setPersist SystemRestore=Yes
-set AutoClose_choice=,Yes,No,
-call:setPersist AutoClose=Yes
-set ReviewLogs_choice=,Yes,No,
-call:setPersist ReviewLogs=No
-set OpenNotes_choice=,Yes,No,
-call:setPersist OpenNotes=Yes
-set DeleteNotes_choice=,Yes,No,
-call:setPersist DeleteNotes=No
-set DeleteLogs_choice=,Yes,No,
-call:setPersist DeleteLogs=No
-set DeleteTools_choice=,Yes,No,
-call:setPersist DeleteTools=Yes
-set SelfDestruct_choice=,Yes,No,
-call:setPersist SelfDestruct=Yes
-set Reboot_choice=,Yes,No,
-call:setPersist Reboot=No
+REM Functions menu variables
+set RKill_choice=unidentified
+set JRT_choice=unidentified
+set TDSS_choice=unidentified
+set Rogue_choice=unidentified
+set ADW_choice=unidentified
+set HitmanPro_choice=unidentified
+set Zemana_choice=unidentified
+set MBAR_choice=unidentified
+set Malwarebytes_choice=unidentified
+set Spybot_choice=unidentified
+set CCleaner_choice=unidentified
+set DefragSystem_choice=unidentified
+set ImageChecker_choice=unidentified
+set DriveChecker_choice=unidentified
+
+REM Options menu variables
+set EmailNotes_choice=unidentified
+set SystemRestore_choice=unidentified
+set AutoClose_choice=unidentified
+set ReviewLogs_choice=unidentified
+set OpenNotes_choice=unidentified
+set DeleteNotes_choice=unidentified
+set DeleteLogs_choice=unidentified
+set DeleteTools_choice=unidentified
+set SelfDestruct_choice=unidentified
+set Reboot_choice=unidentified
 
 REM  Force path to some system utilities in case the system PATH is messed up
 set WMIC=%SystemRoot%\System32\wbem\wmic.exe
@@ -471,9 +449,6 @@ if /i "!DELETE_RESTORE!"=="Yes" (
   del "!Output!\Functions\Variables\ABRUPTCLOSE.txt" >nul
 )
 
-REM Goto menu
-goto Functions_Menu
-
 REM ----------------------------DEBUG---------------------------------------
 REM ----------------------------DEBUG---------------------------------------
 REM ----------------------------DEBUG---------------------------------------
@@ -486,53 +461,127 @@ REM ----------------------------DEBUG---------------------------------------
 
 REM Functions Menu
 :Functions_Menu
-%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup;Cancel=Options" "Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows drive for errors;Check Windows image for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
-echo ERROR LEVEL
-echo %ERRORLEVEL%
-pause
+CLS
+FOR /F "usebackq tokens=1-14* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup" "Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows drive for errors;Check Windows image for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+  for /f "tokens=1-14* delims=;" %%a in ("%%^") do (
+    echo A
+    echo %%A
+    IF "%%A"=="Rkill" (set RKill_choice=Yes) else (set RKill_choice=No)
+    echo RKill_choice
+    echo %RKill_choice%
+    echo B
+    echo %%B
+    echo C
+    echo %%C
+    echo D
+    echo %%D
+    echo E
+    echo %%E
+    echo F
+    echo %%F
+    echo G
+    echo %%G
+    echo H
+    echo %%H
+    echo I
+    echo %%I
+    echo J
+    echo %%J
+    echo K
+    echo %%K
+    echo L
+    echo %%L
+    echo M
+    echo %%M
+    echo N
+    echo %%N
+    echo ERROR LEVEL
+    echo %ERRORLEVEL%
+    pause
+    CLS
+  )
+)
+
 IF ERRORLEVEL 0 (
   REM OK BUTTON WAS PRESSED
   echo OK WAS PRESSED!
   pause
   goto Functions_Menu
 )
-ELSE IF ERRORLEVEL 1 (
+IF ERRORLEVEL 1 (
   REM COMMAND LINE ERRORS
   echo COMMAND LINE ERROR
   pause
   goto Functions_Menu
 )
-ELSE IF ERRORLEVEL 2 (
+IF ERRORLEVEL 2 (
   goto Options_Menu
 )
-CLS
-goto Functions_Menu
+REM Ask if the user wants to quit.
+IF ERRORLEVEL -1 (
+  FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Are you sure you want to quit\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+    IF /I "%%G"=="Yes" (
+      exit /b
+    ) else (
+      goto Functions_Menu
+    )
+  )
+)
 
 REM Options Menu
 :Options_Menu
-%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Select Options;Cancel=Go Back to menu" "Create system restore point;Email notes (Experimental);Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"
-echo ERROR LEVEL
-echo %ERRORLEVEL%
-pause
+FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Select Options" "Create system restore point;Email notes (Experimental);Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+  for /f "tokens=1-10* delims=;" %%a in ("%%^") do (
+    echo A
+    echo %%A
+    echo B
+    echo %%B
+    echo C
+    echo %%C
+    echo D
+    echo %%D
+    echo E
+    echo %%E
+    echo F
+    echo %%F
+    echo G
+    echo %%G
+    echo H
+    echo %%H
+    echo I
+    echo %%I
+    echo J
+    echo %%J
+    echo ERROR LEVEL
+    echo %ERRORLEVEL%
+    pause
+  )
+)
 IF ERRORLEVEL 0 (
   REM OK BUTTON WAS PRESSED
   echo OK WAS PRESSED!
   pause
   goto Options_Menu
 )
-ELSE IF ERRORLEVEL 1 (
+IF ERRORLEVEL 1 (
   REM COMMAND LINE ERRORS
   echo COMMAND LINE ERROR
   pause
   goto Options_Menu
 )
-ELSE IF ERRORLEVEL 2 (
+IF ERRORLEVEL 2 (
   goto Functions_Menu
 )
-CLS
-goto Options_Menu
-
-
+REM Ask if the user wants to quit.
+IF ERRORLEVEL -1 (
+  FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Are you sure you want to quit\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+    IF /I "%%G"=="Yes" (
+      exit /b
+    ) else (
+      goto Options_Menu
+    )
+  )
+)
 
 :menuLOOP
 CLS
