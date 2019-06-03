@@ -83,8 +83,8 @@ set ImageChecker_choice=unidentified
 set DriveChecker_choice=unidentified
 
 REM Options menu variables
-set EmailNotes_choice=unidentified
 set SystemRestore_choice=unidentified
+set EmailNotes_choice=unidentified
 set AutoClose_choice=unidentified
 set ReviewLogs_choice=unidentified
 set OpenNotes_choice=unidentified
@@ -462,39 +462,142 @@ REM ----------------------------DEBUG---------------------------------------
 REM Functions Menu
 :Functions_Menu
 CLS
-FOR /F "usebackq tokens=1-14* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup" "Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows drive for errors;Check Windows image for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+FOR /F "usebackq tokens=1-14* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup" "Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows image for errors;Check Windows drive for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
   for /f "tokens=1-14* delims=;" %%a in ("%%^") do (
-    echo A
-    echo %%A
+
+    REM Check %%A & set appropriate variable
     IF "%%A"=="Rkill" (set RKill_choice=Yes) else (set RKill_choice=No)
-    echo RKill_choice
-    echo %RKill_choice%
-    echo B
-    echo %%B
-    echo C
-    echo %%C
-    echo D
-    echo %%D
-    echo E
-    echo %%E
-    echo F
-    echo %%F
-    echo G
-    echo %%G
-    echo H
-    echo %%H
-    echo I
-    echo %%I
-    echo J
-    echo %%J
-    echo K
-    echo %%K
-    echo L
-    echo %%L
-    echo M
-    echo %%M
-    echo N
-    echo %%N
+    IF "%%A"=="JRT" (set JRT_choice=Yes) else (set JRT_choice=No)
+    IF "%%A"=="TDSS Killer" (set TDSS_choice=Yes) else (set TDSS_choice=No)
+    IF "%%A"=="Rogue Killer" (set Rogue_choice=Yes) else (set Rogue_choice=No)
+    IF "%%A"=="ADW" (set ADW_choice=Yes) else (set ADW_choice=No)
+    IF "%%A"=="Hitman Pro" (set HitmanPro_choice=Yes) else (set HitmanPro_choice=No)
+    IF "%%A"=="Zemana" (set Zemana_choice=Yes) else (set Zemana_choice=No)
+    IF "%%A"=="MBAR" (set MBAR_choice=Yes) else (set MBAR_choice=No)
+    IF "%%A"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes) else (set Malwarebytes_choice=No)
+    IF "%%A"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%A"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%A"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%A"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%A"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%B & set appropriate variable
+    IF "%%B"=="JRT" (set JRT_choice=Yes) else (set JRT_choice=No)
+    IF "%%B"=="TDSS Killer" (set TDSS_choice=Yes) else (set TDSS_choice=No)
+    IF "%%B"=="Rogue Killer" (set Rogue_choice=Yes) else (set Rogue_choice=No)
+    IF "%%B"=="ADW" (set ADW_choice=Yes) else (set ADW_choice=No)
+    IF "%%B"=="Hitman Pro" (set HitmanPro_choice=Yes) else (set HitmanPro_choice=No)
+    IF "%%B"=="Zemana" (set Zemana_choice=Yes) else (set Zemana_choice=No)
+    IF "%%B"=="MBAR" (set MBAR_choice=Yes) else (set MBAR_choice=No)
+    IF "%%B"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes) else (set Malwarebytes_choice=No)
+    IF "%%B"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%B"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%B"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%B"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%B"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%C & set appropriate variable
+    IF "%%C"=="TDSS Killer" (set TDSS_choice=Yes) else (set TDSS_choice=No)
+    IF "%%C"=="Rogue Killer" (set Rogue_choice=Yes) else (set Rogue_choice=No)
+    IF "%%C"=="ADW" (set ADW_choice=Yes) else (set ADW_choice=No)
+    IF "%%C"=="Hitman Pro" (set HitmanPro_choice=Yes) else (set HitmanPro_choice=No)
+    IF "%%C"=="Zemana" (set Zemana_choice=Yes) else (set Zemana_choice=No)
+    IF "%%C"=="MBAR" (set MBAR_choice=Yes) else (set MBAR_choice=No)
+    IF "%%C"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes) else (set Malwarebytes_choice=No)
+    IF "%%C"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%C"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%C"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%C"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%C"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%D & set appropriate variable
+    IF "%%D"=="Rogue Killer" (set Rogue_choice=Yes) else (set Rogue_choice=No)
+    IF "%%D"=="ADW" (set ADW_choice=Yes) else (set ADW_choice=No)
+    IF "%%D"=="Hitman Pro" (set HitmanPro_choice=Yes) else (set HitmanPro_choice=No)
+    IF "%%D"=="Zemana" (set Zemana_choice=Yes) else (set Zemana_choice=No)
+    IF "%%D"=="MBAR" (set MBAR_choice=Yes) else (set MBAR_choice=No)
+    IF "%%D"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes) else (set Malwarebytes_choice=No)
+    IF "%%D"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%D"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%D"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%D"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%D"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%E & set appropriate variable
+    IF "%%E"=="ADW" (set ADW_choice=Yes) else (set ADW_choice=No)
+    IF "%%E"=="Hitman Pro" (set HitmanPro_choice=Yes) else (set HitmanPro_choice=No)
+    IF "%%E"=="Zemana" (set Zemana_choice=Yes) else (set Zemana_choice=No)
+    IF "%%E"=="MBAR" (set MBAR_choice=Yes) else (set MBAR_choice=No)
+    IF "%%E"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes) else (set Malwarebytes_choice=No)
+    IF "%%E"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%E"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%E"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%E"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%E"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%F & set appropriate variable
+    IF "%%F"=="Hitman Pro" (set HitmanPro_choice=Yes) else (set HitmanPro_choice=No)
+    IF "%%F"=="Zemana" (set Zemana_choice=Yes) else (set Zemana_choice=No)
+    IF "%%F"=="MBAR" (set MBAR_choice=Yes) else (set MBAR_choice=No)
+    IF "%%F"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes) else (set Malwarebytes_choice=No)
+    IF "%%F"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%F"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%F"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%F"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%F"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%G & set appropriate variable
+    IF "%%G"=="Zemana" (set Zemana_choice=Yes) else (set Zemana_choice=No)
+    IF "%%G"=="MBAR" (set MBAR_choice=Yes) else (set MBAR_choice=No)
+    IF "%%G"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes) else (set Malwarebytes_choice=No)
+    IF "%%G"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%G"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%G"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%G"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%G"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%H & set appropriate variable
+    IF "%%H"=="MBAR" (set MBAR_choice=Yes) else (set MBAR_choice=No)
+    IF "%%H"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes) else (set Malwarebytes_choice=No)
+    IF "%%H"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%H"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%H"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%H"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%H"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%I & set appropriate variable
+    IF "%%I"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes) else (set Malwarebytes_choice=No)
+    IF "%%I"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%I"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%I"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%I"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%I"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%J & set appropriate variable
+    IF "%%J"=="Spybot (Experimental)" (set Spybot_choice=Yes) else (set Spybot_choice=No)
+    IF "%%J"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%J"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%J"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%J"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%K & set appropriate variable
+    IF "%%K"=="Ccleaner" (set CCleaner_choice=Yes) else (set CCleaner_choice=No)
+    IF "%%K"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%K"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%K"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%L & set appropriate variable
+    IF "%%L"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
+    IF "%%L"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%L"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%M & set appropriate variable
+    IF "%%M"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
+    IF "%%M"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
+    REM Check %%N & set appropriate variable
+    IF "%%N"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+
     echo ERROR LEVEL
     echo %ERRORLEVEL%
     pause
@@ -532,26 +635,82 @@ REM Options Menu
 :Options_Menu
 FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Select Options" "Create system restore point;Email notes (Experimental);Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
   for /f "tokens=1-10* delims=;" %%a in ("%%^") do (
-    echo A
-    echo %%A
-    echo B
-    echo %%B
-    echo C
-    echo %%C
-    echo D
-    echo %%D
-    echo E
-    echo %%E
-    echo F
-    echo %%F
-    echo G
-    echo %%G
-    echo H
-    echo %%H
-    echo I
-    echo %%I
-    echo J
-    echo %%J
+
+    REM Check %%A & set appropriate variable
+    IF "%%A"=="Create system restore point" (set SystemRestore_choice=Yes) else (set SystemRestore_choice=No)
+    IF "%%A"=="Email notes (Experimental)" (set EmailNotes_choice=Yes) else (set EmailNotes_choice=No)
+    IF "%%A"=="Auto close when done" (set AutoClose_choice=Yes) else (set AutoClose_choice=No)
+    IF "%%A"=="Review Logs when done" (set ReviewLogs_choice=Yes) else (set ReviewLogs_choice=No)
+    IF "%%A"=="Open comments when done" (set OpenNotes_choice=Yes) else (set OpenNotes_choice=No)
+    IF "%%A"=="Delete comments when done" (set DeleteNotes_choice=Yes) else (set DeleteNotes_choice=No)
+    IF "%%A"=="Delete logs when done" (set DeleteLogs_choice=Yes) else (set DeleteLogs_choice=No)
+    IF "%%A"=="Delete tools when done" (set DeleteTools_choice=Yes) else (set DeleteTools_choice=No)
+    IF "%%A"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
+    IF "%%A"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
+    REM Check %%B & set appropriate variable
+    IF "%%B"=="Email notes (Experimental)" (set EmailNotes_choice=Yes) else (set EmailNotes_choice=No)
+    IF "%%B"=="Auto close when done" (set AutoClose_choice=Yes) else (set AutoClose_choice=No)
+    IF "%%B"=="Review Logs when done" (set ReviewLogs_choice=Yes) else (set ReviewLogs_choice=No)
+    IF "%%B"=="Open comments when done" (set OpenNotes_choice=Yes) else (set OpenNotes_choice=No)
+    IF "%%B"=="Delete comments when done" (set DeleteNotes_choice=Yes) else (set DeleteNotes_choice=No)
+    IF "%%B"=="Delete logs when done" (set DeleteLogs_choice=Yes) else (set DeleteLogs_choice=No)
+    IF "%%B"=="Delete tools when done" (set DeleteTools_choice=Yes) else (set DeleteTools_choice=No)
+    IF "%%B"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
+    IF "%%B"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
+    REM Check %%C & set appropriate variable
+    IF "%%C"=="Auto close when done" (set AutoClose_choice=Yes) else (set AutoClose_choice=No)
+    IF "%%C"=="Review Logs when done" (set ReviewLogs_choice=Yes) else (set ReviewLogs_choice=No)
+    IF "%%C"=="Open comments when done" (set OpenNotes_choice=Yes) else (set OpenNotes_choice=No)
+    IF "%%C"=="Delete comments when done" (set DeleteNotes_choice=Yes) else (set DeleteNotes_choice=No)
+    IF "%%C"=="Delete logs when done" (set DeleteLogs_choice=Yes) else (set DeleteLogs_choice=No)
+    IF "%%C"=="Delete tools when done" (set DeleteTools_choice=Yes) else (set DeleteTools_choice=No)
+    IF "%%C"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
+    IF "%%C"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
+    REM Check %%D & set appropriate variable
+    IF "%%D"=="Review Logs when done" (set ReviewLogs_choice=Yes) else (set ReviewLogs_choice=No)
+    IF "%%D"=="Open comments when done" (set OpenNotes_choice=Yes) else (set OpenNotes_choice=No)
+    IF "%%D"=="Delete comments when done" (set DeleteNotes_choice=Yes) else (set DeleteNotes_choice=No)
+    IF "%%D"=="Delete logs when done" (set DeleteLogs_choice=Yes) else (set DeleteLogs_choice=No)
+    IF "%%D"=="Delete tools when done" (set DeleteTools_choice=Yes) else (set DeleteTools_choice=No)
+    IF "%%D"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
+    IF "%%D"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
+    REM Check %%E & set appropriate variable
+    IF "%%E"=="Open comments when done" (set OpenNotes_choice=Yes) else (set OpenNotes_choice=No)
+    IF "%%E"=="Delete comments when done" (set DeleteNotes_choice=Yes) else (set DeleteNotes_choice=No)
+    IF "%%E"=="Delete logs when done" (set DeleteLogs_choice=Yes) else (set DeleteLogs_choice=No)
+    IF "%%E"=="Delete tools when done" (set DeleteTools_choice=Yes) else (set DeleteTools_choice=No)
+    IF "%%E"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
+    IF "%%E"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
+    REM Check %%F & set appropriate variable
+    IF "%%F"=="Delete comments when done" (set DeleteNotes_choice=Yes) else (set DeleteNotes_choice=No)
+    IF "%%F"=="Delete logs when done" (set DeleteLogs_choice=Yes) else (set DeleteLogs_choice=No)
+    IF "%%F"=="Delete tools when done" (set DeleteTools_choice=Yes) else (set DeleteTools_choice=No)
+    IF "%%F"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
+    IF "%%F"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
+    REM Check %%G & set appropriate variable
+    IF "%%G"=="Delete logs when done" (set DeleteLogs_choice=Yes) else (set DeleteLogs_choice=No)
+    IF "%%G"=="Delete tools when done" (set DeleteTools_choice=Yes) else (set DeleteTools_choice=No)
+    IF "%%G"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
+    IF "%%G"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
+    REM Check %%H & set appropriate variable
+    IF "%%H"=="Delete tools when done" (set DeleteTools_choice=Yes) else (set DeleteTools_choice=No)
+    IF "%%H"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
+    IF "%%H"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
+    REM Check %%I & set appropriate variable
+    IF "%%I"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
+    IF "%%I"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
+    REM Check %%J & set appropriate variable
+    IF "%%J"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+
     echo ERROR LEVEL
     echo %ERRORLEVEL%
     pause
@@ -582,63 +741,6 @@ IF ERRORLEVEL -1 (
     )
   )
 )
-
-:menuLOOP
-CLS
-REM Set title
-title [Menu] Brainiacs Cleanup Tool v%TOOL_VERSION%
-echo.
-echo  ^! MENU
-echo ========================================================================================
-echo.
-echo  ^! Select a tool, option or preset from the list below by inputting the corresponding
-echo  ^! character. Once you are okay with your selection type "SC" and then enter to
-echo  ^! start the automated process.
-echo.
-echo ========================================================================================
-echo.
-for /f "tokens=1,2,* delims=_ " %%A in ('"findstr /b /c:":menu_" "%~f0""') do echo.  %%B  %%C
-set choice=
-echo.
-echo ===================================================================================
-echo.&set /p choice=Make a choice: ||(
-	GOTO:menuLOOP
-)
-echo.&call:menu_%choice%
-GOTO:menuLOOP
-
-REM Display notes
-:menu_CSG_ID: !VARID!
-:menu_Phone_Number: !VARPHN!
-
-REM Display additional notes
-:menu_
-:menu_Additional_Notes: !VAR_ADDT_NOTES!
-
-REM Display menu tools
-:menu_
-:menu_Tools:
-
-REM Start RKill service
-:menu_1   Run RKill?                                : '!RKill!' [!RKill_choice:~1,-1!]
-call:getNextInList RKill "!RKill_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Start JRT service
-:menu_2   Run JRT?                                  : '!JRT!' [!JRT_choice:~1,-1!]
-call:getNextInList JRT "!JRT_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Start TDSS Killer service
-:menu_3   Run TDSS Killer?                          : '!TDSS!' [!TDSS_choice:~1,-1!]
-call:getNextInList TDSS "!TDSS_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
 
 REM Start Rogue Killer service
 :menu_4   Run Rogue Killer?                         : '!Rogue!' [!Rogue_choice:~1,-1!]
@@ -684,34 +786,6 @@ if "!Rogue!"=="Yes" (
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   GOTO:EOF
 )
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Start ADW service
-:menu_5   Run ADW?                                  : '!ADW!' [!ADW_choice:~1,-1!]
-call:getNextInList ADW "!ADW_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Start Hitman Pro service
-:menu_6   Run Hitman Pro?                           : '!HitmanPro!' [!HitmanPro_choice:~1,-1!]
-call:getNextInList HitmanPro "!HitmanPro_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Start Zemana service
-:menu_7   Run Zemana?                               : '!Zemana!' [!Zemana_choice:~1,-1!]
-call:getNextInList Zemana "!Zemana_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Start MBAR service
-:menu_8   Run MBAR? (Takes a long time to run)      : '!MBAR!' [!MBAR_choice:~1,-1!]
-call:getNextInList MBAR "!MBAR_choice!"
-cls
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
@@ -786,38 +860,6 @@ if /i "!SystemRestore!"=="No" (
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
 
-REM Start CCleaner service
-:menu_11   Run CCleaner?                            : '!CCleaner!' [!CCleaner_choice:~1,-1!]
-call:getNextInList CCleaner "!CCleaner_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Start Defrag System service
-:menu_12   Defrag System?                           : '!DefragSystem!' [!DefragSystem_choice:~1,-1!]
-call:getNextInList DefragSystem "!DefragSystem_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Start Windows Drive check service
-:menu_13   Check Windows Drive for errors?          : '!DriveChecker!' [!DriveChecker_choice:~1,-1!]
-call:getNextInList DriveChecker "!DriveChecker_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Start Windows Image check service
-:menu_14   Check Windows Image for errors?          : '!ImageChecker!' [!ImageChecker_choice:~1,-1!]
-call:getNextInList ImageChecker "!ImageChecker_choice!"
-cls
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Display other tools
-:menu_
-:menu_Other_Tools:
-
 REM Start Geek Uninstaller
 :menu_GK   Run Geek Uninstaller
 if exist "%Output%\Tools\Geek\geek.exe" (
@@ -848,10 +890,6 @@ if exist "%Output%\Tools\Geek\geek.exe" (
   color 07
 )
 GOTO:EOF
-
-REM Display menu options
-:menu_
-:menu_Options:
 
 REM Email notes?
 :menu_E    Email notes? (Experimental)               : '!EmailNotes!' [!EmailNotes_choice:~1,-1!]
@@ -1093,102 +1131,6 @@ if /i "!DeleteTools!"=="Yes" (
 )
 call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 GOTO:EOF
-
-REM Display preset options.
-:menu_
-:menu_Tool_Presets:
-
-:menu_DP    Default cleanup preset.
-cls
-set RKill=Yes
-set JRT=Yes
-set TDSS=Yes
-set Rogue=Yes
-set ADW=Yes
-set HitmanPro=Yes
-set Zemana=Yes
-set MBAR=No
-set Malwarebytes=No
-set Spybot=No
-set CCleaner=Yes
-set DefragSystem=Yes
-set ImageChecker=Yes
-set DriveChecker=Yes
-set EmailNotes=No
-set SystemRestore=Yes
-set AutoClose=Yes
-set ReviewLogs=No
-set OpenNotes=Yes
-set DeleteNotes=No
-set DeleteLogs=No
-set DeleteTools=Yes
-set SelfDestruct=Yes
-set Reboot=No
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-:menu_EA    Enable all preset.
-cls
-set RKill=Yes
-set JRT=Yes
-set TDSS=Yes
-set Rogue=Yes
-set ADW=Yes
-set HitmanPro=Yes
-set Zemana=Yes
-set MBAR=Yes
-set Malwarebytes=Yes
-set Spybot=Yes
-set CCleaner=Yes
-set DefragSystem=Yes
-set ImageChecker=Yes
-set DriveChecker=Yes
-set EmailNotes=Yes
-set SystemRestore=Yes
-set AutoClose=Yes
-set ReviewLogs=Yes
-set OpenNotes=Yes
-set DeleteNotes=Yes
-set DeleteLogs=Yes
-set DeleteTools=Yes
-set SelfDestruct=Yes
-set Reboot=Yes
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-:menu_DA    Disable all preset.
-cls
-set RKill=No
-set JRT=No
-set TDSS=No
-set Rogue=No
-set ADW=No
-set HitmanPro=No
-set Zemana=No
-set MBAR=No
-set Malwarebytes=No
-set Spybot=No
-set CCleaner=No
-set DefragSystem=No
-set ImageChecker=No
-set DriveChecker=No
-set EmailNotes=No
-set SystemRestore=No
-set AutoClose=No
-set ReviewLogs=No
-set OpenNotes=No
-set DeleteNotes=No
-set DeleteLogs=No
-set DeleteTools=No
-set SelfDestruct=No
-set Reboot=No
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-GOTO:EOF
-
-REM Display execute options.
-:menu_
-:menu_Execute_Actions:
-:menu_SC   Start Cleanup
 
 if /i "%EmailNotes:~0,1%"=="Y" (
   REM Call function
