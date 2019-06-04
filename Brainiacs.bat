@@ -1,7 +1,7 @@
 @ECHO OFF
 
 REM Maximize Window
-if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
+if not "%1" == "min" start /MIN cmd /c %0 min & exit/b
 
 REM Run as admin
 :init
@@ -85,6 +85,7 @@ set CCleaner_choice=unidentified
 set DefragSystem_choice=unidentified
 set ImageChecker_choice=unidentified
 set DriveChecker_choice=unidentified
+set No_selection_choice_function=unidentified
 
 REM Options menu variables
 set SystemRestore_choice=unidentified
@@ -97,6 +98,7 @@ set DeleteLogs_choice=unidentified
 set DeleteTools_choice=unidentified
 set SelfDestruct_choice=unidentified
 set Reboot_choice=unidentified
+set No_selection_choice_options=unidentified
 
 REM  Force path to some system utilities in case the system PATH is messed up
 set WMIC=%SystemRoot%\System32\wbem\wmic.exe
@@ -152,9 +154,6 @@ set T=%TEMP%\sthUnique.tmp
 wmic process where (Name="WMIC.exe" AND CommandLine LIKE "%%%TIME%%%") get ParentProcessId /value | find "ParentProcessId" >%T%
 set /P A=<%T%
 set PID_BRAINIACS=%A:~16%%
-
-REM Set Initial Color
-color 07
 
 REM Skip to menu if verbose is enabled
 if exist "%Output%\Debug" (
@@ -221,15 +220,9 @@ goto Test_Upgrade_All_Decline
 
 REM Ask to enable debugging
 :Test_Upgrade_All_Decline
-FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to enable debugging?\n\nThe output will be really long." "[NOTICE] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:I /O:N`) DO (
-  IF /I "%%G"=="Yes" (
-    echo. >> "%Output%\Debug"
-    start Brainiacs.bat
-    exit /b
-  ) ELSE (
-    goto :menuLOOP
-  )
-)
+%Output%\Functions\Menu\MessageBox "Skipping checks and entering menu." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N
+REM Skip to menu without checks
+goto Functions_Menu
 
 REM Skip testing mode stuff if denied previously
 :No_Test_Continue
@@ -326,13 +319,9 @@ if "%ABRUPTCLOSE%"=="yes" (
     FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Abrupt stop detected!\n\nDo you want to restore the session\u003F" "[QUESTION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:Q /O:N`) DO (
       IF /I "%%G"=="Yes" (
     	  call:restorePersistentVars "%FilePersist%"
-        REM Set Color
-        color 07
     	  REM Start menu interface
-    	  goto :menu_SC
+    	  goto :Execute_Menu
       ) ELSE (
-        REM Set Color
-        color 07
         REM Set var to delete restore point on start
         set DELETE_RESTORE=Yes
         REM Delete ABRUTCLOSE file
@@ -383,22 +372,23 @@ if exist "%Output%\Notes\Comments.txt" (
 )
 
 REM Ask & enter new CSG user ID into notes
-FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:">L00" /R:"(.)*[a-zA-Z]{1}\d{2}" /F:"(.)*[a-zA-Z]{1}\d{2}"/U /I`) DO (
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:"L00" /U /I`) DO (
   echo CSG User ID: "%%G" >> "%Output%\Notes\Comments.txt"
-  echo. >> "%Output%\Notes\Comments.txt"
 )
 
 REM Enter general cleanup as the reason
+echo. >> "%Output%\Notes\Comments.txt"
 echo Continuing general cleanup. >> "%Output%\Notes\Comments.txt"
 echo. >> "%Output%\Notes\Comments.txt"
 
 REM Ask & enter any additional notes
-FOR /F "usebackq delims=?" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any additional notes:" "[ADDT NOTES] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
-  echo. >> "%Output%\Notes\Comments.txt"
+FOR /F "usebackq tokens=*" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any additional notes:" "[ADDT NOTES] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
   echo Additional Notes: "%%G" >> "%Output%\Notes\Comments.txt"
-  echo --- >> "%Output%\Notes\Comments.txt"
-  echo -Picked up session from "%PREVIOUS_USER%" >> "%Output%\Notes\Comments.txt"
 )
+
+REM Enter pickup notes
+echo --- >> "%Output%\Notes\Comments.txt"
+echo -Picked up session from "%PREVIOUS_USER%" >> "%Output%\Notes\Comments.txt"
 
 REM Start menu
 goto Functions_Menu
@@ -427,25 +417,27 @@ if not exist "%Output%\Logs\" (
 )
 
 REM Ask & enter CSG user ID into notes
-FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:">L00" /R:"(.)*[a-zA-Z]{1}\d{2}" /F:"(.)*[a-zA-Z]{1}\d{2}"/U /I`) DO (
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:"L00" /U /I`) DO (
   echo CSG User ID: "%%G" >> "%Output%\Notes\Comments.txt"
 )
 
 REM Ask & enter Phone number into notes
-FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the subscribers Phone number:" "[PHN #] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:">000\-000\-0000" /R:"[\d0-9]{10}" /F:"[\d0-9]{0,10}" /U /I`) DO (
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the subscribers Phone number:" "[PHN #] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:">000\-000\-0000" /U /I`) DO (
   echo Phone Number: "%%G" >> "%Output%\Notes\Comments.txt"
-  echo. >> "%Output%\Notes\Comments.txt"
 )
 
 REM Enter general cleanup reason
+echo. >> "%Output%\Notes\Comments.txt"
 echo General Cleanup. >> "%Output%\Notes\Comments.txt"
+echo. >> "%Output%\Notes\Comments.txt"
 
 REM Ask & enter any additional notes
-FOR /F "usebackq delims=?" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any additional notes:" "[ADDT NOTES] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
-  echo. >> "%Output%\Notes\Comments.txt"
+FOR /F "usebackq tokens=*" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any additional notes:" "[ADDT NOTES] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
   echo Additional Notes: "%%G" >> "%Output%\Notes\Comments.txt"
-  echo --- >> "%Output%\Notes\Comments.txt"
 )
+
+REM Enter break for notes
+echo --- >> "%Output%\Notes\Comments.txt"
 
 REM Add check for restore deletion to prevent any remnants from messing with the new session.
 if /i "!DELETE_RESTORE!"=="Yes" (
@@ -453,20 +445,11 @@ if /i "!DELETE_RESTORE!"=="Yes" (
   del "!Output!\Functions\Variables\ABRUPTCLOSE.txt" >nul
 )
 
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM         REMOVE LATER. THIS IS JUST FOR KNOWING WHERE I AM
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-
 REM Functions Menu
 :Functions_Menu
 CLS
-FOR /F "usebackq tokens=1-14* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup" "Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows image for errors;Check Windows drive for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+FOR /F "usebackq tokens=1-14* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Select Options" "Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows image for errors;Check Windows drive for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+
   for /f "tokens=1-14* delims=;" %%a in ("%%^") do (
 
     REM Check %%A & set appropriate variable
@@ -484,6 +467,7 @@ FOR /F "usebackq tokens=1-14* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%A"=="Defrag" (set DefragSystem_choice=Yes) else (set DefragSystem_choice=No)
     IF "%%A"=="Check Windows image for errors" (set ImageChecker_choice=Yes) else (set ImageChecker_choice=No)
     IF "%%A"=="Check Windows drive for errors" (set DriveChecker_choice=Yes) else (set DriveChecker_choice=No)
+    IF "%%A"=="" (set No_selection_choice_function=Yes) else (set No_selection_choice_function=No)
 
     REM Check %%B & set appropriate variable
     IF "%%B"=="JRT" (set JRT_choice=Yes) else (set JRT_choice=No)
@@ -604,28 +588,20 @@ FOR /F "usebackq tokens=1-14* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
   )
 )
 
-REM OK BUTTON WAS PRESSED
+REM Check if any button was pressed.
 IF ERRORLEVEL 0 (
-  goto Options_Menu
-)
-
-REM COMMAND LINE ERRORS
-IF ERRORLEVEL 1 (
-  echo COMMAND LINE ERROR
-  pause
-  goto Functions_Menu
-)
-
-IF ERRORLEVEL 2 (
-  goto Options_Menu
-)
-
-REM CANCEL BUTTON WAS PRESSED
-IF ERRORLEVEL -1 (
-  FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Are you sure you want to quit\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+  REM Check if user selected nothing, if so then ask to exit the tool
+  IF /i "%No_selection_choice_function%"=="No" (
+    REM Set variables
+    set No_selection_choice_function=unidentified
+    goto Options_Menu
+  )
+  FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "No options were selected or you are trying to quit. Do you want to quit the cleanup tool\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:A /O:N`) DO (
     IF /I "%%G"=="Yes" (
       exit /b
     ) else (
+      REM Set variables
+      set No_selection_choice_function=unidentified
       goto Functions_Menu
     )
   )
@@ -633,7 +609,7 @@ IF ERRORLEVEL -1 (
 
 REM Options Menu
 :Options_Menu
-FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Select Options" "Create system restore point;Email notes (Experimental);Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup" "Create system restore point;Email notes (Experimental);Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
   for /f "tokens=1-10* delims=;" %%a in ("%%^") do (
 
     REM Check %%A & set appropriate variable
@@ -647,6 +623,7 @@ FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%A"=="Delete tools when done" (set DeleteTools_choice=Yes) else (set DeleteTools_choice=No)
     IF "%%A"=="Self-Destruct Cleanup Tool when done" (set SelfDestruct_choice=Yes) else (set SelfDestruct_choice=No)
     IF "%%A"=="Reboot when done" (set Reboot_choice=Yes) else (set Reboot_choice=No)
+    IF "%%A"=="" (set No_selection_choice_options=Yes) else (set No_selection_choice_options=No)
 
     REM Check %%B & set appropriate variable
     IF "%%B"=="Email notes (Experimental)" (set EmailNotes_choice=Yes) else (set EmailNotes_choice=No)
@@ -713,29 +690,24 @@ FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
   )
 )
 
-REM OK BUTTON WAS PRESSED
+REM Check if any button was pressed.
 IF ERRORLEVEL 0 (
-  goto Execute_Menu
-)
-
-REM COMMAND LINE ERRORS
-IF ERRORLEVEL 1 (
-  echo COMMAND LINE ERROR
-  pause
-  goto Options_Menu
-)
-
-IF ERRORLEVEL 2 (
-  goto Functions_Menu
-)
-
-REM CANCEL BUTTON WAS PRESSED
-IF ERRORLEVEL -1 (
-  FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Are you sure you want to quit\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+  REM Check if user selected nothing, if so then ask to exit the tool
+  IF /i "%No_selection_choice_options%"=="No" (
+    REM Set variables
+    set No_selection_choice_options=unidentified
+    goto Execute_Menu
+  )
+  FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "No options were selected or you are trying to quit. Do you want to continue with no options selected\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:N /I:A /O:N`) DO (
     IF /I "%%G"=="Yes" (
       exit /b
+    )
+    IF /I "%%G"=="No" (
+     REM Set variables
+     set No_selection_choice_options=unidentified
+     goto Options_Menu
     ) else (
-      goto Options_Menu
+      exit /b
     )
   )
 )
@@ -758,7 +730,6 @@ if exist "%Output%\Tools\Geek\geek.exe" (
 
 ) ELSE (
   CLS
-  color 0c
   echo.
   echo  ^! WARNING
   echo ================================
@@ -769,20 +740,9 @@ if exist "%Output%\Tools\Geek\geek.exe" (
   echo.
   echo ================================
   TIMEOUT 5
-  color 07
 )
 GOTO:EOF
 )
-
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM         REMOVE LATER. THIS IS JUST FOR KNOWING WHERE I AM
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
-REM ----------------------------DEBUG---------------------------------------
 
 REM Execute Menu
 :Execute_Menu
@@ -814,39 +774,41 @@ if /i "%SystemRestore_choice%"=="Yes" (
   REM Set variables
   set SystemRestore_choice=No
 ) else /i "%SystemRestore_choice%"=="No" (
-    if /i "%Malwarebytes_choice%"=="Yes" (
-      FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Malwarebytes requires 'System Restore' to be enabled to be able to run. Do you want to enable it\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
-        IF /I "%%G"=="Yes" (
-          REM Set variables
-          set SystemRestore_choice=Yes
-          REM Create restore point
-          echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-          REM Call function
-          call functions\Restore_function
-          REM Set variables
+  if /i "%Malwarebytes_choice%"=="Yes" (
+    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Malwarebytes requires 'System Restore' to be enabled to be able to run. Do you want to enable it\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+      IF /I "%%G"=="Yes" (
+        REM Set variables
+        set SystemRestore_choice=Yes
+        REM Create restore point
+        echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+        REM Call function
+        call functions\Restore_function
+        REM Set variables if spybot is not selected to prevent double prompt
+        if /i "%Spybot_choice%"=="No" (
           set SystemRestore_choice=No
-        ) else (
-          set Malwarebytes_choice=No
         )
-      )
-    )
-    if /i "%Spybot_choice%"=="Yes" (
-      FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Spybot requires 'System Restore' to be enabled to be able to run. Do you want to enable it\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
-        IF /I "%%G"=="Yes" (
-          REM Set variables
-          set SystemRestore_choice=Yes
-          REM Create restore point
-          echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-          REM Call function
-          call functions\Restore_function
-          REM Set variables
-          set SystemRestore_choice=No
-        ) else (
-          set Spybot_choice=No
-        )
+      ) else (
+        set Malwarebytes_choice=No
       )
     )
   )
+  if /i "%Spybot_choice%"=="Yes" (
+    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Spybot requires 'System Restore' to be enabled to be able to run. Do you want to enable it\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+      IF /I "%%G"=="Yes" (
+        REM Set variables
+        set SystemRestore_choice=Yes
+        REM Create restore point
+        echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+        REM Call function
+        call functions\Restore_function
+        REM Set variables
+        set SystemRestore_choice=No
+      ) else (
+        set Spybot_choice=No
+      )
+    )
+  )
+)
 
 if /i "%RKill_choice%"=="Yes" (
   REM Create restore point
@@ -984,7 +946,7 @@ if /i "%CCleaner_choice%"=="Yes" (
   REM Create restore point
   echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
-  call functions\CCleaner_function
+  REM call functions\CCleaner_function
   REM Create restore point
   echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
@@ -1002,16 +964,17 @@ if /i "%DefragSystem_choice%"=="Yes" (
       set Defrag_External=No
     )
   )
-  REM Ask if want to schedule boot if not ran externally
-  if /i "%Defrag_External%"=="No" (
-    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to run defrag on the next boot\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
-      IF /I "%%G"=="Yes" (
-        REM Set variables
-        set Defrag_On_Boot=Yes
-      ) else (
-        REM Set variables
-        set Defrag_On_Boot=No
-      )
+)
+
+REM Ask if want to schedule boot if not ran externally
+if /i "%Defrag_External%"=="No" (
+  FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to run defrag on the next boot\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+    IF /I "%%G"=="Yes" (
+      REM Set variables
+      set Defrag_On_Boot=Yes
+    ) else (
+      REM Set variables
+      set Defrag_On_Boot=No
     )
   )
   REM Initiate defrag based on variables
@@ -1064,7 +1027,10 @@ if /i "%DeleteLogs_choice%"=="Yes" (
 )
 
 if /i "%DeleteTools_choice%"=="Yes" (
-  if /i "%AutoClose_choice%"=="No" (set SKIP_DELETE_TOOLS=Yes) else if /i "%Reboot_choice%"=="No" (set SKIP_DELETE_TOOLS=Yes)
+  REM set SKIP_DELETE_TOOLS if autoclose or reboot was selected
+  if /i "%AutoClose_choice%"=="No" (set SKIP_DELETE_TOOLS=Yes)
+  if /i "%Reboot_choice%"=="No" (set SKIP_DELETE_TOOLS=Yes)
+  REM If skip delete then display a message
   if /i "%SKIP_DELETE_TOOLS%"=="Yes" (
     FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Tool deletion requires the 'Auto-Close' or 'Reboot' option to be enabled to be able to run. Do you want to enable autoclose\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
       IF /I "%%G"=="Yes" (
@@ -1080,16 +1046,16 @@ if /i "%DeleteTools_choice%"=="Yes" (
       ) else (
         set Malwarebytes_choice=No
       )
-    ) else (
-      REM Set variables
-      set DeleteTools_choice=Yes
-      REM Create restore point
-      echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-      REM Call function
-      call functions\DeleteTools_function
-      REM Set variables
-      set DeleteTools_choice=No
     )
+  ) else (
+    REM Set variables
+    set DeleteTools_choice=Yes
+    REM Create restore point
+    echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+    REM Call function
+    call functions\DeleteTools_function
+    REM Set variables
+    set DeleteTools_choice=No
   )
 )
 
@@ -1157,7 +1123,7 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Cleanup 
   IF /I "%%G"=="Yes" (
     goto Functions_Menu
   ) else (
-    %Output%\Functions\Menu\MessageBox "Exiting 'Brainiacs Cleanup Tool v%TOOL_VERSION%' in 5 seconds. Goodbye!" "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:5
+    %Output%\Functions\Menu\MessageBox "Exiting 'Brainiacs Cleanup Tool v%TOOL_VERSION%' in 5 seconds. Goodbye." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:5
     exit /b
   )
 )
