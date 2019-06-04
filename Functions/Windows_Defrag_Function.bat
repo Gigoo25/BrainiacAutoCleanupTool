@@ -1,5 +1,7 @@
 @echo off
 
+  xcopy /v "%Output%\functions\Windows_Defrag_Function.bat" "%SystemDrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
+
 REM Variables
 set Defrag_Boot=unidentified
 
