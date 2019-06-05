@@ -37,9 +37,6 @@ REM Set default directory
 %~d0
 cd %~dp0
 
-REM Define the filename where persistent variables get stored
-set FilePersist=%cd%\Functions\Persist.cmd&
-
 REM Other variables
 set Output=%cd%
 set SAFE_MODE=no
@@ -102,11 +99,32 @@ set SelfDestruct_choice=unidentified
 set Reboot_choice=unidentified
 set No_selection_choice_options=unidentified
 
+REM Define the filename where persistent variables get stored
+set FilePersist=%Output%\Functions\Variables\Persist.cmd&
+
 REM  Force path to some system utilities in case the system PATH is messed up
 set WMIC=%SystemRoot%\System32\wbem\wmic.exe
 set FIND=%SystemRoot%\System32\find.exe
 set FINDSTR=%SystemRoot%\System32\findstr.exe
 set REG=%SystemRoot%\System32\reg.exe
+
+call:setPersist Geek_choice=unidentified
+call:setPersist RKill_choice=unidentified
+call:setPersist JRT_choice=unidentified
+pause
+call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+echo %FilePersist%
+echo Done setting persistent vars!
+pause
+
+echo Setting vars from file!
+call:restorePersistentVars "%FilePersist%"
+echo %Geek_choice%
+echo %RKill_choice%
+echo %JRT_choice%
+pause
+
+exit /b
 
 REM Un-Hide files/folders
 attrib "%Output%\Functions" -h -r
@@ -1131,3 +1149,43 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Cleanup 
     exit /b
   )
 )
+
+REM -----------------------------------------------------------
+REM  helper functions follow below here
+REM -----------------------------------------------------------
+
+
+call:setPersist RKill=Yes
+call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+
+:setPersist -- to be called to initialize persistent variables
+REM           -- %*: set command arguments
+set %*
+GOTO:EOF
+
+
+:getPersistentVars -- returns a comma separated list of persistent variables
+REM                  -- %~1: reference to return variable
+SETLOCAL
+set retlist=
+set parse=findstr /i /c:"call:setPersist" "%~f0%"^|find /v "ButNotThisLine"
+for /f "tokens=2 delims== " %%a in ('"%parse%"') do (set retlist=!retlist!%%a,)
+( ENDLOCAL & REM RETURN VALUES
+    IF "%~1" NEQ "" SET %~1=%retlist%
+)
+GOTO:EOF
+
+
+:savePersistentVars -- Save values of persistent variables into a file
+REM                   -- %~1: file name
+SETLOCAL
+echo.>"%~1"
+call :getPersistentVars persvars
+for %%a in (%persvars%) do (echo.SET %%a=!%%a!>>"%~1")
+GOTO:EOF
+
+
+:restorePersistentVars -- Restore the values of the persistent variables
+REM                      -- %~1: batch file name to restore from
+if exist "%FilePersist%" call "%FilePersist%"
+GOTO:EOF
