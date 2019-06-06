@@ -102,29 +102,40 @@ set No_selection_choice_options=unidentified
 REM Define the filename where persistent variables get stored
 set FilePersist=%Output%\Functions\Variables\Persist.cmd&
 
+REM Functions menu variables persistent
+call:setPersist Geek_choice=unidentified
+call:setPersist RKill_choice=unidentified
+call:setPersist JRT_choice=unidentified
+call:setPersist TDSS_choice=unidentified
+call:setPersist Rogue_choice=unidentified
+call:setPersist ADW_choice=unidentified
+call:setPersist HitmanPro_choice=unidentified
+call:setPersist Zemana_choice=unidentified
+call:setPersist MBAR_choice=unidentified
+call:setPersist Malwarebytes_choice=unidentified
+call:setPersist Spybot_choice=unidentified
+call:setPersist CCleaner_choice=unidentified
+call:setPersist DefragSystem_choice=unidentified
+call:setPersist ImageChecker_choice=unidentified
+call:setPersist DriveChecker_choice=unidentified
+
+REM Options menu variables persistent
+call:setPersist SystemRestore_choice=unidentified
+call:setPersist EmailNotes_choice=unidentified
+call:setPersist AutoClose_choice=unidentified
+call:setPersist ReviewLogs_choice=unidentified
+call:setPersist OpenNotes_choice=unidentified
+call:setPersist DeleteNotes_choice=unidentified
+call:setPersist DeleteLogs_choice=unidentified
+call:setPersist DeleteTools_choice=unidentified
+call:setPersist SelfDestruct_choice=unidentified
+call:setPersist Reboot_choice=unidentified
+
 REM  Force path to some system utilities in case the system PATH is messed up
 set WMIC=%SystemRoot%\System32\wbem\wmic.exe
 set FIND=%SystemRoot%\System32\find.exe
 set FINDSTR=%SystemRoot%\System32\findstr.exe
 set REG=%SystemRoot%\System32\reg.exe
-
-call:setPersist Geek_choice=unidentified
-call:setPersist RKill_choice=unidentified
-call:setPersist JRT_choice=unidentified
-pause
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
-echo %FilePersist%
-echo Done setting persistent vars!
-pause
-
-echo Setting vars from file!
-call:restorePersistentVars "%FilePersist%"
-echo %Geek_choice%
-echo %RKill_choice%
-echo %JRT_choice%
-pause
-
-exit /b
 
 REM Un-Hide files/folders
 attrib "%Output%\Functions" -h -r
@@ -334,7 +345,7 @@ if not exist "%Output%\Functions" (
 REM Setup resume state if not found, if found ask if you want to resume the last state
 if "%ABRUPTCLOSE%"=="yes" (
   if exist "!Output!\Functions\Variables\ABRUPTCLOSE.txt" (
-    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Abrupt stop detected!\n\nDo you want to restore the session\u003F" "[QUESTION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:Q /O:N`) DO (
+    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Abrupt stop detected.\n\nDo you want to restore the session\u003F" "[QUESTION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:Q /O:N`) DO (
       IF /I "%%G"=="Yes" (
     	  call:restorePersistentVars "%FilePersist%"
     	  REM Start menu interface
@@ -1153,10 +1164,6 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Cleanup 
 REM -----------------------------------------------------------
 REM  helper functions follow below here
 REM -----------------------------------------------------------
-
-
-call:setPersist RKill=Yes
-call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 
 :setPersist -- to be called to initialize persistent variables
 REM           -- %*: set command arguments
