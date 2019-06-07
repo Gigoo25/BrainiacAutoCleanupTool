@@ -59,7 +59,6 @@ set PASSWORD=undetected
 set PID_BRAINIACS=undetected
 set EMAIL_SEND=undetected
 set ROGUE_QUICKSCAN=undetected
-set TEST_UPDATE_ALL=undetected
 set TEST_UPDATE_MASTER=undetected
 set TEST_UPDATE_EXPERIMENTAL=undetected
 set PREVIOUS_USER=undetected
@@ -67,6 +66,10 @@ set Defrag_External=undetected
 set Defrag_On_Boot=undetected
 set DefragSystem_choice=undetected
 set SKIP_DELETE_TOOLS=undetected
+
+set CSG_USR_ID=unidentified
+set SUB_PHN=unidentified
+set ADDT_NOTES=unidentified
 
 REM Functions menu variables
 set Geek_choice=unidentified
@@ -184,6 +187,7 @@ REM Get PID of BrainiacsAutoCleanupTool CMD
 set T=%TEMP%\sthUnique.tmp
 wmic process where (Name="WMIC.exe" AND CommandLine LIKE "%%%TIME%%%") get ParentProcessId /value | find "ParentProcessId" >%T%
 set /P A=<%T%
+REM Set variables
 set PID_BRAINIACS=%A:~16%%
 
 REM Skip to menu if debug file is found
@@ -227,24 +231,19 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\RADIOBUTTONBOX  "Mas
     goto :Test_Upgrade_Experimental
   )
 )
-%Output%\Functions\Menu\MessageBox "Error\u0021\n\nUser canceled update." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N >nul
-goto :Choice_Test_Upgrade_All
 
 REM Upgrade from master branch
 :Test_Upgrade_Master
-set TEST_UPDATE_ALL=yes
 set TEST_UPDATE_MASTER=yes
 call functions\Update_function
 set TEST_UPDATE_MASTER=no
-set TEST_UPDATE_ALL=no
 goto Test_Upgrade_All_Decline
+
 REM Upgrade from experimenal branch
 :Test_Upgrade_Experimental
-set TEST_UPDATE_ALL=yes
 set TEST_UPDATE_EXPERIMENTAL=yes
 call functions\Update_function
 set TEST_UPDATE_EXPERIMENTAL=no
-set TEST_UPDATE_ALL=no
 goto Test_Upgrade_All_Decline
 
 REM Ask to enable debugging
@@ -402,7 +401,14 @@ if exist "%Output%\Notes\Comments.txt" (
 
 REM Ask & enter new CSG user ID into notes
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:"L00" /U /I`) DO (
-  echo CSG User ID: "%%G" >> "%Output%\Notes\Comments.txt"
+  REM Set variable
+  set CSG_USR_ID=%%G
+)
+REM Set comments based on variable
+IF NOT "!CSG_USR_ID!"=="unidentified" (
+  echo CSG User ID: "!CSG_USR_ID!" >> "%Output%\Notes\Comments.txt"
+) else (
+  echo CSG User ID: "*Not entered*" >> "%Output%\Notes\Comments.txt"
 )
 
 REM Enter general cleanup as the reason
@@ -412,7 +418,14 @@ echo. >> "%Output%\Notes\Comments.txt"
 
 REM Ask & enter any additional notes
 FOR /F "usebackq tokens=*" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any additional notes:" "[ADDT NOTES] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
-  echo Additional Notes: "%%G" >> "%Output%\Notes\Comments.txt"
+  REM Set variable
+  set ADDT_NOTES=%%G
+)
+REM Set comments based on variable
+IF NOT "!ADDT_NOTES!"=="unidentified" (
+  echo Additional Notes: "!ADDT_NOTES!" >> "%Output%\Notes\Comments.txt"
+) else (
+  echo Additional Notes: "None" >> "%Output%\Notes\Comments.txt"
 )
 
 REM Enter pickup notes
@@ -445,14 +458,28 @@ if not exist "%Output%\Logs\" (
   mkdir "%Output%\Logs" >nul
 )
 
-REM Ask & enter CSG user ID into notes
+REM Ask & enter new CSG user ID into notes
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter your CSG user ID:" "[CSG ID] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:"L00" /U /I`) DO (
-  echo CSG User ID: "%%G" >> "%Output%\Notes\Comments.txt"
+  REM Set variable
+  set CSG_USR_ID=%%G
+)
+REM Set comments based on variable
+IF NOT "!CSG_USR_ID!"=="unidentified" (
+  echo CSG User ID: "!CSG_USR_ID!" >> "%Output%\Notes\Comments.txt"
+) else (
+  echo CSG User ID: "*Not entered*" >> "%Output%\Notes\Comments.txt"
 )
 
 REM Ask & enter Phone number into notes
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the subscribers Phone number:" "[PHN #] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:">000\-000\-0000" /U /I`) DO (
-  echo Phone Number: "%%G" >> "%Output%\Notes\Comments.txt"
+  REM Set variable
+  set SUB_PHN=%%G
+)
+REM Set comments based on variable
+IF NOT "!SUB_PHN!"=="unidentified" (
+  echo Phone Number: "!SUB_PHN!" >> "%Output%\Notes\Comments.txt"
+) else (
+  echo Phone Number: "*Not entered*" >> "%Output%\Notes\Comments.txt"
 )
 
 REM Enter general cleanup reason
@@ -462,7 +489,14 @@ echo. >> "%Output%\Notes\Comments.txt"
 
 REM Ask & enter any additional notes
 FOR /F "usebackq tokens=*" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter any additional notes:" "[ADDT NOTES] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280`) DO (
-  echo Additional Notes: "%%G" >> "%Output%\Notes\Comments.txt"
+  REM Set variable
+  set ADDT_NOTES=%%G
+)
+REM Set comments based on variable
+IF NOT "!ADDT_NOTES!"=="unidentified" (
+  echo Additional Notes: "!ADDT_NOTES!" >> "%Output%\Notes\Comments.txt"
+) else (
+  echo Additional Notes: "None" >> "%Output%\Notes\Comments.txt"
 )
 
 REM Enter break for notes
@@ -1156,7 +1190,7 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Cleanup 
   IF /I "%%G"=="Yes" (
     goto Functions_Menu
   ) else (
-    %Output%\Functions\Menu\MessageBox "Exiting 'Brainiacs Cleanup Tool v%TOOL_VERSION%' in 5 seconds.\n\Goodbye." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:5
+    %Output%\Functions\Menu\MessageBox "Exiting 'Brainiacs Cleanup Tool v%TOOL_VERSION%' in 5 seconds.\n\nGoodbye." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:5
     exit /b
   )
 )
