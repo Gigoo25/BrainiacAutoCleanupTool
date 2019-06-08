@@ -3,30 +3,15 @@
 REM Variables
 set VarTDSSKiller=0
 
-REM Set title
-title [TDSS Killer] Brainiacs Cleanup Tool v%TOOL_VERSION%
-
 REM Start TDSS Killer service.
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\TDSS\TDSSKiller.exe" (
-  CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Running TDSS Killer
-	echo.
-	echo =================================
+  REM Display message
+  %Output%\Functions\Menu\MessageBox "Upgrading from master branch." "[ALERT] Brainiacs Cleanup Tool" /B:Y /I:A /O:N
+
   start "TDS" "%Output%\Tools\TDSS\TDSSKiller.exe" -l "%Output%\Logs\tdsskiller.log" -accepteula
+
   :TDSSKILLER_RUN_LOOP
-  CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Running TDSS Killer
-	echo.
-	echo =================================
   tasklist | find /i "TDSSKiller.exe" >nul
   IF ERRORLEVEL 1 (
     CLS
