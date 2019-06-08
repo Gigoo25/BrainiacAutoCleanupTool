@@ -59,7 +59,7 @@ if exist "%Output%\Logs" (
 REM Output notes that logs were cleared.
 if %LOG_REMNANTS%==no (
 	REM Display message that logs were deleted succesfuly
-	%Output%\Functions\Menu\MessageBox "Done deleting known logs/temp files!\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 10 seconds" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:10 >nul
+	%Output%\Functions\Menu\MessageBox "Done deleting known logs/temp files.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close in 10 seconds" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:10 >nul
 	REM Add notes that finished
 	echo -Deleted known logs/temp files remnants left on drive >> %Output%\Notes\Comments.txt
 	GOTO :EOF

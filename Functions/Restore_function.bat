@@ -61,6 +61,8 @@ if /i !WIN_VER_NUM! geq 6.1 (
 
 REM Create restore point
 echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
+  REM Display message that restore point creation is starting.
+  %Output%\Functions\Menu\MessageBox "Starting creation of 'Brainiacs - %DATE%: Pre-run checkpoint' restore point.\n\nThis may take a while." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:A /O:N
   powershell "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
 	if /i not !ERRORLEVEL!==0 (
     REM Display message that restore point failed
