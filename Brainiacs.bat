@@ -1019,7 +1019,7 @@ if /i "%CCleaner_choice%"=="Yes" (
   REM Create restore point
   echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
-  REM call functions\CCleaner_function
+  call functions\CCleaner_function
   REM Create restore point
   echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
