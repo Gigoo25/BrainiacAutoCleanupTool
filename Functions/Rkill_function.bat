@@ -3,7 +3,7 @@
 REM Start RKill service.
 if exist "%Output%\Tools\RKill\rkill.exe" (
 	REM Run RKill
-	"%Output%\Tools\RKill\rkill.exe" -s -l "%Output%\Logs\rkill.log" -w "%Output%\Tools\RKill\rkill_process_whitelist.txt"
+	start /WAIT "[SFC] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX "%Output%\Tools\RKill\rkill.exe" -l "%Output%\Logs\rkill.log" -w "%Output%\Tools\RKill\rkill_process_whitelist.txt"
 	REM Set notes
 	echo -Ran RKill >> %Output%\Notes\Comments.txt
   GOTO :EOF

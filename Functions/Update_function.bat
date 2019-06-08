@@ -198,7 +198,7 @@ GOTO :EOF
 REM Decline update
 :update_yes
 REM If its lower that a major release then prompt the user to download the new update.
-if "%CURRENT_VERSION%" LSS "1.5" (
+if "%CURRENT_VERSION%" LSS "2.0" (
 	REM Display message that version is too old then prompt for download
 	if "%CHECK_UPDATE_VERSION%" GTR "%CURRENT_VERSION%" (
 		REM Ask if sub wants to update

@@ -1,8 +1,9 @@
 @ECHO OFF
 
 REM Maximize Window
-if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
-REM if not "%1" == "min" start /MIN cmd /c %0 min & exit/b
+REM if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
+REM Minimize Window
+if not "%1" == "min" start /MIN cmd /c %0 min & exit/b
 
 REM Run as admin
 :init
@@ -387,11 +388,8 @@ if exist "%Output%\Notes\Comments.txt" (
   FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to see the comments created so far\u003F" "[QUESTION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:Q /O:N`) DO (
     IF /I "%%G"=="Yes" (
       %Output%\Functions\Menu\MessageBox "Session was started by '%PREVIOUS_USER%'\n\nPress 'OK' to show the comments created so far." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N >nul
-      REM Type comments out if user wants
-      CLS
-    	type  %Output%\Notes\Comments.txt
-      pause
-      CLS
+      REM Open notes
+    	start "notepad" /wait notepad "%Output%\Notes\Comments.txt"
     )
   )
 ) ELSE (
@@ -511,7 +509,7 @@ if /i "!DELETE_RESTORE!"=="Yes" (
 REM Functions Menu
 :Functions_Menu
 
-FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Select Options" "Geek Uninstaller;Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows image for errors;Check Windows drive for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Continue" "Geek Uninstaller;Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows image for errors;Check Windows drive for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
 
   for /f "tokens=* delims=;" %%a in ("%%^") do (
 
@@ -691,7 +689,7 @@ IF ERRORLEVEL 0 (
 REM Options Menu
 :Options_Menu
 
-FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start Cleanup" "Create system restore point;Email notes (Experimental);Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start" "Create system restore point;Email notes (Experimental);Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
   for /f "tokens=1-10* delims=;" %%a in ("%%^") do (
 
     REM Check %%A & set appropriate variable
@@ -800,7 +798,7 @@ REM Execute Menu
 if /i "%EmailNotes_choice%"=="Yes" (
   REM ---------------------------TEMPORARIY------------------------------------
   REM ADD TO DISABLE EMAIL UNLESS TESTING.
-  if "%PASSWORD%"=="RedRuby" (
+  if "!PASSWORD!"=="RedRuby" (
     REM Create restore point
     echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Call function
@@ -809,6 +807,8 @@ if /i "%EmailNotes_choice%"=="Yes" (
     echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Set variables
     set EmailNotes=No
+  ) else (
+    %Output%\Functions\Menu\MessageBox "This feature is still experimental and not enebled yet.\n\nWait until I get it tested and fixed.\n\nThanks.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
   )
   REM ADD TO DISABLE EMAIL UNLESS TESTING.
   REM ---------------------------TEMPORARIY------------------------------------
@@ -831,8 +831,8 @@ if /i "%SystemRestore_choice%"=="Yes" (
         set SystemRestore_choice=Yes
         REM Create restore point
         echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-        REM Call function
-        call functions\Restore_function
+        REM Goto function
+        goto Malwarebytes_function
         REM Set variables if spybot is not selected to prevent double prompt
         if /i "%Spybot_choice%"=="No" (
           set SystemRestore_choice=No
@@ -849,8 +849,8 @@ if /i "%SystemRestore_choice%"=="Yes" (
         set SystemRestore_choice=Yes
         REM Create restore point
         echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-        REM Call function
-        call functions\Restore_function
+        REM Goto function
+        goto Spybot_function
         REM Set variables
         set SystemRestore_choice=No
       ) else (
@@ -974,6 +974,7 @@ if /i "%MBAR_choice%"=="Yes" (
   set MBAR_choice=No
 )
 
+:Malwarebytes_function
 if /i "%Malwarebytes_choice%"=="Yes" (
   REM ---------------------------TEMPORARIY------------------------------------
   REM ADD TO DISABLE MALWAREBYTES UNLESS TESTING.
@@ -986,15 +987,18 @@ if /i "%Malwarebytes_choice%"=="Yes" (
     echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Set variables
     set Malwarebytes_choice=No
+  ) else (
+    %Output%\Functions\Menu\MessageBox "This feature is still experimental and not enebled yet.\n\nWait until I get it tested and fixed.\n\nThanks.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
   )
   REM ADD TO DISABLE MALWAREBYTES UNLESS TESTING.
   REM ---------------------------TEMPORARIY------------------------------------
 )
 
+:Spybot_function
 if /i "%Spybot_choice%"=="Yes" (
   REM ---------------------------TEMPORARIY------------------------------------
   REM ADD TO DISABLE SPYBOT UNLESS TESTING.
-  if not "%PASSWORD%"=="RedRuby" (
+  if "%PASSWORD%"=="RedRuby" (
     REM Create restore point
     echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Call function
@@ -1003,6 +1007,8 @@ if /i "%Spybot_choice%"=="Yes" (
     echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Set variables
     set Spybot_choice=No
+  ) else (
+    %Output%\Functions\Menu\MessageBox "This feature is still experimental and not enebled yet.\n\nWait until I get it tested and fixed.\n\nThanks.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
   )
   REM ADD TO DISABLE SPYBOT UNLESS TESTING.
   REM ---------------------------TEMPORARIY------------------------------------
@@ -1192,7 +1198,7 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Cleanup 
   IF /I "%%G"=="Yes" (
     goto Functions_Menu
   ) else (
-    %Output%\Functions\Menu\MessageBox "Exiting 'Brainiacs Cleanup Tool v%TOOL_VERSION%' in 5 seconds.\n\nGoodbye." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:5
+    %Output%\Functions\Menu\MessageBox "Exiting 'Brainiacs Cleanup Tool v%TOOL_VERSION%' in 10 seconds.\n\nGoodbye." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:10
     exit /b
   )
 )

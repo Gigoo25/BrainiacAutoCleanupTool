@@ -17,7 +17,7 @@ if exist "%Output%\Tools\TDSS\TDSSKiller.exe" (
 		REM Set notes
     echo -Ran TDSS Killer >> %Output%\Notes\Comments.txt
     REM Ask for amount of infections found & set notes
-    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:"####" /F:"\d{0,4}" /U /I`) DO (
+    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] TDSS Killer" /H:150 /W:280 /M:"####" /F:"\d{0,4}" /U /I`) DO (
       REM Set variable
       set TDSS_Infections=%%G
     )

@@ -12,23 +12,25 @@ if exist "%Output%\Tools\RogueKiller\RogueKillerCMD_portable*" (
 	if "%ROGUE_QUICKSCAN%"=="Yes" (
 		REM Run appropriate version
 		if %OS%==32BIT (
-			"%Output%\Tools\RogueKiller\RogueKillerCMD_portable32.exe" -quickscan -no_interact -debuglog "%Output%\Logs\rogue.log"
+			start /WAIT "[Rogue Killer] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX "%Output%\Tools\RogueKiller\RogueKillerCMD_portable32.exe" -quickscan -no_interact -debuglog "%Output%\Logs\rogue.log"
 		) else (
-			"%Output%\Tools\RogueKiller\RogueKillerCMD_portable64.exe" -quickscan -no_interact -debuglog "%Output%\Logs\rogue.log"
+			start /WAIT "[Rogue Killer] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX "%Output%\Tools\RogueKiller\RogueKillerCMD_portable64.exe" -quickscan -no_interact -debuglog "%Output%\Logs\rogue.log"
 		)
+		REM Set notes
+		echo -Ran RougueKiller quickscan >> %Output%\Notes\Comments.txt
 	)
 	REM Run full scan
 	if "%ROGUE_QUICKSCAN%"=="No" (
 		if %OS%==32BIT (
-			"%Output%\Tools\RogueKiller\RogueKillerCMD_portable32.exe" -scan -no_interact -debuglog "%Output%\Logs\rogue.log"
+			start /WAIT "[Rogue Killer] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX "%Output%\Tools\RogueKiller\RogueKillerCMD_portable32.exe" -scan -no_interact -debuglog "%Output%\Logs\rogue.log"
 		) else (
-			"%Output%\Tools\RogueKiller\RogueKillerCMD_portable64.exe" -scan -no_interact -debuglog "%Output%\Logs\rogue.log"
+			start /WAIT "[Rogue Killer] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX "%Output%\Tools\RogueKiller\RogueKillerCMD_portable64.exe" -scan -no_interact -debuglog "%Output%\Logs\rogue.log"
 		)
+		REM Set notes
+		echo -Ran RougueKiller fullscan >> %Output%\Notes\Comments.txt
 	)
-	REM Set notes
-	echo -Ran RougueKiller >> %Output%\Notes\Comments.txt
 	REM Ask for amount of infections found & set notes
-	FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:"####" /F:"\d{0,4}" /U /I`) DO (
+	FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] Rogue Killer" /H:150 /W:280 /M:"####" /F:"\d{0,4}" /U /I`) DO (
 		REM Set variable
 		set Rogue_Infections=%%G
 	)

@@ -1,8 +1,10 @@
 @echo off
 
-
 REM Variables
 set Defrag_On_Boot=unidentified
+
+REM Enable delayed expansion
+SETLOCAL ENABLEDELAYEDEXPANSION
 
 REM Determine how the function was ran
 if exist "%SystemDrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Windows_Defrag_Function.bat" (
@@ -25,27 +27,29 @@ REM Start defrag Intenally
 
 REM Start defrag function
   REM Display message showing internal defrag is being run
+%Output%\Functions\Menu\MessageBox "Click 'OK' to run defrag/optimization on all drives." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N
 if "%Defrag_External%"=="No" (
-  %Output%\Functions\Menu\MessageBox "Click 'OK' to run defrag/optimization on all drives." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N
+  start /WAIT "[Defrag] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX defrag "%SystemDrive%" /O /V /H /U
+) else (
+  defrag "%SystemDrive%" /O /V /H /U
 )
-defrag "%SystemDrive%" /O /V /H /U
 if /i !ERRORLEVEL!==0 (
-  REM Display message showing defrag was successful
-  %Output%\Functions\Menu\MessageBox "Defrag was successful.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N /T:10
   REM Add succesful defrag notes
   echo -Defragged and Optimized all drives >> %Output%\Notes\Comments.txt
   if "%Defrag_External%"=="No" (
+    REM Display message showing defrag was successful
+    %Output%\Functions\Menu\MessageBox "Defrag was successful.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N /T:10
 	  GOTO :EOF
   ) else (
+    REM Display message showing defrag was successful
+    %Output%\Functions\Menu\MessageBox "Defrag was successful.\n\nDefrag will close in 10 seconds." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N
     exit /b
   )
 ) else (
+  if "%Defrag_External%"=="No" (
   REM Display message showing defrag was un-successful
   %Output%\Functions\Menu\MessageBox "Defrag was un-successful.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N /T:10
-  if "%Defrag_External%"=="No" (
-    GOTO :EOF
-  ) else (
-      exit /b
+  GOTO :EOF
   )
 )
 
@@ -64,6 +68,7 @@ if /i !ERRORLEVEL!==0 (
   echo ===========================
   REM Self delete if ran after boot/any other circumstance
   (goto) 2>nul & del "%~f0"
+  GOTO :EOF
 ) else (
   REM Loop to Defrag_On_Boot_Loop to try again
   color 0c
@@ -82,3 +87,6 @@ if /i !ERRORLEVEL!==0 (
   set Defrag_On_Boot=No
   goto :Start_Defrag_On_Boot
 )
+
+REM Disable delayed expansion
+ENDLOCAL DISABLEDELAYEDEXPANSION

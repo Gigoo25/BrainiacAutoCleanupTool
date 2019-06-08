@@ -4,12 +4,12 @@ REM Set variables
 set DELETE_COOLDOWN=unidentified
 
 REM Enable delayed expansion
-setlocal enableDelayedExpansion
+SETLOCAL ENABLEDELAYEDEXPANSION
 
 REM Start System restore service.
 if !SAFE_MODE!==yes (
   REM Display message that TDSS was not found
-  %Output%\Functions\Menu\MessageBox "'%WIN_VER%' blocks creating SysRestore points in Safe Mode. Why? Because Microsoft.\n\nSkipping restore point creation.\n\nReboot to Normal mode and re-run the Autocleanup tool if you absolutely require one." "[ERROR] Brainiacs Cleanup Tool" /B:Y /I:E /O:N /T:10
+  %Output%\Functions\Menu\MessageBox "'%WIN_VER%' blocks creating SysRestore points in Safe Mode.\n\nSkipping restore point creation.\n\nReboot to Normal mode and re-run the Autocleanup tool if you absolutely require one." "[ERROR] Brainiacs Cleanup Tool" /B:Y /I:E /O:N /T:10
 	REM Set notes
 	echo -Skipped restore point due to being booted in safe mode >> !Output!\Notes\Comments.txt
   GOTO :EOF
@@ -31,150 +31,67 @@ if /i !WIN_VER_NUM! geq 6.1 (
 		reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /t reg_dword /v SystemRestorePointCreationFrequency /d 0 /f >nul
 		powershell "Enable-ComputerRestore -Drive "!SystemDrive!" | Out-Null" 2>&1
 		if /i not !ERRORLEVEL!==0 (
-			REM Set Color
-			color 0c
-			cls
-			echo.
-			echo  ^! ERROR
-			echo ===================================================================================
-			echo.
-			echo    Brainiacs - !DATE!: Pre-run checkpoint failed!
-			echo.
-			echo    Would you like to create a manual restore point prior to start?
-			echo.
-			echo    You can skip this step but be aware of the consequences!
-			echo.
-			echo.
-			echo    Consequences: Bad things will happen.
-			echo.
-			echo ===================================================================================
-			choice /M "[M]anual restore or [S]kip restore" /c MS
-			IF errorlevel 2 goto skip_restore_point_creation_user_choice_cooldown
-			IF errorlevel 1 goto manual_restore_point_creation_user_choice_cooldown
+      REM Display message that restore point pre-check failed
+      FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Brainiacs - %DATE%: Pre-run checkpoint failed.\n\nWould you like to create a manual restore point prior to start\u003F\n\nYou can skip this step but be aware of the consequences\n\n\n\nConsequences: Bad things will happen." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:A /O:N`) DO (
+        IF /I "%%G"=="Yes" (
+          goto manual_restore_point_creation_user_choice_cooldown
+        ) else (
+          goto skip_restore_point_creation_user_choice_cooldown
+        )
+      )
+
 			:skip_restore_point_creation_user_choice_cooldown
-			CLS
-			echo.
-			echo  ^! WARNING
-			echo ===================================================================================
-			echo.
-			echo    Skipping manual restore point!
-			echo.
-			echo    I hope you are aware of the consequences!!
-			echo.
-			echo ===================================================================================
-			TIMEOUT 5 >nul
+      REM Display message that user skipped manual restore creation
+      %Output%\Functions\Menu\MessageBox "You decided to skip the manual restore point.\n\nI hope you are aware of the consequences." "[WARNING] Brainiacs Cleanup Tool" /B:O /I:W /O:N /T:10
+  		REM Set notes
 			echo -Skipped creation restore point creation per user input >> !Output!\Notes\Comments.txt
-			REM Set Color
-			color 07
-			goto :skip_restore_point_creation
+			GOTO :EOF
+
 			:manual_restore_point_creation_user_choice_cooldown
 			start /WAIT "RESTORE" "!SystemRoot!\System32\SystemPropertiesProtection.exe"
-			CLS
-		  echo.
-		  echo  ^! ALERT
-		  echo =================================
-		  echo.
-		  echo   Manual restore point created!
-		  echo.
-		  echo =================================
+  		REM Set notes
 			echo -Created a manual restore point >> !Output!\Notes\Comments.txt
-			REM Set Color
-			color 07
-			goto :skip_restore_point_creation
+			GOTO :EOF
 		) else (
-			CLS
-		  echo.
-		  echo  ^! ALERT
-		  echo =============================================
-		  echo.
-		  echo   Removing system restore cooldown timer...
-		  echo.
-		  echo =============================================
 			REM Set variable to skip windows timer if previously ran.
 			set DELETE_COOLDOWN=no
-			TIMEOUT 2 >nul
 		)
 	)
 )
 
 REM Create restore point
 echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =============================
-	echo.
-	echo   Creating restore point...
-	echo.
-	echo =============================
-	TIMEOUT 1 >nul
-	CLS
-	echo.
-	powershell "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
+  powershell "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
 	if /i not !ERRORLEVEL!==0 (
-		REM Set Color
-		color 0c
-		cls
-		echo.
-		echo  ^! ERROR
-		echo ===================================================================================
-		echo.
-		echo    Brainiacs - !DATE!: Pre-run checkpoint failed!
-		echo.
-		echo    Would you like to create a manual restore point prior to start?
-		echo.
-		echo    You can skip this step but be aware of the consequences!
-		echo.
-		echo.
-		echo    Consequences: Bad things will happen.
-		echo.
-		echo ===================================================================================
-		choice /M "[M]anual restore or [S]kip restore" /c MS
-		IF errorlevel 2 goto skip_restore_point_creation_user_choice_cooldown
-		IF errorlevel 1 goto manual_restore_point_creation_user_choice_cooldown
-		:skip_restore_point_creation_user_choice_cooldown
-		CLS
-		echo.
-		echo  ^! WARNING
-		echo ===================================================================================
-		echo.
-		echo    Skipping manual restore point!
-		echo.
-		echo    I hope you are aware of the consequences!!
-		echo.
-		echo ===================================================================================
-		TIMEOUT 5 >nul
-		echo -Skipped creation restore point creation per user input >> !Output!\Notes\Comments.txt
-		REM Set Color
-		color 07
-		goto :skip_restore_point_creation
-		:manual_restore_point_creation_user_choice_cooldown
-		start /WAIT "RESTORE" "!SystemRoot!\System32\SystemPropertiesProtection.exe"
-		CLS
-		echo.
-		echo  ^! ALERT
-		echo =================================
-		echo.
-		echo   Manual restore point created!
-		echo.
-		echo =================================
-		echo -Created a manual restore point >> !Output!\Notes\Comments.txt
-		REM Set Color
-		color 07
-		goto :skip_restore_point_creation
+    REM Display message that restore point failed
+    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Brainiacs - %DATE%: Pre-run checkpoint failed.\n\nWould you like to create a manual restore point prior to start\u003F\n\nYou can skip this step but be aware of the consequences\n\n\n\nConsequences: Bad things will happen." "[ERROR] Brainiacs Cleanup Tool" /B:Y /I:E /O:N`) DO (
+      IF /I "%%G"=="Yes" (
+        goto manual_restore_point_creation_user_choice_cooldown
+      ) else (
+        goto skip_restore_point_creation_user_choice_cooldown
+      )
+    )
+
+    :skip_restore_point_creation_user_choice_cooldown
+    REM Display message that user skipped manual restore creation
+    %Output%\Functions\Menu\MessageBox "You decided to skip the manual restore point.\n\nI hope you are aware of the consequences." "[WARNING] Brainiacs Cleanup Tool" /B:O /I:W /O:N /T:10
+    REM Set notes
+    echo -Skipped creation restore point creation per user input >> !Output!\Notes\Comments.txt
+    GOTO :EOF
+
+    :manual_restore_point_creation_user_choice_cooldown
+    start /WAIT "RESTORE" "!SystemRoot!\System32\SystemPropertiesProtection.exe"
+    REM Set notes
+    echo -Created a manual restore point >> !Output!\Notes\Comments.txt
+    GOTO :EOF
+
 	) else (
-		CLS
-		echo.
-		echo  ^! ALERT
-		echo ===================================================================
-		echo.
-		echo   Restore point 'Brainiacs - !DATE!: Pre-run checkpoint' created!
-		echo.
-		echo ===================================================================
+    REM Display message that restore point was Created
+    %Output%\Functions\Menu\MessageBox "Restore point 'Brainiacs - %DATE%: Pre-run checkpoint' created.\n\nThe tool will continue in 10 seconds." "[INFORMATION] Brainiacs Cleanup Tool" /B:O /I:I /O:N /T:10
+    REM Set notes
 		echo -Created a system restore point 'Brainiacs - !DATE!: Pre-run checkpoint' >> !Output!\Notes\Comments.txt
-		TIMEOUT 3 >nul
 	)
 )
-:skip_restore_point_creation
+
 REM Disable delayed expansion
-ENDLOCAL
+ENDLOCAL DISABLEDELAYEDEXPANSION

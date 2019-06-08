@@ -13,7 +13,7 @@ if %WIN_VER_NUM% geq 6.1 (
 		REM Set notes
 		echo -Ran Zemana >> %Output%\Notes\Comments.txt
 		REM Ask for amount of infections found & set notes
-		FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] Brainiacs Cleanup Tool v%TOOL_VERSION%" /H:150 /W:280 /M:"####" /F:"\d{0,4}" /U /I`) DO (
+		FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] Zemana" /H:150 /W:280 /M:"####" /F:"\d{0,4}" /U /I`) DO (
 			REM Set variable
 			set Zemana_Infections=%%G
 		)
@@ -26,7 +26,7 @@ if %WIN_VER_NUM% geq 6.1 (
   	GOTO :EOF
 	) else (
 		REM Display message that tool was not found.
-		%Output%\Functions\Menu\MessageBox "Zemana not found. Skipping. The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool" /B:O /I:E /O:N /T:10
+		%Output%\Functions\Menu\MessageBox "Zemana not found.\n\nSkipping.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool" /B:O /I:E /O:N /T:10
   	GOTO :EOF
 	)
 ) else (
