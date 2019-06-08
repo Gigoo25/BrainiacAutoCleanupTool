@@ -63,7 +63,6 @@ set TEST_UPDATE_MASTER=undetected
 set TEST_UPDATE_EXPERIMENTAL=undetected
 set PREVIOUS_USER=undetected
 set Defrag_External=undetected
-set Defrag_On_Boot=undetected
 set DefragSystem_choice=undetected
 set SKIP_DELETE_TOOLS=undetected
 
@@ -193,21 +192,22 @@ set PID_BRAINIACS=%A:~16%%
 REM Skip to menu if debug file is found
 if exist "%Output%\Debug" (
   %Output%\Functions\Menu\MessageBox "Debug file detected.\n\nEntering Debugging mode." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N
-  goto :Functions_Menu
+  goto Functions_Menu
 )
 
 REM Ask for password for beta testing purposes
+:Password_Menu
 FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the password in order to access the tool:" "[PASSWORD] Brainiacs Cleanup Tool v%TOOL_VERSION%" "password" /S /H:150 /W:280`) DO (
   IF /I "%%G"=="Bluemoon" (
+    REM Continue if correct password was entered
     goto No_Test_Continue
   ) ELSE if "%%G"=="RedRuby" (
+    REM Continue to testing mode if correct password was entered
     %Output%\Functions\Menu\MessageBox "Entering hidden testing mode." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N >nul
     goto Choice_Test_Upgrade_All
-  ) ELSE (
-    %Output%\Functions\Menu\MessageBox "Password is incorrect.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will close." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /T:30 /O:N >nul
-    exit /b
   )
 )
+REM Exit if cancel/X is pressed or no input is entered
 exit /b
 
 REM Ask to upgrade all functions if in testing mode
@@ -1031,32 +1031,34 @@ if /i "%DefragSystem_choice%"=="Yes" (
       set Defrag_External=No
     )
   )
-)
 
-REM Ask if want to schedule boot if not ran externally
-if /i "%Defrag_External%"=="No" (
-  FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to run defrag on the next boot\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
-    IF /I "%%G"=="Yes" (
-      REM Set variables
-      set Defrag_On_Boot=Yes
-    ) else (
-      REM Set variables
-      set Defrag_On_Boot=No
+  REM Ask if want to schedule boot if not ran externally
+  if /i "!Defrag_External!"=="No" (
+    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to run defrag on the next boot\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+      IF /I "%%G"=="Yes" (
+        REM Move defrag function to boot folder
+        xcopy /v "%Output%\functions\Windows_Defrag_Function.bat" "%SystemDrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
+        REM Display message showing defrag will start next boot
+        %Output%\Functions\Menu\MessageBox "Defrag is scheduled to run on next boot.\n\nCleanup will now continue." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:10
+        REM Continue cleanup
+        goto Continue_ImageChecker
+      )
     )
   )
+
   REM Initiate defrag based on variables
     REM Create restore point
-    echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-    REM Call function
-    call functions\Windows_Defrag_Function
-    REM Create restore point
-    echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-    REM Set variables
-    set Defrag_External=No
-    set Defrag_On_Boot=No
-    set DefragSystem_choice=No
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  REM Call function
+  call functions\Windows_Defrag_Function
+  REM Create restore point
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  REM Set variables
+  set DefragSystem_choice=No
 )
 
+REM Set tag for Continuing Cleanup
+:Continue_ImageChecker
 if /i "%ImageChecker_choice%"=="Yes" (
   REM Create restore point
   echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
