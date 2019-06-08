@@ -1,43 +1,27 @@
 @echo off
 
-REM Enable delayed expansion
-setlocal enableDelayedExpansion
-
 REM Set variables
 set DELETE_COOLDOWN=unidentified
 
-REM Set title
-title [System Restore Point] Brainiacs Cleanup Tool v!TOOL_VERSION!
+REM Enable delayed expansion
+setlocal enableDelayedExpansion
 
 REM Start System restore service.
 if !SAFE_MODE!==yes (
-	REM Set Color
-	color 0c
-	cls
-	echo.
-	echo  ^! WARNING
-	echo ===================================================================================
-	echo.
-	echo    "%WIN_VER%" blocks creating SysRestore points in Safe Mode. Why? Because Microsoft.
-	echo.
-	echo    Skipping restore point creation.
-	echo.
-	echo    Reboot to Normal mode and re-run the Autocleanup tool if you absolutely require one.
-	echo.
-	echo ===================================================================================
-	TIMEOUT 10
-	REM Set Color
-	color 07
+  REM Display message that TDSS was not found
+  %Output%\Functions\Menu\MessageBox "'%WIN_VER%' blocks creating SysRestore points in Safe Mode. Why? Because Microsoft.\n\nSkipping restore point creation.\n\nReboot to Normal mode and re-run the Autocleanup tool if you absolutely require one." "[ERROR] Brainiacs Cleanup Tool" /B:Y /I:E /O:N /T:10
+	REM Set notes
 	echo -Skipped restore point due to being booted in safe mode >> !Output!\Notes\Comments.txt
-	goto :skip_restore_point_creation
+  GOTO :EOF
 )
 
 REM Detect if reg key has been added already to prevent false positive
-CLS
 reg query "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /v SystemRestorePointCreationFrequency >NUL 2>&1
 if /i not !ERRORLEVEL!==0 (
+	REM Set variable
 	set DELETE_COOLDOWN=yes
 ) else (
+	REM Set variable
 	set DELETE_COOLDOWN=no
 )
 
