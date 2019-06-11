@@ -8,7 +8,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 
 REM Start System restore service.
 if !SAFE_MODE!==yes (
-  REM Display message that TDSS was not found
+  REM Display message that safemode is enabled
   %Output%\Functions\Menu\MessageBox "'%WIN_VER%' blocks creating SysRestore points in Safe Mode.\n\nSkipping restore point creation.\n\nReboot to Normal mode and re-run the Autocleanup tool if you absolutely require one." "[ERROR] Brainiacs Cleanup Tool" /B:Y /I:E /O:N /T:10
 	REM Set notes
 	echo -Skipped restore point due to being booted in safe mode >> !Output!\Notes\Comments.txt
