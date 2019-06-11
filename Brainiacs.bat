@@ -866,7 +866,7 @@ if /i "%Geek_choice%"=="Yes" (
   REM Start function
   if exist "%Output%\Tools\Geek\geek.exe" (
     start /WAIT "Geek" "%Output%\Tools\Geek\geek.exe"
-    echo -Ran Geek Uninstaller >> %Output%\Notes\Comments.
+    echo -Ran Geek Uninstaller >> %Output%\Notes\Comments.txt
   ) else (
     REM Display message showing that tool was not found
     %Output%\Functions\Menu\MessageBox "Geek uninstaller not found.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
