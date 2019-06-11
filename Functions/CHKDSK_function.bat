@@ -4,8 +4,10 @@ REM Check if chkdsk is found if not error out
 if exist "%SystemRoot%\System32\chkdsk.exe" (
 	REM Display starting message
 	%Output%\Functions\Menu\MessageBox "Starting Check Disk\n\nThis will check Windows System Files for corruptions..." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:X /O:N /T:5 >nul
+	REM Clear terminal screen
+	CLS
 	REM Start function
-	%SystemRoot%\System32\chkdsk.exe %SystemDrive%
+	start /WAIT "CHKDSK" /MAX %SystemRoot%\System32\chkdsk.exe %SystemDrive%
 	REM If errors found then schedule a fix on reboot
 	if /i not %ERRORLEVEL%==0 (
 		%Output%\Functions\Menu\MessageBox "Errors found on %SystemDrive%\n\nScheduling full chkdsk at next reboot.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:X /O:N /T:10 >nul
