@@ -192,7 +192,11 @@ set PID_BRAINIACS=%A:~16%%
 
 REM Skip to menu if debug file is found
 if exist "%Output%\Debug" (
+  REM Set debug variables
+  set PASSWORD=RedRuby
+  REM Display message showing that debug mode was enabled
   %Output%\Functions\Menu\MessageBox "Debug file detected.\n\nEntering Debugging mode." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N
+  REM Go to menu
   goto Functions_Menu
 )
 
@@ -824,37 +828,41 @@ if /i "%SystemRestore_choice%"=="Yes" (
   REM Set variables
   set SystemRestore_choice=No
 ) else /i "%SystemRestore_choice%"=="No" (
-  if /i "%Malwarebytes_choice%"=="Yes" (
-    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Malwarebytes requires 'System Restore' to be enabled to be able to run.\n\nDo you want to enable it\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
-      IF /I "%%G"=="Yes" (
-        REM Set variables
-        set SystemRestore_choice=Yes
-        REM Create restore point
-        echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-        REM Goto function
-        goto Malwarebytes_function
-        REM Set variables if spybot is not selected to prevent double prompt
-        if /i "%Spybot_choice%"=="No" (
-          set SystemRestore_choice=No
+  if not "!PASSWORD!"=="RedRuby" (
+    if /i "%Malwarebytes_choice%"=="Yes" (
+      FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Malwarebytes requires 'System Restore' to be enabled to be able to run.\n\nDo you want to enable it\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+        IF /I "%%G"=="Yes" (
+          REM Set variables
+          set SystemRestore_choice=Yes
+          REM Create restore point
+          echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+          REM Goto function
+          goto Malwarebytes_function
+          REM Set variables if spybot is not selected to prevent double prompt
+          if /i "%Spybot_choice%"=="No" (
+            set SystemRestore_choice=No
+          )
+        ) else (
+          set Malwarebytes_choice=No
         )
-      ) else (
-        set Malwarebytes_choice=No
       )
     )
-  )
-  if /i "%Spybot_choice%"=="Yes" (
-    FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Spybot requires 'System Restore' to be enabled to be able to run.\n\nDo you want to enable it\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
-      IF /I "%%G"=="Yes" (
-        REM Set variables
-        set SystemRestore_choice=Yes
-        REM Create restore point
-        echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-        REM Goto function
-        goto Spybot_function
-        REM Set variables
-        set SystemRestore_choice=No
-      ) else (
-        set Spybot_choice=No
+    if not "!PASSWORD!"=="RedRuby" (
+      if /i "%Spybot_choice%"=="Yes" (
+        FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Spybot requires 'System Restore' to be enabled to be able to run.\n\nDo you want to enable it\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+          IF /I "%%G"=="Yes" (
+            REM Set variables
+            set SystemRestore_choice=Yes
+            REM Create restore point
+            echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+            REM Goto function
+            goto Spybot_function
+            REM Set variables
+            set SystemRestore_choice=No
+          ) else (
+            set Spybot_choice=No
+          )
+        )
       )
     )
   )
