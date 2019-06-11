@@ -63,7 +63,7 @@ REM Create restore point
 echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
   REM Display message that restore point creation is starting.
   %Output%\Functions\Menu\MessageBox "Starting creation of 'Brainiacs - %DATE%: Pre-run checkpoint' restore point.\n\nThis may take a while." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:A /O:N
-  powershell "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
+  start /WAIT "Restore Point" /MAX powershell "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
 	if /i not !ERRORLEVEL!==0 (
     REM Display message that restore point failed
     FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Brainiacs - %DATE%: Pre-run checkpoint failed.\n\nWould you like to create a manual restore point prior to start\u003F\n\nYou can skip this step but be aware of the consequences\n\n\n\nConsequences: Bad things will happen." "[ERROR] Brainiacs Cleanup Tool" /B:Y /I:E /O:N`) DO (
