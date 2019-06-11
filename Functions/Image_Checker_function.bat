@@ -5,6 +5,8 @@ REM Start Windows Image Check service.
 if %WIN_VER_NUM% geq 6.2 (
 	REM Display starting message
 	%Output%\Functions\Menu\MessageBox "Starting Windows Image Check\n\nThis will check the Windows System Image for corruptions..." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:X /O:N /T:5 >nul
+	REM Clear terminal screen
+	CLS
 	REM Start function
 	start /WAIT "[DISM] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX dism /Online /NoRestart /Cleanup-Image /RestoreHealth /Logpath:"%SystemRoot%\Windows_Image_Check.txt"
   REM Set notes
@@ -35,7 +37,9 @@ if %WIN_VER_NUM% LSS 6.2 (
     if exist "%SystemRoot%\System32\sfc.exe" (
     	REM Display starting message
     	%Output%\Functions\Menu\MessageBox "Starting SFC\n\nThis will check the Windows System Image for corruptions..." "[ALERT] Brainiacs Cleanup
-    	REM Start function
+			REM Clear terminal screen
+			CLS
+			REM Start function
       start /WAIT "[SFC] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX %SystemRoot%\System32\sfc.exe /scannow
       %SystemRoot%\System32\findstr.exe /c:"[SR]" %SystemRoot%\logs\cbs\cbs.log
       REM Set notes
