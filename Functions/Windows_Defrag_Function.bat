@@ -29,9 +29,9 @@ REM Start defrag function
   REM Display message showing internal defrag is being run
 %Output%\Functions\Menu\MessageBox "Click 'OK' to run defrag/optimization on all drives." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N
 if "%Defrag_External%"=="No" (
-  start /WAIT "[Defrag] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX defrag "%SystemDrive%" /O /V /H /U
+  start /WAIT "[Defrag] Brainiacs Cleanup Tool v%TOOL_VERSION%" /MAX %SystemRoot%\system32\defrag.exe "%SystemDrive%" /O /V /H /U
 ) else (
-  defrag "%SystemDrive%" /O /V /H /U
+  start "[Defrag] Brainiacs Cleanup Tool v%TOOL_VERSION%" %SystemRoot%\system32\defrag.exe "%SystemDrive%" /O /V /H /U
 )
 if /i !ERRORLEVEL!==0 (
   REM Add succesful defrag notes
@@ -55,7 +55,7 @@ if /i !ERRORLEVEL!==0 (
 
 REM Start defrag on boot
 :Start_Defrag_On_Boot
-start /WAIT "defrag" defrag "%SystemDrive%" /O /V /H /U
+start /WAIT "[Defrag] Brainiacs Cleanup Tool v%TOOL_VERSION%" %SystemRoot%\system32\defrag.exe "%SystemDrive%" /O /V /H /U
 if /i !ERRORLEVEL!==0 (
   echo.
   echo  ^! ALERT
