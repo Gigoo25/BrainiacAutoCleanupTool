@@ -14,7 +14,7 @@ if exist "%Output%\Tools\ADW\adwcleaner.exe" (
 	IF ERRORLEVEL 1 (
 		echo -Ran ADWCleaner >> %Output%\Notes\Comments.txt
 		REM Ask for number of infections & add to notes
-		FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] ADW Cleaner" /H:150 /W:280 /M:">00" /R:"[\d0-9]{10}" /F:"[\d0-9]{0,10}" /U /I`) DO (
+		FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] ADW Cleaner" /H:150 /W:280 /M:">0000" /R:"[\d0-9]{10}" /F:"[\d0-9]{0,10}" /U /I`) DO (
 		  echo Infections-"%%G" >> "%Output%\Notes\Comments.txt"
 		)
   	GOTO :EOF
