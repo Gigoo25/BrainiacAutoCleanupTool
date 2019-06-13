@@ -28,8 +28,10 @@ if /i not !ERRORLEVEL!==0 (
 REM Win7 and up only: Remove the cooldown timer (via reg command) and enable System Restore
 if /i !WIN_VER_NUM! geq 6.1 (
 	if /i "!DELETE_COOLDOWN!"=="yes" (
+    REM Set restore point frequency to 0
 		reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\SystemRestore" /t reg_dword /v SystemRestorePointCreationFrequency /d 0 /f >nul
-		powershell "Enable-ComputerRestore -Drive "!SystemDrive!" | Out-Null" 2>&1
+    REM Enable system restore on system drive
+		%SystemRoot%\system32\WindowsPowerShell\v1.0\Powershell.exe "Enable-ComputerRestore -Drive "!SystemDrive!" | Out-Null" 2>&1
 		if /i not !ERRORLEVEL!==0 (
       REM Display message that restore point pre-check failed
       FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Brainiacs - %DATE%: Pre-run checkpoint failed.\n\nWould you like to create a manual restore point prior to start\u003F\n\nYou can skip this step but be aware of the consequences\n\n\n\nConsequences: Bad things will happen." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:A /O:N`) DO (
@@ -63,7 +65,7 @@ REM Create restore point
 echo "!WIN_VER!" | findstr /i /c:"server" >NUL || (
   REM Display message that restore point creation is starting.
   %Output%\Functions\Menu\MessageBox "Starting creation of 'Brainiacs - %DATE%: Pre-run checkpoint' restore point.\n\nThis may take a while." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:A /O:N
-  start /WAIT "Restore Point" /MAX powershell "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
+  start /WAIT "Restore Point" /MAX %SystemRoot%\system32\WindowsPowerShell\v1.0\Powershell.exe "Checkpoint-Computer -Description 'Brainiacs - !DATE!: Pre-run checkpoint' | Out-Null" 2>&1
 	if /i not !ERRORLEVEL!==0 (
     REM Display message that restore point failed
     FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Brainiacs - %DATE%: Pre-run checkpoint failed.\n\nWould you like to create a manual restore point prior to start\u003F\n\nYou can skip this step but be aware of the consequences\n\n\n\nConsequences: Bad things will happen." "[ERROR] Brainiacs Cleanup Tool" /B:Y /I:E /O:N`) DO (
