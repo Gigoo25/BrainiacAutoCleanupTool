@@ -3,7 +3,7 @@
 REM Set repo variables
 set REPO_URL=https://raw.githubusercontent.com/Gigoo25/BrainiacAutoCleanupTool
 set REPO_BRANCH=master
-set REPO_BRANCH_TEST=experimental
+set REPO_BRANCH_TEST=experimental_new_menu
 
 REM Set tool verison check variables
 set CURRENT_VERSION=unidentified
@@ -415,7 +415,7 @@ if "%Rogue_Update_Function_Online%" GTR "%Rogue_Update_Function_Local%" (
 ) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
 	REM Update from experimental branch if debug mode is enabled
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/RogueKiller_function.bat" -O "%Output%\Functions\RogueKiller_function.bat" 2>NUL
-) else if not exist "%Output%\Functions\Rogue_Function.bat" (
+) else if not exist "%Output%\Functions\RogueKiller_function.bat" (
 	REM Download if not present
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/RogueKiller_function.bat" -O "%Output%\Functions\RogueKiller_function.bat" 2>NUL
 )
