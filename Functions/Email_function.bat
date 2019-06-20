@@ -3,34 +3,11 @@
 REM Prevent noobies from testing function before its finished.
 if not "%PASSWORD%"=="RedRuby" (
   REM Skip function for now until it is fixed & functioning.
-  CLS
-  echo.
-  echo  ^! NOTICE
-  echo ===================================================================================
-  echo.
-  echo    Email function coming soon.
-  echo.
-  echo    Skipping for now...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
+  %Output%\Functions\Menu\MessageBox "Email feature is still experimental and not enebled yet.\n\nWait until I get it tested and fixed.\n\nThanks.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
   GOTO:EOF
 ) else (
-  CLS
-  color 0c
-  echo.
-  echo  ^! WARNING
-  echo ===================================================================================
-  echo.
-  echo    Dragons ahead.
-  echo.
-  echo    Highly experimental option.
-  echo.
-  echo ===================================================================================
-  pause
-  color 07
+  REM Continue function for testing purposes
+  %Output%\Functions\Menu\MessageBox "Dragons ahead.\n\nHighly experimental option.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
 )
 
 REM Variables
@@ -38,22 +15,34 @@ set ACTIVE_SESSION=undetected
 set ACTIVE_TOOL=undetected
 set NETWORK_AVAILABLE=undetected
 set AVALIBLE_COMMENTS=undetected
-set AVALIBLE_SWITHMAIL=undetected
-set AVALIBLE_BLAT=undetected
+set AVALIBLE_SMTPMAILSENDER=undetected
 
-REM Email Variables
-set EMAIL_TO=cleanup@bex.net
-set EMAIL_FROM=cleanup@bex.net
-set EMAIL_SUBJECT=-s "Test Blat"
-set EMAIL_SERVER=-server mail.bex.net
-set HEADER=-x "X-Header-Test: Can Blat do it? Yes it Can!"
-set EMAIL_DEBUG=-debug -log %Output%\Logs\blat.log -timestamp
-set EMAIL_PORT=-port 587
-set EMAIL_USERNAME=-u cleanup@bex.net
-set EMAIL_PASSWORD=-pw BuckeyeCleanup999
+  REM Email Variables
+REM -config
+set EMAIL_CONFIG=%Output%\Tools\SMTPMailSender\config.conf
+REM -username
+set EMAIL_USERNAME=cleanup@buckeye-express.com
+REM -password
+set EMAIL_PASSWORD=BuckeyeCleanup999
+REM -to
+set EMAIL_TO=cleanup@buckeye-express.com
+REM -from
+set EMAIL_FROM=cleanup@buckeye-express.com
+REM -cc
+set EMAIL_CC=unidentified
+REM -subject
+set EMAIL_SUBJECT=unidentified
+REM -body
+set EMAIL_BODY=unidentified
+REM -attachment
+set EMAIL_ATTACHMENT=%Output%\Notes\Comments.txt
+REM -timeout
+set EMAIL_TIMEOUT=100
+REM -logfile
+set EMAIL_LOG=%Output%\Logs\Email.log
 
 REM Start function minimized
-if not "%1" == "min" start /MIN cmd /c %0 min & exit/b
+REM if not "%1" == "min" start /MIN cmd /c %0 min & exit/b
 
 REM --------------------------
 REM ABRUPTCLOSE STATUS
@@ -108,25 +97,14 @@ IF NOT ERRORLEVEL 1 (
 )
 
 REM --------------------------
-REM SWITHMAIL STATUS
+REM SMTPMAILSENDER STATUS
 REM --------------------------
 
-REM Detect if SWITHMAIL is avalible
-if exist "%Output%\Tools\SwithMail\SwithMail.exe" (
-  set AVALIBLE_SWITHMAIL=yes
+REM Detect if SMTPMAILSENDER is avalible
+if exist "%Output%\Tools\SMTPMailSender\SMTPMailSender.exe" (
+  set AVALIBLE_SMTPMAILSENDER=yes
 ) else (
-  set AVALIBLE_SWITHMAIL=no
-)
-
-REM --------------------------
-REM BLAT STATUS
-REM --------------------------
-
-REM Detect if SWITHMAIL is avalible
-if exist "%Output%\Tools\Blat\blat.exe" (
-  set AVALIBLE_BLAT=yes
-) else (
-  set AVALIBLE_BLAT=no
+  set AVALIBLE_SMTPMAILSENDER=no
 )
 
 REM --------------------------
@@ -152,20 +130,19 @@ echo NETWORK_AVAILABLE
 echo %NETWORK_AVAILABLE%
 echo AVALIBLE_COMMENTS
 echo %AVALIBLE_COMMENTS%
-echo AVALIBLE_SWITHMAIL
-echo %AVALIBLE_SWITHMAIL%
-echo AVALIBLE_BLAT
-echo %AVALIBLE_BLAT%
+echo AVALIBLE_SMTPMAILSENDER
+echo %AVALIBLE_SMTPMAILSENDER%
 echo ABRUPTCLOSE
 echo %ABRUPTCLOSE%
 pause
 
-IF "%ACTIVE_SESSION%"=="no" (
-
-
-
-%Output%\Tools\Blat\blat %0 -to %EMAIL_TO% -f %EMAIL_FROM% %EMAIL_SUBJECT% %EMAIL_SERVER% %EMAIL_PORT% %EMAIL_USERNAME% %EMAIL_PASSWORD% %EMAIL_DEBUG% %HEADER%
+REM %Output%\Tools\SMTPMailSender\SMTPMailSender.exe -username %EMAIL_USERNAME% -password %EMAIL_PASSWORD% -to %EMAIL_TO% -from %EMAIL_FROM% -subject %EMAIL_SUBJECT% -attachment %EMAIL_ATTACHMENT% -timeout %EMAIL_TIMEOUT% -logfile %EMAIL_LOG% -send
+%Output%\Tools\SMTPMailSender\SMTPMailSender.exe -config %EMAIL_CONFIG% -to %EMAIL_TO% -subject %EMAIL_SUBJECT% -attachment %EMAIL_ATTACHMENT% -timeout %EMAIL_TIMEOUT% -logfile %EMAIL_LOG% -send
 pause
+GOTO:EOF
+
+
+IF "%ACTIVE_SESSION%"=="no" (
 
 
 
