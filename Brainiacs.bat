@@ -800,22 +800,14 @@ REM Execute Menu
 :Execute_Menu
 
 if /i "%EmailNotes_choice%"=="Yes" (
-  REM ---------------------------TEMPORARIY------------------------------------
-  REM ADD TO DISABLE EMAIL UNLESS TESTING.
-  if "!PASSWORD!"=="RedRuby" (
-    REM Create restore point
-    echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-    REM Call function
-    call functions\Email_function
-    REM Create restore point
-    echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
-    REM Set variables
-    set EmailNotes=No
-  ) else (
-    %Output%\Functions\Menu\MessageBox "This feature is still experimental and not enebled yet.\n\nWait until I get it tested and fixed.\n\nThanks.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
-  )
-  REM ADD TO DISABLE EMAIL UNLESS TESTING.
-  REM ---------------------------TEMPORARIY------------------------------------
+  REM Create restore point
+  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  REM Call function
+  call functions\Email_function
+  REM Create restore point
+  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  REM Set variables
+  set EmailNotes=No
 )
 
 if /i "%SystemRestore_choice%"=="Yes" (
