@@ -923,8 +923,6 @@ if /i "%MBAR_choice%"=="Yes" (
 
 :Malwarebytes_function
 if /i "%Malwarebytes_choice%"=="Yes" (
-  REM ---------------------------TEMPORARIY------------------------------------
-  REM ADD TO DISABLE MALWAREBYTES UNLESS TESTING.
   if "%PASSWORD%"=="RedRuby" (
     REM Create restore point
     echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
@@ -937,8 +935,6 @@ if /i "%Malwarebytes_choice%"=="Yes" (
   ) else (
     %Output%\Functions\Menu\MessageBox "This feature is still experimental and not enebled yet.\n\nWait until I get it tested and fixed.\n\nThanks.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
   )
-  REM ADD TO DISABLE MALWAREBYTES UNLESS TESTING.
-  REM ---------------------------TEMPORARIY------------------------------------
 )
 
 if /i "%CCleaner_choice%"=="Yes" (
