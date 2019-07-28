@@ -7,9 +7,18 @@ Brainiacs Cleanup Tool v2.0.1 (2019-XX-XX)
 -Removed Spybot Function.
 -Added pre-set menu options.
 
-Brainiacs Cleanup Tool v2.0.1 (2019-XX-XX)
+Brainiacs Cleanup Tool v2.0 (2019-06-13)
 *MAJOR POINT RELEASE*
 ---
+-New menu system including GUI.
+-Minimized console due to GUI implementation.
+-Unified menu system so everything has the same look.
+-Reworked multiple functions to account for the new menu system.
+-More work on an email sending function.
+-Fixed countless bugs.
+-Reworked debug menu.
+-Made the tool in whole a lot smaller.
+-Many other changes that I am forgetting.
 
 Brainiacs Cleanup Tool v1.5 (2019-05-11)
 *MAJOR POINT RELEASE*
