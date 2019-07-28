@@ -29,7 +29,6 @@ set HitmanPro_Update_Function_Local=unidentified
 set Zemana_Update_Function_Local=unidentified
 set MBAR_Update_Function_Local=unidentified
 set Malwarebytes_Update_Function_Local=unidentified
-set Spybot_Update_Function_Local=unidentified
 set CCleaner_Update_Function_Local=unidentified
 set DefragSystem_A_Update_Function_Local=unidentified
 set DefragSystem_D_Update_Function_Local=unidentified
@@ -42,7 +41,6 @@ set DeleteTools_Update_Function_Local=unidentified
 set Brainiacs_Update_Function_Local=unidentified
 set Update_Function_Local=unidentified
 set Windows_Defrag_Function_Local=unidentified
-set Email_function_Local=unidentified
 
 REM Function online variables
 set RKill_Update_Function_Online=unidentified
@@ -54,7 +52,6 @@ set HitmanPro_Update_Function_Online=unidentified
 set Zemana_Update_Function_Online=unidentified
 set MBAR_Update_Function_Online=unidentified
 set Malwarebytes_Update_Function_Online=unidentified
-set Spybot_Update_Function_Online=unidentified
 set CCleaner_Update_Function_Online=unidentified
 set DefragSystem_A_Update_Function_Online=unidentified
 set DefragSystem_D_Update_Function_Online=unidentified
@@ -67,7 +64,6 @@ set DeleteTools_Update_Function_Online=unidentified
 set Brainiacs_Update_Function_Online=unidentified
 set Update_Function_Online=unidentified
 set Windows_Defrag_Function_Online=unidentified
-set Email_function_Online=unidentified
 
 REM Tool local variables
 set RKill_Update_Tool_Local=unidentified
@@ -79,7 +75,6 @@ set HitmanPro_Update_Tool_Local=unidentified
 set Zemana_Update_Tool_Local=unidentified
 set MBAR_Update_Tool_Local=unidentified
 set Malwarebytes_Update_Tool_Local=unidentified
-set Spybot_Update_Tool_Local=unidentified
 set CCleaner_Update_Tool_Local=unidentified
 set DefragSystem_A_Update_Tool_Local=unidentified
 set DefragSystem_D_Update_Tool_Local=unidentified
@@ -96,7 +91,6 @@ set HitmanPro_Update_Tool_Online=unidentified
 set Zemana_Update_Tool_Online=unidentified
 set MBAR_Update_Tool_Online=unidentified
 set Malwarebytes_Update_Tool_Online=unidentified
-set Spybot_Update_Tool_Online=unidentified
 set CCleaner_Update_Tool_Online=unidentified
 set DefragSystem_A_Update_Tool_Online=unidentified
 set DefragSystem_D_Update_Tool_Online=unidentified
@@ -115,7 +109,6 @@ set HitmanPro_64_Url=https://dl.surfright.nl/HitmanPro_x64.exe
 set Zemana_Url=http://dl12.zemana.com/AntiMalware/2.74.2.664/Zemana.AntiMalware.Portable.exe
 set MBAR_Url=unidentified
 set Malwarebytes_Url=unidentified
-set Spybot_Url=unidentified
 set CCleaner_Url=https://download.ccleaner.com/portable/ccsetup556.zip
 set DefragSystem_A_Url=http://downloads.auslogics.com/en/disk-defrag/ausdiskdefragportable.exe
 set DefragSystem_D_Url=https://softpedia-secure-download.com/dl/43f41169943fef85b1fcc5f7e22ac9bf/5c9b623b/100100698/software/portable/system/dfsetup222.zip
@@ -237,7 +230,7 @@ REM Set variables for online text files
 
 REM Set variables for Functions_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,39) do set /p =
+	for /l %%i in (1,1,37) do set /p =
 	set /p RKill_Update_Function_Local=
 	set /p JRT_Update_Function_Local=
 	set /p TDSS_Update_Function_Local=
@@ -247,7 +240,6 @@ REM Set variables for Functions_Local
 	set /p Zemana_Update_Function_Local=
 	set /p MBAR_Update_Function_Local=
 	set /p Malwarebytes_Update_Function_Local=
-	set /p Spybot_Update_Function_Local=
 	set /p CCleaner_Update_Function_Local=
 	set /p DefragSystem_A_Update_Function_Local=
 	set /p DefragSystem_D_Update_Function_Local=
@@ -260,12 +252,11 @@ REM Set variables for Functions_Local
 	set /p Brainiacs_Update_Function_Local=
 	set /p Update_Function_Local=
 	set /p Windows_Defrag_Function_Local=
-	set /p Email_function_Local=
 )
 
 REM Set variables for Tools_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,81) do set /p =
+	for /l %%i in (1,1,76) do set /p =
 	set /p RKill_Update_Tool_Local=
 	set /p JRT_Update_Tool_Local=
 	set /p TDSS_Update_Tool_Local=
@@ -275,7 +266,6 @@ REM Set variables for Tools_Local
 	set /p Zemana_Update_Tool_Local=
 	set /p MBAR_Update_Tool_Local=
 	set /p Malwarebytes_Update_Tool_Local=
-	set /p Spybot_Update_Tool_Local=
 	set /p CCleaner_Update_Tool_Local=
 	set /p DefragSystem_A_Update_Tool_Local=
 	set /p DefragSystem_D_Update_Tool_Local=
@@ -285,7 +275,7 @@ REM Set variables for Tools_Local
 
 REM Set variables for Functions_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,39) do set /p =
+	for /l %%i in (1,1,37) do set /p =
 	set /p RKill_Update_Function_Online=
 	set /p JRT_Update_Function_Online=
 	set /p TDSS_Update_Function_Online=
@@ -295,7 +285,6 @@ REM Set variables for Functions_Online
 	set /p Zemana_Update_Function_Online=
 	set /p MBAR_Update_Function_Online=
 	set /p Malwarebytes_Update_Function_Online=
-	set /p Spybot_Update_Function_Online=
 	set /p CCleaner_Update_Function_Online=
 	set /p DefragSystem_A_Update_Function_Online=
 	set /p DefragSystem_D_Update_Function_Online=
@@ -308,12 +297,11 @@ REM Set variables for Functions_Online
 	set /p Brainiacs_Update_Function_Online=
 	set /p Update_Function_Online=
 	set /p Windows_Defrag_Function_Online=
-	set /p Email_function_Online=
 )
 
 REM Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,81) do set /p =
+	for /l %%i in (1,1,76) do set /p =
 	set /p RKill_Update_Tool_Online=
 	set /p JRT_Update_Tool_Online=
 	set /p TDSS_Update_Tool_Online=
@@ -323,7 +311,6 @@ REM Set variables for Tools_Online
 	set /p Zemana_Update_Tool_Online=
 	set /p MBAR_Update_Tool_Online=
 	set /p Malwarebytes_Update_Tool_Online=
-	set /p Spybot_Update_Tool_Online=
 	set /p CCleaner_Update_Tool_Online=
 	set /p DefragSystem_A_Update_Tool_Online=
 	set /p DefragSystem_D_Update_Tool_Online=
@@ -496,22 +483,6 @@ if "%Malwarebytes_Update_Function_Online%" GTR "%Malwarebytes_Update_Function_Lo
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Malwarebytes_function.bat" -O "%Output%\Functions\Malwarebytes_function.bat" 2>NUL
 )
 
-REM Spybot_Function
-if "%Spybot_Update_Function_Online%" GTR "%Spybot_Update_Function_Local%" (
-	REM Update function based on variables
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
-) else if %TEST_UPDATE_MASTER%==yes (
-	REM Update from master branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
-) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
-	REM Update from experimental branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
-) else if not exist "%Output%\Functions\Spybot_Function.bat" (
-	REM Download if not present
-	echo ==================================
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Spybot_function.bat" -O "%Output%\Functions\Spybot_function.bat" 2>NUL
-)
-
 REM CCleaner_Function
 if "%CCleaner_Update_Function_Online%" GTR "%CCleaner_Update_Function_Local%" (
 	REM Update function based on variables
@@ -677,21 +648,6 @@ if "%Windows_Defrag_Function_Online%" GTR "%Windows_Defrag_Function_Local%" (
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Windows_Defrag_Function.bat" -O "%Output%/Functions/Windows_Defrag_Function.bat" 2>NUL
 )
 
-REM Email_Function
-if "%Email_Function_Online%" GTR "%Email_Function_Local%" (
-	REM Update function based on variables
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
-) else if %TEST_UPDATE_MASTER%==yes (
-	REM Update from master branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
-) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
-	REM Update from experimental branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
-) else if not exist "%Output%/Functions/Email_Function.bat" (
-	REM Download if not present
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Email_Function.bat" -O "%Output%/Functions/Email_Function.bat" 2>NUL
-)
-
 REM End file if updated due to testing
 if %TEST_UPDATE_MASTER%==yes (
 	  GOTO:EOF
@@ -764,12 +720,6 @@ REM Malwarebytes_Tool
 if "%Malwarebytes_Update_Tool_Online%" GTR "%Malwarebytes_Update_Tool_Local%" (
 	REM Update tool based on variables
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Malwarebytes_Url%" -O "%Output%\Tools\Malwarebytes\mb3-setup.exe" 2>NUL
-)
-
-REM Spybot_Tool
-if "%Spybot_Update_Tool_Online%" GTR "%Spybot_Update_Tool_Local%" (
-	REM Update tool based on variables
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Spybot_Url%" -O "%Output%\Tools\SpyBot\spybotsd.exe" 2>NUL
 )
 
 REM CCleaner_Tool

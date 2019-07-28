@@ -1,7 +1,5 @@
 @ECHO OFF
 
-REM Maximize Window
-REM if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 REM Minimize Window
 if not "%1" == "min" start /MIN cmd /c %0 min & exit/b
 
@@ -58,7 +56,6 @@ set VAR_GEEK=None
 set TEST_UPDATE_MASTER=undetected
 set PASSWORD=undetected
 set PID_BRAINIACS=undetected
-set EMAIL_SEND=undetected
 set ROGUE_QUICKSCAN=undetected
 set TEST_UPDATE_MASTER=undetected
 set TEST_UPDATE_EXPERIMENTAL=undetected
@@ -82,7 +79,6 @@ set HitmanPro_choice=unidentified
 set Zemana_choice=unidentified
 set MBAR_choice=unidentified
 set Malwarebytes_choice=unidentified
-set Spybot_choice=unidentified
 set CCleaner_choice=unidentified
 set DefragSystem_choice=unidentified
 set ImageChecker_choice=unidentified
@@ -91,7 +87,6 @@ set No_selection_choice_function=unidentified
 
 REM Options menu variables
 set SystemRestore_choice=unidentified
-set EmailNotes_choice=unidentified
 set AutoClose_choice=unidentified
 set ReviewLogs_choice=unidentified
 set OpenNotes_choice=unidentified
@@ -116,7 +111,6 @@ call:setPersist HitmanPro_choice=unidentified
 call:setPersist Zemana_choice=unidentified
 call:setPersist MBAR_choice=unidentified
 call:setPersist Malwarebytes_choice=unidentified
-call:setPersist Spybot_choice=unidentified
 call:setPersist CCleaner_choice=unidentified
 call:setPersist DefragSystem_choice=unidentified
 call:setPersist ImageChecker_choice=unidentified
@@ -124,7 +118,6 @@ call:setPersist DriveChecker_choice=unidentified
 
 REM Options menu variables persistent
 call:setPersist SystemRestore_choice=unidentified
-call:setPersist EmailNotes_choice=unidentified
 call:setPersist AutoClose_choice=unidentified
 call:setPersist ReviewLogs_choice=unidentified
 call:setPersist OpenNotes_choice=unidentified
@@ -513,7 +506,7 @@ if /i "!DELETE_RESTORE!"=="Yes" (
 REM Functions Menu
 :Functions_Menu
 
-FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Continue" "Geek Uninstaller;Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Spybot (Experimental);Ccleaner;Defrag;Check Windows image for errors;Check Windows drive for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Continue" "Geek Uninstaller;Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Ccleaner;Defrag;Check Windows image for errors;Check Windows drive for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
 
   for /f "tokens=* delims=;" %%a in ("%%^") do (
 
@@ -528,7 +521,6 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%A"=="Zemana" (set Zemana_choice=Yes)
     IF "%%A"=="MBAR" (set MBAR_choice=Yes)
     IF "%%A"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%A"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%A"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%A"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%A"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -545,7 +537,6 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%B"=="Zemana" (set Zemana_choice=Yes)
     IF "%%B"=="MBAR" (set MBAR_choice=Yes)
     IF "%%B"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%B"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%B"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%B"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%B"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -560,7 +551,6 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%C"=="Zemana" (set Zemana_choice=Yes)
     IF "%%C"=="MBAR" (set MBAR_choice=Yes)
     IF "%%C"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%C"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%C"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%C"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%C"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -574,7 +564,6 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%D"=="Zemana" (set Zemana_choice=Yes)
     IF "%%D"=="MBAR" (set MBAR_choice=Yes)
     IF "%%D"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%D"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%D"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%D"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%D"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -587,7 +576,6 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%E"=="Zemana" (set Zemana_choice=Yes)
     IF "%%E"=="MBAR" (set MBAR_choice=Yes)
     IF "%%E"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%E"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%E"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%E"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%E"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -599,7 +587,6 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%F"=="Zemana" (set Zemana_choice=Yes)
     IF "%%F"=="MBAR" (set MBAR_choice=Yes)
     IF "%%F"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%F"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%F"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%F"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%F"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -610,7 +597,6 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%G"=="Zemana" (set Zemana_choice=Yes)
     IF "%%G"=="MBAR" (set MBAR_choice=Yes)
     IF "%%G"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%G"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%G"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%G"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%G"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -620,7 +606,6 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%H"=="Zemana" (set Zemana_choice=Yes)
     IF "%%H"=="MBAR" (set MBAR_choice=Yes)
     IF "%%H"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%H"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%H"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%H"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%H"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -629,7 +614,6 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     REM Check %%I & set appropriate variable
     IF "%%I"=="MBAR" (set MBAR_choice=Yes)
     IF "%%I"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%I"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%I"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%I"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%I"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -637,14 +621,12 @@ FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
 
     REM Check %%J & set appropriate variable
     IF "%%J"=="Malwarebytes (Experimental)" (set Malwarebytes_choice=Yes)
-    IF "%%J"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%J"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%J"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%J"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
     IF "%%J"=="Check Windows drive for errors" (set DriveChecker_choice=Yes)
 
     REM Check %%K & set appropriate variable
-    IF "%%K"=="Spybot (Experimental)" (set Spybot_choice=Yes)
     IF "%%K"=="Ccleaner" (set CCleaner_choice=Yes)
     IF "%%K"=="Defrag" (set DefragSystem_choice=Yes)
     IF "%%K"=="Check Windows image for errors" (set ImageChecker_choice=Yes)
@@ -693,12 +675,11 @@ IF ERRORLEVEL 0 (
 REM Options Menu
 :Options_Menu
 
-FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start" "Create system restore point;Email notes (Experimental);Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start" "Create system restore point;Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
   for /f "tokens=1-10* delims=;" %%a in ("%%^") do (
 
     REM Check %%A & set appropriate variable
     IF "%%A"=="Create system restore point" (set SystemRestore_choice=Yes)
-    IF "%%A"=="Email notes (Experimental)" (set EmailNotes_choice=Yes)
     IF "%%A"=="Auto close when done" (set AutoClose_choice=Yes)
     IF "%%A"=="Review Logs when done" (set ReviewLogs_choice=Yes)
     IF "%%A"=="Open comments when done" (set OpenNotes_choice=Yes)
@@ -710,7 +691,6 @@ FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\Multipl
     IF "%%A"=="" (set No_selection_choice_options=Yes) else (set No_selection_choice_options=No)
 
     REM Check %%B & set appropriate variable
-    IF "%%B"=="Email notes (Experimental)" (set EmailNotes_choice=Yes)
     IF "%%B"=="Auto close when done" (set AutoClose_choice=Yes)
     IF "%%B"=="Review Logs when done" (set ReviewLogs_choice=Yes)
     IF "%%B"=="Open comments when done" (set OpenNotes_choice=Yes)
@@ -799,17 +779,6 @@ IF ERRORLEVEL 0 (
 REM Execute Menu
 :Execute_Menu
 
-if /i "%EmailNotes_choice%"=="Yes" (
-  REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-  REM Call function
-  call functions\Email_function
-  REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
-  REM Set variables
-  set EmailNotes=No
-)
-
 if /i "%SystemRestore_choice%"=="Yes" (
   REM Create restore point
   echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
@@ -830,30 +799,8 @@ if /i "%SystemRestore_choice%"=="Yes" (
           echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
           REM Goto function
           goto Malwarebytes_function
-          REM Set variables if spybot is not selected to prevent double prompt
-          if /i "%Spybot_choice%"=="No" (
-            set SystemRestore_choice=No
-          )
         ) else (
           set Malwarebytes_choice=No
-        )
-      )
-    )
-    if not "!PASSWORD!"=="RedRuby" (
-      if /i "%Spybot_choice%"=="Yes" (
-        FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Spybot requires 'System Restore' to be enabled to be able to run.\n\nDo you want to enable it\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
-          IF /I "%%G"=="Yes" (
-            REM Set variables
-            set SystemRestore_choice=Yes
-            REM Create restore point
-            echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-            REM Goto function
-            goto Spybot_function
-            REM Set variables
-            set SystemRestore_choice=No
-          ) else (
-            set Spybot_choice=No
-          )
         )
       )
     )
@@ -992,27 +939,6 @@ if /i "%Malwarebytes_choice%"=="Yes" (
   )
   REM ADD TO DISABLE MALWAREBYTES UNLESS TESTING.
   REM ---------------------------TEMPORARIY------------------------------------
-)
-
-:Spybot_function
-if /i "%Spybot_choice%"=="Yes" (
-  REM ---------------------------TEMPORARIY------------------------------------
-  REM ADD TO DISABLE SPYBOT UNLESS TESTING.
-  if "%PASSWORD%"=="RedRuby" (
-    REM Create restore point
-    echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
-    REM Call function
-    call functions\Spybot_function
-    REM Create restore point
-    echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
-    REM Set variables
-    set Spybot_choice=No
-  ) else (
-    %Output%\Functions\Menu\MessageBox "This feature is still experimental and not enebled yet.\n\nWait until I get it tested and fixed.\n\nThanks.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
-  )
-  REM ADD TO DISABLE SPYBOT UNLESS TESTING.
-  REM ---------------------------TEMPORARIY------------------------------------
-  REM Check if system restore is enabled
 )
 
 if /i "%CCleaner_choice%"=="Yes" (

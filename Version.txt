@@ -1,4 +1,4 @@
-2.0
+2.0.1
 2019-XX-XX
 
 Functions Legend
@@ -8,8 +8,8 @@ Version
 Changelog
 
 2.0
-2.0
-2.0
+2.0.1
+2.0.1
 
 Functions Legend
 --------------
@@ -22,20 +22,18 @@ Functions Legend
 7 - Zemana_Function
 8 - MBAR_Function
 9 - Malwarebytes_Function
-10 - Spybot_Function
-11 - CCleaner_Function
-12 - DefragSystem_A_Function
-13 - DefragSystem_D_Function
-14 - ImageChecker_Function
-15 - CHKDSK_Function
-16 - SystemRestore_Function
-17 - DeleteNotes_Function
-18 - DeleteLogs_Function
-19 - DeleteTools_Function
-20 - Brainiacs_Function
-21 - Update_Update_Function
-22 - Windows_Defrag_Function
-23 - Email_function
+10 - CCleaner_Function
+11 - DefragSystem_A_Function
+12 - DefragSystem_D_Function
+13 - ImageChecker_Function
+14 - CHKDSK_Function
+15 - SystemRestore_Function
+16 - DeleteNotes_Function
+17 - DeleteLogs_Function
+18 - DeleteTools_Function
+19 - Brainiacs_Function
+20 - Update_Update_Function
+21 - Windows_Defrag_Function
 
 2.0
 2.0
@@ -56,9 +54,7 @@ Functions Legend
 2.0
 2.0
 2.0
-2.0
-2.0
-2.0
+2.0.1
 2.0
 
 Tools Legend
@@ -72,12 +68,11 @@ Tools Legend
 7 - Zemana_Tool
 8 - MBAR_Tool
 9 - Malwarebytes_Tool
-10 - Spybot_Tool
-11 - CCleaner_Tool
-12 - DefragSystem_A_Tool
-13 - DefragSystem_D_Tool
-14 - Geek_Tool
-15 - Blat_Tool
+10 - CCleaner_Tool
+11 - DefragSystem_A_Tool
+12 - DefragSystem_D_Tool
+13 - Geek_Tool
+14 - Blat_Tool
 
 2.9.1.0
 8.1.4.0
@@ -86,7 +81,6 @@ Tools Legend
 7.3
 3.8.0.295
 2.74.2.664
-1.0
 1.0
 1.0
 5.56

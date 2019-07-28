@@ -1,9 +1,14 @@
 
 CHANGELOG
 ===================================================================================
-Brainiacs Cleanup Tool v2.0 (2019-XX-XX)
-*MAJOR POINT RELEASE*
+Brainiacs Cleanup Tool v2.0.1 (2019-XX-XX)
+---
+-Removed Beta Email Function
+-Removed Spybot Function
 
+Brainiacs Cleanup Tool v2.0.1 (2019-XX-XX)
+*MAJOR POINT RELEASE*
+---
 
 Brainiacs Cleanup Tool v1.5 (2019-05-11)
 *MAJOR POINT RELEASE*
