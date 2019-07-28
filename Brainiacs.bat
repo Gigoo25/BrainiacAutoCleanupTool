@@ -506,7 +506,7 @@ if /i "!DELETE_RESTORE!"=="Yes" (
 REM Functions Menu
 :Functions_Menu
 
-FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Continue" "Geek Uninstaller;Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Ccleaner;Defrag;Check Windows image for errors;Check Windows drive for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+FOR /F "usebackq tokens=1-15* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /P:8143 /L:"OK=Continue" "Geek Uninstaller;Rkill;JRT;TDSS Killer;Rogue Killer;ADW;Hitman Pro;Zemana;MBAR;Malwarebytes (Experimental);Ccleaner;Defrag;Check Windows image for errors;Check Windows drive for errors" "Select a tool from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
 
   for /f "tokens=* delims=;" %%a in ("%%^") do (
 
@@ -675,7 +675,7 @@ IF ERRORLEVEL 0 (
 REM Options Menu
 :Options_Menu
 
-FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /L:"OK=Start" "Create system restore point;Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
+FOR /F "usebackq tokens=1-10* delims=;" %%A IN (`%Output%\Functions\Menu\MultipleChoiceBox /P:416 /L:"OK=Start" "Create system restore point;Auto close when done;Review Logs when done;Open comments when done;Delete comments when done;Delete logs when done;Delete tools when done;Self-Destruct Cleanup Tool when done;Reboot when done" "Select an option or preset from the list below by clicking the corresponding box.\nOnce you are okay with your selection click "OK" to start the automated process." "[MENU] Brainiacs Cleanup Tool v%TOOL_VERSION%"`) DO (
   for /f "tokens=1-10* delims=;" %%a in ("%%^") do (
 
     REM Check %%A & set appropriate variable
