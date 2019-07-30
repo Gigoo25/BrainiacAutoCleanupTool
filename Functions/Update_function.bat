@@ -30,8 +30,6 @@ set Zemana_Update_Function_Local=unidentified
 set MBAR_Update_Function_Local=unidentified
 set Malwarebytes_Update_Function_Local=unidentified
 set CCleaner_Update_Function_Local=unidentified
-set DefragSystem_A_Update_Function_Local=unidentified
-set DefragSystem_D_Update_Function_Local=unidentified
 set ImageChecker_Update_Function_Local=unidentified
 set CHKDSK_Update_Function_Local=unidentified
 set SystemRestore_Update_Function_Local=unidentified
@@ -53,8 +51,6 @@ set Zemana_Update_Function_Online=unidentified
 set MBAR_Update_Function_Online=unidentified
 set Malwarebytes_Update_Function_Online=unidentified
 set CCleaner_Update_Function_Online=unidentified
-set DefragSystem_A_Update_Function_Online=unidentified
-set DefragSystem_D_Update_Function_Online=unidentified
 set ImageChecker_Update_Function_Online=unidentified
 set CHKDSK_Update_Function_Online=unidentified
 set SystemRestore_Update_Function_Online=unidentified
@@ -76,10 +72,7 @@ set Zemana_Update_Tool_Local=unidentified
 set MBAR_Update_Tool_Local=unidentified
 set Malwarebytes_Update_Tool_Local=unidentified
 set CCleaner_Update_Tool_Local=unidentified
-set DefragSystem_A_Update_Tool_Local=unidentified
-set DefragSystem_D_Update_Tool_Local=unidentified
 set Geek_Update_Tool_Local=unidentified
-set Blat_Update_Tool_Local=unidentified
 
 REM Tool online variables
 set RKill_Update_Tool_Online=unidentified
@@ -92,10 +85,7 @@ set Zemana_Update_Tool_Online=unidentified
 set MBAR_Update_Tool_Online=unidentified
 set Malwarebytes_Update_Tool_Online=unidentified
 set CCleaner_Update_Tool_Online=unidentified
-set DefragSystem_A_Update_Tool_Online=unidentified
-set DefragSystem_D_Update_Tool_Online=unidentified
 set Geek_Update_Tool_Online=unidentified
-set Blat_Update_Tool_Online=unidentified
 
 REM Tool download location variables
 set RKill_Url=unidentified
@@ -110,10 +100,7 @@ set Zemana_Url=http://dl12.zemana.com/AntiMalware/2.74.2.664/Zemana.AntiMalware.
 set MBAR_Url=unidentified
 set Malwarebytes_Url=unidentified
 set CCleaner_Url=https://download.ccleaner.com/portable/ccsetup556.zip
-set DefragSystem_A_Url=http://downloads.auslogics.com/en/disk-defrag/ausdiskdefragportable.exe
-set DefragSystem_D_Url=https://softpedia-secure-download.com/dl/43f41169943fef85b1fcc5f7e22ac9bf/5c9b623b/100100698/software/portable/system/dfsetup222.zip
 set Geek_Url=https://geekuninstaller.com/geek.zip
-set Blat_Url=unidentified
 
 REM Update functions based on branch selected
 if %TEST_UPDATE_MASTER%==yes (
@@ -191,7 +178,7 @@ GOTO :EOF
 REM Decline update
 :update_yes
 REM If its lower that a major release then prompt the user to download the new update.
-if "%CURRENT_VERSION%" LSS "2.0" (
+if "%CURRENT_VERSION%" LSS "2.0.1" (
 	REM Display message that version is too old then prompt for download
 	if "%CHECK_UPDATE_VERSION%" GTR "%CURRENT_VERSION%" (
 		REM Ask if sub wants to update
@@ -230,7 +217,7 @@ REM Set variables for online text files
 
 REM Set variables for Functions_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,37) do set /p =
+	for /l %%i in (1,1,35) do set /p =
 	set /p RKill_Update_Function_Local=
 	set /p JRT_Update_Function_Local=
 	set /p TDSS_Update_Function_Local=
@@ -241,8 +228,6 @@ REM Set variables for Functions_Local
 	set /p MBAR_Update_Function_Local=
 	set /p Malwarebytes_Update_Function_Local=
 	set /p CCleaner_Update_Function_Local=
-	set /p DefragSystem_A_Update_Function_Local=
-	set /p DefragSystem_D_Update_Function_Local=
 	set /p ImageChecker_Update_Function_Local=
 	set /p CHKDSK_Update_Function_Local=
 	set /p SystemRestore_Update_Function_Local=
@@ -256,7 +241,7 @@ REM Set variables for Functions_Local
 
 REM Set variables for Tools_Local
 < "%Output%\Version.txt" (
-	for /l %%i in (1,1,76) do set /p =
+	for /l %%i in (1,1,69) do set /p =
 	set /p RKill_Update_Tool_Local=
 	set /p JRT_Update_Tool_Local=
 	set /p TDSS_Update_Tool_Local=
@@ -267,15 +252,12 @@ REM Set variables for Tools_Local
 	set /p MBAR_Update_Tool_Local=
 	set /p Malwarebytes_Update_Tool_Local=
 	set /p CCleaner_Update_Tool_Local=
-	set /p DefragSystem_A_Update_Tool_Local=
-	set /p DefragSystem_D_Update_Tool_Local=
 	set /p Geek_Update_Tool_Local=
-	set /p Blat_Update_Tool_Local=
 )
 
 REM Set variables for Functions_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,37) do set /p =
+	for /l %%i in (1,1,35) do set /p =
 	set /p RKill_Update_Function_Online=
 	set /p JRT_Update_Function_Online=
 	set /p TDSS_Update_Function_Online=
@@ -286,8 +268,6 @@ REM Set variables for Functions_Online
 	set /p MBAR_Update_Function_Online=
 	set /p Malwarebytes_Update_Function_Online=
 	set /p CCleaner_Update_Function_Online=
-	set /p DefragSystem_A_Update_Function_Online=
-	set /p DefragSystem_D_Update_Function_Online=
 	set /p ImageChecker_Update_Function_Online=
 	set /p CHKDSK_Update_Function_Online=
 	set /p SystemRestore_Update_Function_Online=
@@ -301,7 +281,7 @@ REM Set variables for Functions_Online
 
 REM Set variables for Tools_Online
 < "%TEMP%\Version_Check.txt" (
-	for /l %%i in (1,1,76) do set /p =
+	for /l %%i in (1,1,69) do set /p =
 	set /p RKill_Update_Tool_Online=
 	set /p JRT_Update_Tool_Online=
 	set /p TDSS_Update_Tool_Online=
@@ -312,10 +292,7 @@ REM Set variables for Tools_Online
 	set /p MBAR_Update_Tool_Online=
 	set /p Malwarebytes_Update_Tool_Online=
 	set /p CCleaner_Update_Tool_Online=
-	set /p DefragSystem_A_Update_Tool_Online=
-	set /p DefragSystem_D_Update_Tool_Online=
 	set /p Geek_Update_Tool_Online=
-	set /p Blat_Update_Tool_Online=
 )
 
 REM Update functions if ran in test mode
@@ -496,36 +473,6 @@ if "%CCleaner_Update_Function_Online%" GTR "%CCleaner_Update_Function_Local%" (
 ) else if not exist "%Output%\Functions\CCleaner_Function.bat" (
 	REM Download if not present
 	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/CCleaner_function.bat" -O "%Output%\Functions\CCleaner_function.bat" 2>NUL
-)
-
-REM DefragSystem_A_Update_Function
-if "%DefragSystem_A_Update_Function_Online%" GTR "%DefragSystem_A_Update_Function_Local%" (
-	REM Update function based on variables
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
-) else if %TEST_UPDATE_MASTER%==yes (
-	REM Update from master branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
-) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
-	REM Update from experimental branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
-) else if not exist "%Output%\Functions\Aus_Defrag_function.bat" (
-	REM Download if not present
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Aus_Defrag_function.bat" -O "%Output%\Functions\Aus_Defrag_function.bat" 2>NUL
-)
-
-REM DefragSystem_D_Update_Function
-if "%DefragSystem_D_Update_Function_Online%" GTR "%DefragSystem_D_Update_Function_Local%" (
-	REM Update function based on variables
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
-) else if %TEST_UPDATE_MASTER%==yes (
-	REM Update from master branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
-) else if %TEST_UPDATE_EXPERIMENTAL%==yes (
-	REM Update from experimental branch if debug mode is enabled
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH_TEST%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
-) else if not exist "%Output%\Functions\Defraggler_Defrag_function.bat" (
-	REM Download if not present
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%REPO_URL%/%REPO_BRANCH%/Functions/Defraggler_Defrag_function.bat" -O "%Output%\Functions\Defraggler_Defrag_function.bat" 2>NUL
 )
 
 REM ImageChecker_Function
@@ -732,22 +679,6 @@ if "%CCleaner_Update_Tool_Online%" GTR "%CCleaner_Update_Tool_Local%" (
 	del "%Output%\ccsetup.zip"
 )
 
-REM DefragSystem_A_Tool
-if "%DefragSystem_A_Update_Tool_Online%" GTR "%DefragSystem_A_Update_Tool_Local%" (
-	REM Update tool based on variables
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%DefragSystem_A_Url%" -O "%Output%\Tools\AUS\ausdiskdefrag.exe" 2>NUL
-)
-
-REM DefragSystem_D_Tool
-if "%DefragSystem_D_Update_Tool_Online%" GTR "%DefragSystem_D_Update_Tool_Local%" (
-	REM Update tool based on variables
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%DefragSystem_D_Url%" -O "%Output%\dfsetup.zip" 2>NUL
-	REM Unzip zip file
-	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Defraggler'); $zip = $shell.NameSpace('%Output%\dfsetup.zip'); $target.CopyHere($zip.Items(), 16); }"
-	REM Delete zip file
-	del "%Output%\dfsetup.zip"
-)
-
 REM Update Geek Uninstaller
 if "%Geek_Update_Tool_Online%" GTR "%Geek_Update_Tool_Local%" (
 	REM Update tool based on variables
@@ -766,20 +697,6 @@ if not exist "%Output%\Tools\Geek\" (
 	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\Tools\Geek'); $zip = $shell.NameSpace('%Output%\Tools\Geek\geek.zip'); $target.CopyHere($zip.Items(), 16); }"
 	REM Delete zip file
 	del "%Output%\Tools\Geek\geek.zip"
-)
-
-REM Blat_Update_Tool_Online
-if "%Blat_Update_Tool_Online%" GTR "%Blat_Update_Tool_Local%" (
-	REM Update tool based on variables
-	"%Output%\Tools\WGET\wget.exe" --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 2 --progress=bar:force "%Blat_Url%" -O "%Output%\blat3219_32.full.zip" 2>NUL
-	REM Unzip zip file
-	powershell -nologo -noprofile -command "& { $shell = New-Object -COM Shell.Application; $target = $shell.NameSpace('%Output%\'); $zip = $shell.NameSpace('%Output%\blat3219_32.full.zip'); $target.CopyHere($zip.Items(), 16); }" 2>NUL
-	REM Move folder
-	move "%Output%\blat3219\full" "%Output%\Tools\Blat" 2>NUL
-	REM Delete zip file
-	del "%Output%\blat3219_32.full.zip" 2>NUL
-	REM Delete unecessary remaining folder
-	rmdir "%Output%\blat3219" /s /q 2>NUL
 )
 
 REM Update Readme file
