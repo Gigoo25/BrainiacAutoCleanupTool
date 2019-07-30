@@ -7,122 +7,39 @@ for /f %%i in ('%Output%\Tools\SMARTCTL\smartctl.exe --scan') do %Output%\Tools\
 
 REM Skip defrag due to SSD detected
 if /i "%SKIP_DEFRAG%"=="yes_ssd" (
-	CLS
-	color 0c
-	echo.
-	echo  ^! ERROR
-	echo ===================================================================================
-	echo.
-	echo    SSD Detected.
-	echo.
-	echo    Skipping defrag function...
-	echo.
-	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-	echo.
-	echo ===================================================================================
-	TIMEOUT 10
-	color 07
-	goto Defrag_Done
+	%Output%\Functions\Menu\MessageBox "SSD Detected.\n\nSkipping defrag function...\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10 >nul
+	GOTO :EOF
 )
 
 REM Skip defrag due to Virtual machine detected
 if /i "%SKIP_DEFRAG%"=="yes_vm" (
-	CLS
-	color 0c
-	echo.
-	echo  ^! ERROR
-	echo ===================================================================================
-	echo.
-	echo    Virtual Machine Detected.
-	echo.
-	echo    Skipping defrag function...
-	echo.
-	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-	echo.
-	echo ===================================================================================
-	TIMEOUT 10
-	color 07
-	goto Defrag_Done
+	%Output%\Functions\Menu\MessageBox "Virtual Machine Detected.\n\nSkipping defrag function...\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10 >nul
+	GOTO :EOF
 )
 
 REM Skip defrag due to error reading disk stats detected
 if /i "%SKIP_DEFRAG%"=="yes_disk_smart_read_error" (
-	CLS
-	color 0c
-	echo.
-	echo  ^! ERROR
-	echo ===================================================================================
-	echo.
-	echo    Disk Smart Read Error.
-	echo.
-	echo    Skipping defrag function...
-	echo.
-	echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-	echo.
-	echo ===================================================================================
-	TIMEOUT 10
-	color 07
-	goto Defrag_Done
+	%Output%\Functions\Menu\MessageBox "Disk Smart Read Error.\n\nSkipping defrag function...\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10 >nul
+	GOTO :EOF
 )
 
 REM Display disclaimer on checking for SSD.
-CLS
-color 0c
-echo.
-echo  ^! WARNING
-echo ===================================================================================
-echo.
-echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% does have a limited check for SSD but
-echo    it is not bulletproof.
-echo.
-echo    Be sure that you are not running this on an SSD and reducing the span of the drive.
-echo.
-echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 15 seconds.
-echo.
-echo ===================================================================================
-TIMEOUT 15
-color 07
-
-REM Set title
-title [AusDefrag] Brainiacs Cleanup Tool v%TOOL_VERSION%
+FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "The Brainiacs Cleanup Tool v%TOOL_VERSION% does have a limited check for SSD but it is not bulletproof.\n\nBe sure that you are not running this on an SSD and reducing the span of the drive.\n\nAre you sure you're not running on an SSD?" "[DISCLAIMER] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:I /O:N`) DO (
+  IF /I "%%G"=="No" (
+	%Output%\Functions\Menu\MessageBox "You did not accept responsibility.\n\nSkipping...\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10 >nul
+  GOTO :EOF
+  )
+)
 
 REM Start AusDefrag service.
 if exist "%Output%\Tools\AUS\ausdiskdefrag.exe" (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Running AusDefrag...
-	echo.
-	echo =================================
+	REM Display start message.
+	%Output%\Functions\Menu\MessageBox "Starting AusDefrag..." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:X /O:N /T:5 >nul
 	start /WAIT "AUS" "%Output%\Tools\AUS\ausdiskdefrag.exe"
 	echo -Ran AusDefrag >> %Output%\Notes\Comments.txt
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Done running AusDefrag!
-	echo.
-	echo =================================
-  TIMEOUT 2 >nul
   GOTO :EOF
 ) else (
-	CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    AusDefrag not found.
-  echo.
-  echo    Skipping...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
-  color 07
+	REM Display message that ADW was not found & skip
+	%Output%\Functions\Menu\MessageBox "AusDefrag not found.\n\nSkipping...\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10 >nul
 	GOTO :EOF
 )

@@ -19,38 +19,48 @@ README
 
 -How to run the tool-
 	-Running the tool should be simple:
-	1) Double click on the "Brainiacs Cleanup.exe".
-	2) Select the extraction path and click on "Extract".
-	3) The tool will now automatically open.
-	4) Follow the onscreen prompts and either selecting "Y" to accept or "N" to deny.
-	5) Once you reach the menu make a selection based on the options allowed.
-	6) The options will adjust based on your selection and will show either "Yes" or "No"
-	 depending on the tools you have selected to run.
-	7) Once you have selected the optimal cleanup process type in "SC" and press "Enter" to start the cleanup process.
-	8) Follow the onscreen prompts to complete the notes.
-	9) When done copy the notes from Cleanup/Notes and paste them into LogMeIn.
+		1) Double click on the "Brainiacs Cleanup.exe".
+		2) Select the extraction path and click on "Extract".
+		3) The tool will now automatically open.
+		4) Follow the windows and make selections on how you want the tool ran.
+		5) When done copy the notes from Cleanup/Notes and paste them into LogMeIn.
 
 -Allowed options-
-	1-15) Will run the listed tool.
+	-Functions Menu-
+		-Geek Uninstaller
+		-RKill
+		-JRT
+		-TDSS Killer
+		-Rogue Killer
+		-ADW
+		-Hitman Pro
+		-Zemana
+		-MBAR
+		-Malwarebytes
+		-Spybot
+		-CCleaner
+		-Defrag
+		-Check Windows image for errors
+		-Check Windows drive for errors
 
-	R) Will create a restore point prior to running the tool.
-	A) This will auto close the tool when done running the tool.
-	L) This will show you the output logs of the tools that have ran.
-	C) This will open the comments once when done running the tool to be able to paste them
-	 into log-me-in.
-	DC) This will delete the comments when done running the tool.
-	DL) This will delete the logs when done running the tool.
-	DT) This will delete the tools/functions when done running the tool.
-	SD) This will self destruct the bat file when done.
-	B) This will reboot the PC once done.
-
-	DP) Sets the tools to run the "Default" cleanup process. This is a good standard
-	 cleanup option without running all the tools.
-	EA) Sets all tools to run for the cleanup.
-	DA) Disables all tools from running in the cleanup.
-
-	SC) Starts the cleanup with the selected options.
-	GK) Starts Geek Uninstaller + notes.
-	VR) View this readme.
-	VC) Shows the comments that have been created by the tool.
-	VH) Shows the changelog.
+	-Options Menu-
+		-Create system restore point
+			*Will create a restore point prior to running the tool.*
+		-Email notes (Experimental)
+		-Auto close when done
+			*This will auto close the tool when done running the tool.*
+		-Review Logs when done
+			*This will show you the output logs of the tools that have ran.*
+		-Open comments when done
+			*This will open the comments once when done running the tool to be able to paste them
+			 into log-me-in.*
+		-Delete comments when done
+			*This will delete the comments when done running the tool.*
+		-Delete logs when done
+			*This will delete the logs when done running the tool.*
+		-Delete tools when done
+			*This will delete the tools/functions when done running the tool.*
+		-Self-Destruct Cleanup Tool when done
+			*This will self destruct the bat file when done.*
+		-Reboot when done
+			*This will reboot the PC once done.*

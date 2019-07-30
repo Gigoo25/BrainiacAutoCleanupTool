@@ -1,64 +1,41 @@
 @echo off
 
 REM Variables
-set "VarHitman=0"
-
-REM Set title
-title [HitmanPro] Brainiacs Cleanup Tool v%TOOL_VERSION%
+set VarHitman=0
+set HMP_Infections=unidentified
 
 REM Start HitmanPro service.
+	REM Enable delayed expansion
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\HitmanPro\HitmanPro*" (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Running HitmanPro...
-	echo.
-	echo =================================
+	REM Delete old license if found
 	if exist "%systemdrive%\ProgramData\HitmanPro" (
 		rmdir /s /q "%systemdrive%\ProgramData\HitmanPro" >nul
 	)
+	REM Start HMP
 	if %OS%==32BIT start /WAIT "HMP" "%Output%\Tools\HitmanPro\HitmanPro.exe" /noupload /noinstall /scan
 	if %OS%==64BIT start /WAIT "HMP" "%Output%\Tools\HitmanPro\HitmanPro_x64.exe" /noupload /noinstall /scan
+	REM Delete old license if found
 	if exist "%systemdrive%\ProgramData\HitmanPro" (
 		rmdir /s /q "%systemdrive%\ProgramData\HitmanPro" >nul
 	)
+	REM Set notes
 	echo -Ran HitmanPro >> %Output%\Notes\Comments.txt
-	CLS
-	echo.
-	echo  ^! USER INPUT
-	echo =================================
-	echo.
-	set /p VarHitman=Enter the amount of infections found:
-	echo Infections-!!VarHitman!! >> %Output%\Notes\Comments.txt
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Done running HitmanPro!
-	echo.
-	echo =================================
-  TIMEOUT 2 >nul
+	REM Ask for amount of infections found & set notes
+	FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] Hitman Pro" /H:150 /W:280 /M:"####" /F:"\d{0,4}" /U /I`) DO (
+		REM Set variable
+		set HMP_Infections=%%G
+	)
+	REM Set comments based on variable
+	IF NOT "!HMP_Infections!"=="unidentified" (
+		echo Infections-"!HMP_Infections!" >> "%Output%\Notes\Comments.txt"
+	) else (
+		echo No infections found. >> "%Output%\Notes\Comments.txt"
+	)
   GOTO :EOF
 ) else (
-	CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    HitmanPro not found.
-  echo.
-  echo    Skipping...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
-  color 07
-  GOTO :EOF
+	REM Display message that tool was not found.
+	%Output%\Functions\Menu\MessageBox "HitmanPro not found.\n\nSkipping.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool" /B:O /I:E /O:N /T:10
 )
+REM Disable delayed expansion
 ENDLOCAL DISABLEDELAYEDEXPANSION

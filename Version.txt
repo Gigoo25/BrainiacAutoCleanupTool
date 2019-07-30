@@ -1,5 +1,5 @@
-1.5.1
-2019-05-11
+2.0.1
+2019-07-30
 
 Functions Legend
 --------------
@@ -7,9 +7,9 @@ Readme
 Version
 Changelog
 
-1.5
-1.5.1
-1.5
+2.0.1
+2.0.1
+2.0.1
 
 Functions Legend
 --------------
@@ -22,44 +22,36 @@ Functions Legend
 7 - Zemana_Function
 8 - MBAR_Function
 9 - Malwarebytes_Function
-10 - Spybot_Function
-11 - CCleaner_Function
-12 - DefragSystem_A_Function
-13 - DefragSystem_D_Function
-14 - ImageChecker_Function
-15 - CHKDSK_Function
-16 - SystemRestore_Function
-17 - DeleteNotes_Function
-18 - DeleteLogs_Function
-19 - DeleteTools_Function
-20 - Brainiacs_Function
-21 - Update_Update_Function
-22 - Windows_Defrag_Function
-23 - Email_function
+10 - CCleaner_Function
+11 - ImageChecker_Function
+12 - CHKDSK_Function
+13 - SystemRestore_Function
+14 - DeleteNotes_Function
+15 - DeleteLogs_Function
+16 - DeleteTools_Function
+17 - Brainiacs_Function
+18 - Update_Update_Function
+19 - Windows_Defrag_Function
 
-1.5
-1.5
-1.5
-1.5.1
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5
-1.5.1
-1.5.1
-1.5
-1.5
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
+2.0.1
 
 Tools Legend
 --------------
@@ -72,13 +64,8 @@ Tools Legend
 7 - Zemana_Tool
 8 - MBAR_Tool
 9 - Malwarebytes_Tool
-10 - Spybot_Tool
-11 - CCleaner_Tool
-12 - DefragSystem_A_Tool
-13 - DefragSystem_D_Tool
-14 - Caffeine_Tool
-15 - Geek_Tool
-16 - Blat_Tool
+10 - CCleaner_Tool
+11 - Geek_Tool
 
 2.9.1.0
 8.1.4.0
@@ -89,10 +76,5 @@ Tools Legend
 2.74.2.664
 1.0
 1.0
-1.0
-5.56
+5.60
 8.0.24.0
-2.22.995
-1.0
-1.4.5.135
-2.5.0

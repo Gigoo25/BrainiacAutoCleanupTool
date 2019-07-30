@@ -1,60 +1,32 @@
 @echo off
 
 REM Variables
-set "VarMBAR=0"
-
-REM Set title
-title [MBAR] Brainiacs Cleanup Tool v%TOOL_VERSION%
+set VarMBAR=0
+set MBAR_Infections=unidentified
 
 REM Start MBAR service.
-CLS
+	REM Enable delayed expansion
 SETLOCAL ENABLEDELAYEDEXPANSION
 if exist "%Output%\Tools\MBAR\mbar.exe" (
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Running MBAR...
-	echo.
-	echo   This may take a while.
-	echo.
-	echo =================================
+	REM Start MBAR
 	start /WAIT "MBAR" "%Output%\Tools\MBAR\mbar.exe"
-	CLS
+	REM Set notes
 	echo -Ran MBAR >> %Output%\Notes\Comments.txt
-	echo.
-	echo  ^! USER INPUT
-	echo =================================
-	echo.
-	set /p VarMBAR=Enter the amount of infections found:
-	echo Infections-!!VarMBAR!! >> %Output%\Notes\Comments.txt
-	CLS
-	echo.
-	echo  ^! ALERT
-	echo =================================
-	echo.
-	echo   Done running MBAR!
-	echo.
-	echo =================================
-  TIMEOUT 2 >nul
+	REM Ask for amount of infections found & set notes
+	FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the amount of infections found:" "[INFECTIONS] MBAR" /H:150 /W:280 /M:"####" /F:"\d{0,4}" /U /I`) DO (
+		REM Set variable
+		set MBAR_Infections=%%G
+	)
+	REM Set comments based on variable
+	IF NOT "!MBAR_Infections!"=="unidentified" (
+		echo Infections-"!MBAR_Infections!" >> "%Output%\Notes\Comments.txt"
+	) else (
+		echo No infections found. >> "%Output%\Notes\Comments.txt"
+	)
 	GOTO :EOF
 ) else (
-	CLS
-  color 0c
-  echo.
-  echo  ^! ERROR
-  echo ===================================================================================
-  echo.
-  echo    MBAR not found.
-  echo.
-  echo    Skipping...
-  echo.
-  echo    The Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds.
-  echo.
-  echo ===================================================================================
-  TIMEOUT 10
-  color 07
-  GOTO :EOF
+	REM Display message that tool was not found.
+	%Output%\Functions\Menu\MessageBox "MBAR not found.\n\nSkipping.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool" /B:O /I:E /O:N /T:10
 )
+REM Disable delayed expansion
 ENDLOCAL DISABLEDELAYEDEXPANSION
