@@ -32,38 +32,44 @@ REM Prepare the Command Processor
 SETLOCAL ENABLEEXTENSIONS
 SETLOCAL ENABLEDELAYEDEXPANSION
 
-REM Set default directory
+REM Set all variables as default value to be sure none are unable to be set due to non-existance.
+
+REM Directory related variables
 %~d0
 cd %~dp0
-
-REM Other variables
 set Output=%cd%
+
+REM Windows related variables
 set SAFE_MODE=no
-set TOOL_VERSION=undetected
-set TOOL_DATE=undetected
 set OS=unidentified
 set WIN_VER=undetected
 set WIN_VER_NUM=undetected
-set DELETEFUNCTIONS=yes
+set PID_BRAINIACS=undetected
+set DISK_DRIVE_TYPE=undetected
+set DISK_INTERFACE_TYPE=undetected
+
+REM Tool related variables
+set TOOL_VERSION=undetected
+set TOOL_DATE=undetected
+set PASSWORD=undetected
+
+REM Session restoration related variables
 set DELETE_RESTORE=undetected
+set SKIP_DELETE_TOOLS=undetected
 set ABRUPTCLOSE=undetected
 set ABORT_CLEANUP=no
-set VARID=unidentified
-set VARPHN=unidentified
-set VAR_ADDT_NOTES=None
-set SKIP_DEFRAG=no
-set VAR_GEEK=None
-set TEST_UPDATE_MASTER=undetected
-set PASSWORD=undetected
-set PID_BRAINIACS=undetected
-set ROGUE_QUICKSCAN=undetected
+
+REM Update related variables
 set TEST_UPDATE_MASTER=undetected
 set TEST_UPDATE_EXPERIMENTAL=undetected
-set PREVIOUS_USER=undetected
-set Defrag_External=undetected
-set DefragSystem_choice=undetected
-set SKIP_DELETE_TOOLS=undetected
 
+REM Function related variables
+set ROGUE_QUICKSCAN=undetected
+set SKIP_DEFRAG=no
+set DEFRAG_EXTERNAL=undetected
+
+REM User related variables
+set PREVIOUS_USER=undetected
 set CSG_USR_ID=unidentified
 set SUB_PHN=unidentified
 set ADDT_NOTES=unidentified
@@ -200,6 +206,8 @@ FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\INPUTBOX "Enter the 
     REM Continue if correct password was entered
     goto No_Test_Continue
   ) ELSE if "%%G"=="RedRuby" (
+    REM Enable test features
+    set PASSWORD=RedRuby
     REM Continue to testing mode if correct password was entered
     %Output%\Functions\Menu\MessageBox "Entering hidden testing mode." "[WARNING] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:W /O:N >nul
     goto Choice_Test_Upgrade_All
@@ -781,13 +789,15 @@ REM Execute Menu
 
 if /i "%SystemRestore_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\Restore_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set SystemRestore_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 ) else /i "%SystemRestore_choice%"=="No" (
   if not "!PASSWORD!"=="RedRuby" (
     if /i "%Malwarebytes_choice%"=="Yes" (
@@ -796,11 +806,13 @@ if /i "%SystemRestore_choice%"=="Yes" (
           REM Set variables
           set SystemRestore_choice=Yes
           REM Create restore point
-          echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+          echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
           REM Goto function
           goto Malwarebytes_function
         ) else (
           set Malwarebytes_choice=No
+          REM Save persistent for ABRUPTCLOSE
+          call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
         )
       )
     )
@@ -809,7 +821,7 @@ if /i "%SystemRestore_choice%"=="Yes" (
 
 if /i "%Geek_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Start function
   if exist "%Output%\Tools\Geek\geek.exe" (
     start /WAIT "Geek" "%Output%\Tools\Geek\geek.exe"
@@ -819,42 +831,50 @@ if /i "%Geek_choice%"=="Yes" (
     %Output%\Functions\Menu\MessageBox "Geek uninstaller not found.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
   )
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set Geek_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%RKill_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\Rkill_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set RKill_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%JRT_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\JRT_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set JRT_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%TDSS_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\TDSS_Killer_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set TDSS_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%Rogue_choice%"=="Yes" (
@@ -868,70 +888,82 @@ if /i "%Rogue_choice%"=="Yes" (
     )
   )
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\RogueKiller_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set Rogue_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%ADW_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\ADW_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set ADW_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%HitmanPro_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\HitmanPro_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set HitmanPro_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%Zemana_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\Zemana_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set Zemana_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%MBAR_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\MBAR_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set MBAR_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 :Malwarebytes_function
 if /i "%Malwarebytes_choice%"=="Yes" (
-  if "%PASSWORD%"=="RedRuby" (
+  if "!PASSWORD!"=="RedRuby" (
     REM Create restore point
-    echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+    echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Call function
     call functions\Malwarebytes_function
     REM Create restore point
-    echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+    echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Set variables
     set Malwarebytes_choice=No
+    REM Save persistent for ABRUPTCLOSE
+    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   ) else (
     %Output%\Functions\Menu\MessageBox "This feature is still experimental and not enebled yet.\n\nWait until I get it tested and fixed.\n\nThanks.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
   )
@@ -939,33 +971,89 @@ if /i "%Malwarebytes_choice%"=="Yes" (
 
 if /i "%CCleaner_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\CCleaner_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set CCleaner_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%DefragSystem_choice%"=="Yes" (
+
+  REM Limited check on SSD usage
+  for /F "tokens=1-2" %%a in ('wmic LogicalDisk get DeviceID^,DriveType') do (
+    if "%%b" equ "3" (
+      set DISK_DRIVE_TYPE=HDD
+    ) else (
+      set DISK_DRIVE_TYPE=SSD
+    )
+  )
+
+  set partitions=0
+  for /F "tokens=1-2" %%a in ('wmic DiskDrive get InterfaceType^,Partitions') do (
+     if "%%a" equ "IDE" set /A partitions+=%%b
+  )
+  set drives=BCDEFGHIJKLMNOPQRSTUVWXYZ
+  call set lastIDEdrive=%%drives:~%partitions%,1%%:
+  for /F %%a in ('wmic LogicalDisk get DeviceID') do (
+    if "%%a" gtr "%lastIDEdrive%" (
+      set DISK_INTERFACE_TYPE=SSD
+    ) else (
+      set DISK_INTERFACE_TYPE=HDD
+    )
+  )
+
+  REM Ask to check SSD before running if not in testing
+  if not "!PASSWORD!"=="RedRuby" (
+    if /i "!DISK_DRIVE_TYPE!"=="SSD" (
+      REM Display warning prompt
+      FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "There is a possibility that this is an SSD.\n\nDefragging an SSD can be dangerous\u0021\n\nAre you sure this is not an SSD\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+        IF /I "%%G"=="Yes" (
+          REM Continue defrag
+        ) else (
+          REM Display message showing defrag will start next boot
+          %Output%\Functions\Menu\MessageBox "You're not confident that this is not an SSD.\n\nDefrag will be skipped for safety." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:10
+          REM Continue cleanup
+          goto Continue_ImageChecker
+        )
+      )
+    )
+    if /i "!DISK_INTERFACE_TYPE!"=="SSD" (
+      REM Display warning prompt
+      FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "There is a possibility that this is an SSD.\n\nDefragging an SSD can be dangerous\u0021\n\nAre you sure this is not an SSD\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
+        IF /I "%%G"=="Yes" (
+          REM Continue defrag
+        ) else (
+          REM Display message showing defrag will start next boot
+          %Output%\Functions\Menu\MessageBox "You're not confident that this is not an SSD.\n\nDefrag will be skipped for safety." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:10
+          REM Continue cleanup
+          goto Continue_ImageChecker
+        )
+      )
+    )
+  )
+
   REM Ask if want to run externally
   FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to run defrag externally\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
     IF /I "%%G"=="Yes" (
       REM Set variables
-      set Defrag_External=Yes
+      set DEFRAG_EXTERNAL=Yes
     ) else (
       REM Set variables
-      set Defrag_External=No
+      set DEFRAG_EXTERNAL=No
     )
   )
 
   REM Ask if want to schedule boot if not ran externally
-  if /i "!Defrag_External!"=="No" (
+  if /i "!DEFRAG_EXTERNAL!"=="No" (
     FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Do you want to run defrag on the next boot\u003F" "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:W /O:N`) DO (
       IF /I "%%G"=="Yes" (
         REM Move defrag function to boot folder
-        xcopy /v "%Output%\functions\Windows_Defrag_Function.bat" "%SystemDrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
+        xcopy /v "%Output%\functions\Windows_Defrag_Function.bat" "%UserProfile%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
         REM Display message showing defrag will start next boot
         %Output%\Functions\Menu\MessageBox "Defrag is scheduled to run on next boot.\n\nCleanup will now continue." "[INFORMATION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:I /O:N /T:10
         REM Continue cleanup
@@ -976,37 +1064,44 @@ if /i "%DefragSystem_choice%"=="Yes" (
 
   REM Initiate defrag based on variables
     REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\Windows_Defrag_Function
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set DefragSystem_choice=No
-)
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
+
+  )
 
 REM Set tag for Continuing Cleanup
 :Continue_ImageChecker
 if /i "%ImageChecker_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\Image_Checker_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set ImageChecker_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%DriveChecker_choice%"=="Yes" (
   REM Create restore point
-  echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Call function
   call functions\CHKDSK_function
   REM Create restore point
-  echo No >!Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set DriveChecker_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%ReviewLogs_choice%"=="Yes" (
@@ -1014,6 +1109,8 @@ if /i "%ReviewLogs_choice%"=="Yes" (
   call functions\ReviewLogs_function
   REM Set variables
   set ReviewLogs_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%DeleteLogs_choice%"=="Yes" (
@@ -1021,6 +1118,8 @@ if /i "%DeleteLogs_choice%"=="Yes" (
   call functions\DeleteLogs_function
   REM Set variables
   set DeleteLogs_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%DeleteTools_choice%"=="Yes" (
@@ -1035,24 +1134,30 @@ if /i "%DeleteTools_choice%"=="Yes" (
         set DeleteTools_choice=Yes
         set AutoClose_choice=Yes
         REM Create restore point
-        echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+        echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
         REM Call function
         call functions\DeleteTools_function
         REM Set variables
         set DeleteTools_choice=No
+        REM Save persistent for ABRUPTCLOSE
+        call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
       ) else (
         set Malwarebytes_choice=No
+        REM Save persistent for ABRUPTCLOSE
+        call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
       )
     )
   ) else (
     REM Set variables
     set DeleteTools_choice=Yes
     REM Create restore point
-    echo yes>!Output!\Functions\Variables\ABRUPTCLOSE.txt
+    echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Call function
     call functions\DeleteTools_function
     REM Set variables
     set DeleteTools_choice=No
+    REM Save persistent for ABRUPTCLOSE
+    call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   )
 )
 
@@ -1061,6 +1166,8 @@ if /i "%OpenNotes_choice%"=="Yes" (
   call functions\OpenNotes_function
   REM Set variables
   set OpenNotes_choice=No
+  REM Save persistent for ABRUPTCLOSE
+  call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
 )
 
 if /i "%DeleteNotes_choice%"=="Yes" (
@@ -1072,9 +1179,13 @@ if /i "%DeleteNotes_choice%"=="Yes" (
       call functions\DeleteNotes_function
       REM Set variables
       set DeleteNotes_choice=No
+      REM Save persistent for ABRUPTCLOSE
+      call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
     ) else (
       REM Set variables
       set DeleteNotes_choice=No
+      REM Save persistent for ABRUPTCLOSE
+      call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
     )
   )
 )
@@ -1087,6 +1198,8 @@ if /i "%SelfDestruct_choice%"=="Yes" (
     ) else (
       REM Set variables
       set SelfDestruct_choice=No
+      REM Save persistent for ABRUPTCLOSE
+      call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
     )
   )
 )
@@ -1134,7 +1247,6 @@ REM           -- %*: set command arguments
 set %*
 GOTO:EOF
 
-
 :getPersistentVars -- returns a comma separated list of persistent variables
 REM                  -- %~1: reference to return variable
 SETLOCAL
@@ -1146,7 +1258,6 @@ for /f "tokens=2 delims== " %%a in ('"%parse%"') do (set retlist=!retlist!%%a,)
 )
 GOTO:EOF
 
-
 :savePersistentVars -- Save values of persistent variables into a file
 REM                   -- %~1: file name
 SETLOCAL
@@ -1154,7 +1265,6 @@ echo.>"%~1"
 call :getPersistentVars persvars
 for %%a in (%persvars%) do (echo.SET %%a=!%%a!>>"%~1")
 GOTO:EOF
-
 
 :restorePersistentVars -- Restore the values of the persistent variables
 REM                      -- %~1: batch file name to restore from
