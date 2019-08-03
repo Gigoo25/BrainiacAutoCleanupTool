@@ -1,6 +1,15 @@
 
 CHANGELOG
 ===================================================================================
+Brainiacs Cleanup Tool v2.0.2 (2019-08-03)
+*HOTFIX*
+---
+-Corrected the tokens for menu system sparsing.
+-Added abrupt close for yes variables.
+-Fixed system restore check for Malwarebytes.
+-Fixed typo in "SFC" message.
+-Fixed order of "System Restore" to allow for "ABRUPT" close variable.
+
 Brainiacs Cleanup Tool v2.0.1 (2019-07-30)
 *STABLE?*
 ---
