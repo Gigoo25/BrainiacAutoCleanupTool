@@ -36,7 +36,7 @@ REM Check System Files for corruptions
 if %WIN_VER_NUM% LSS 6.2 (
     if exist "%SystemRoot%\System32\sfc.exe" (
     	REM Display starting message
-    	%Output%\Functions\Menu\MessageBox "Starting SFC\n\nThis will check the Windows System Image for corruptions..." "[ALERT] Brainiacs Cleanup
+      %Output%\Functions\Menu\MessageBox "Starting SFC\n\nThis will check the Windows System Image for corruptions." "[ALERT] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:A /O:N /T:10 >nul
 			REM Clear terminal screen
 			CLS
 			REM Start function
