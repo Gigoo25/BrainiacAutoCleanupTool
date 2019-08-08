@@ -1,14 +1,17 @@
 
 CHANGELOG
 ===================================================================================
-Brainiacs Cleanup Tool v2.0.2 (2019-08-03)
+Brainiacs Cleanup Tool v2.0.2 (2019-08-08)
 *HOTFIX*
 ---
 -Corrected the tokens for menu system sparsing.
 -Added abrupt close for yes variables.
--Fixed system restore check for Malwarebytes.
+-Fixed system restore check for Malware-bytes.
 -Fixed typo in "SFC" message.
 -Fixed order of "System Restore" to allow for "ABRUPT" close variable.
+-Updated ADW Cleaner to v7.4.
+-Fixed abrupt close restoration.
+-After session pickup cleanup will skip menu and start the cleanup.
 
 Brainiacs Cleanup Tool v2.0.1 (2019-07-30)
 *STABLE?*
