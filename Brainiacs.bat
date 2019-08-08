@@ -176,7 +176,8 @@ if not exist "%Output%\Logs\" (
 
 REM Pull ABRUPTCLOSE var if present
 if exist "!Output!\Functions\Variables\ABRUPTCLOSE.txt" (
-    set /p ABRUPTCLOSE=<!Output!\Functions\Variables\ABRUPTCLOSE.txt
+    REM set /p ABRUPTCLOSE=<!Output!\Functions\Variables\ABRUPTCLOSE.txt
+    for /f "delims=" %%a in (!Output!\Functions\Variables\ABRUPTCLOSE.txt) do set ABRUPTCLOSE=%%a
 )
 
 REM Check if 32/64bit windows
@@ -348,7 +349,7 @@ if not exist "%Output%\Functions" (
 )
 
 REM Setup resume state if not found, if found ask if you want to resume the last state
-if "%ABRUPTCLOSE%"=="yes" (
+if /i "!ABRUPTCLOSE!"=="yes" (
   if exist "!Output!\Functions\Variables\ABRUPTCLOSE.txt" (
     FOR /F "usebackq tokens=1" %%G IN (`%Output%\Functions\Menu\MessageBox "Abrupt stop detected.\n\nDo you want to restore the session\u003F" "[QUESTION] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:Y /I:Q /O:N`) DO (
       IF /I "%%G"=="Yes" (
@@ -358,8 +359,6 @@ if "%ABRUPTCLOSE%"=="yes" (
       ) ELSE (
         REM Set var to delete restore point on start
         set DELETE_RESTORE=Yes
-        REM Delete ABRUTCLOSE file
-        del "!Output!\Functions\Variables\ABRUPTCLOSE.txt"
       )
     )
   )
@@ -435,8 +434,8 @@ REM Enter pickup notes
 echo --- >> "%Output%\Notes\Comments.txt"
 echo -Picked up session from "%PREVIOUS_USER%" >> "%Output%\Notes\Comments.txt"
 
-REM Start menu
-goto Functions_Menu
+REM Start menu interface
+goto :Execute_Menu
 
 REM Start new session if user did not pick up session
 :Session_New
@@ -795,7 +794,7 @@ if /i "%SystemRestore_choice%"=="No" (
            REM Set variables
            set SystemRestore_choice=Yes
            REM Create restore point
-           echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+           echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
            REM Save persistent for ABRUPTCLOSE
            call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
            REM Start System Restore
@@ -806,7 +805,7 @@ if /i "%SystemRestore_choice%"=="No" (
            REM Set variables
            set Malwarebytes_choice=No
            REM Create restore point
-           echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+           echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
            REM Save persistent for ABRUPTCLOSE
            call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
          )
@@ -815,13 +814,13 @@ if /i "%SystemRestore_choice%"=="No" (
    )
 ) else if /i "%SystemRestore_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\Restore_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set SystemRestore_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -830,7 +829,7 @@ if /i "%SystemRestore_choice%"=="No" (
 
 if /i "%Geek_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Start function
@@ -842,7 +841,7 @@ if /i "%Geek_choice%"=="Yes" (
     %Output%\Functions\Menu\MessageBox "Geek uninstaller not found.\n\nThe Brainiacs Cleanup Tool v%TOOL_VERSION% will continue in 10 seconds." "[ERROR] Brainiacs Cleanup Tool v%TOOL_VERSION%" /B:O /I:E /O:N /T:10
   )
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set Geek_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -851,13 +850,13 @@ if /i "%Geek_choice%"=="Yes" (
 
 if /i "%RKill_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\Rkill_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set RKill_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -866,13 +865,13 @@ if /i "%RKill_choice%"=="Yes" (
 
 if /i "%JRT_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\JRT_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set JRT_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -881,13 +880,13 @@ if /i "%JRT_choice%"=="Yes" (
 
 if /i "%TDSS_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\TDSS_Killer_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set TDSS_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -905,13 +904,13 @@ if /i "%Rogue_choice%"=="Yes" (
     )
   )
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\RogueKiller_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set Rogue_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -920,13 +919,13 @@ if /i "%Rogue_choice%"=="Yes" (
 
 if /i "%ADW_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\ADW_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set ADW_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -935,13 +934,13 @@ if /i "%ADW_choice%"=="Yes" (
 
 if /i "%HitmanPro_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\HitmanPro_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set HitmanPro_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -950,13 +949,13 @@ if /i "%HitmanPro_choice%"=="Yes" (
 
 if /i "%Zemana_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\Zemana_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set Zemana_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -965,13 +964,13 @@ if /i "%Zemana_choice%"=="Yes" (
 
 if /i "%MBAR_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\MBAR_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set MBAR_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -982,11 +981,11 @@ if /i "%MBAR_choice%"=="Yes" (
 if /i "%Malwarebytes_choice%"=="Yes" (
   if "!PASSWORD!"=="RedRuby" (
     REM Create restore point
-    echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+    echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Call function
     call functions\Malwarebytes_function
     REM Create restore point
-    echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+    echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Set variables
     set Malwarebytes_choice=No
     REM Save persistent for ABRUPTCLOSE
@@ -998,13 +997,13 @@ if /i "%Malwarebytes_choice%"=="Yes" (
 
 if /i "%CCleaner_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\CCleaner_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set CCleaner_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -1093,13 +1092,13 @@ if /i "%DefragSystem_choice%"=="Yes" (
 
   REM Initiate defrag based on variables
     REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\Windows_Defrag_Function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set DefragSystem_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -1111,13 +1110,13 @@ REM Set tag for Continuing Cleanup
 :Continue_ImageChecker
 if /i "%ImageChecker_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\Image_Checker_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set ImageChecker_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -1126,13 +1125,13 @@ if /i "%ImageChecker_choice%"=="Yes" (
 
 if /i "%DriveChecker_choice%"=="Yes" (
   REM Create restore point
-  echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Save persistent for ABRUPTCLOSE
   call:savePersistentVars "%FilePersist%"&   rem --save the persistent variables to the storage
   REM Call function
   call functions\CHKDSK_function
   REM Create restore point
-  echo no > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+  echo no> !Output!\Functions\Variables\ABRUPTCLOSE.txt
   REM Set variables
   set DriveChecker_choice=No
   REM Save persistent for ABRUPTCLOSE
@@ -1169,7 +1168,7 @@ if /i "%DeleteTools_choice%"=="Yes" (
         set DeleteTools_choice=Yes
         set AutoClose_choice=Yes
         REM Create restore point
-        echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+        echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
         REM Call function
         call functions\DeleteTools_function
         REM Set variables
@@ -1186,7 +1185,7 @@ if /i "%DeleteTools_choice%"=="Yes" (
     REM Set variables
     set DeleteTools_choice=Yes
     REM Create restore point
-    echo yes > !Output!\Functions\Variables\ABRUPTCLOSE.txt
+    echo yes> !Output!\Functions\Variables\ABRUPTCLOSE.txt
     REM Call function
     call functions\DeleteTools_function
     REM Set variables
